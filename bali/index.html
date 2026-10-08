@@ -129,58 +129,56 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .card .ad2 svg{flex:0 0 38px;height:38px;margin-top:2px}
 
 /* participant info (Slide 2) */
-.ib { position: absolute; left: 70px; right: 70px; top: 520px; z-index: 3; --k: 1; }
+.ib { position: absolute; left: 70px; right: 70px; top: 510px; z-index: 3; --k: 1; }
 
-.dual-wrap { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+.dual-wrap { display: flex; flex-direction: column; gap: 16px; width: 100%; }
 .dual-card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: calc(28px * var(--k, 1)) 36px;
-  border-left: 16px solid #0025cc;
-  box-shadow: 0 12px 40px rgba(0, 37, 204, 0.08);
-  border-top: 1px solid #e2e8f0;
-  border-right: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: calc(22px * var(--k, 1)) 30px;
+  border-left: 14px solid #0025cc;
+  box-shadow: 0 10px 30px rgba(0, 37, 204, 0.07);
+  border: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
-.dual-card .t-name { font-size: calc(48px * var(--k, 1)); font-weight: 800; color: #0f172a; line-height: 1.18; }
-.dual-card .t-meta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: calc(8px * var(--k, 1)); font-size: calc(28px * var(--k, 1)); font-weight: 700; color: #334155; }
-.dual-card .t-meta span { background: #f8fafc; padding: 8px 16px; border-radius: 10px; border: 1px solid #e2e8f0; }
+.dual-card .t-name { font-size: calc(44px * var(--k, 1)); font-weight: 800; color: #0f172a; line-height: 1.18; }
+.dual-card .t-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: calc(6px * var(--k, 1)); font-size: calc(26px * var(--k, 1)); font-weight: 700; color: #334155; }
+.dual-card .t-meta span { background: #f8fafc; padding: 6px 14px; border-radius: 8px; border: 1px solid #e2e8f0; }
 .dual-card .t-meta span b { color: #0025cc; }
 
-.ib .nt { font-family: var(--slab); font-weight: 700; font-size: calc(48px * var(--k, 1)); margin-top: calc(40px * var(--k, 1)); color: #0f172a; }
+.ib .nt { font-family: var(--slab); font-weight: 700; font-size: calc(44px * var(--k, 1)); margin-top: calc(32px * var(--k, 1)); color: #0f172a; }
 .note-it {
   position: relative;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: calc(20px * var(--k, 1)) 28px calc(20px * var(--k, 1)) 60px;
-  margin-top: calc(16px * var(--k, 1));
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  padding: calc(16px * var(--k, 1)) 24px calc(16px * var(--k, 1)) 54px;
+  margin-top: calc(12px * var(--k, 1));
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
-.note-it::before { content: ""; position: absolute; left: 24px; top: calc(26px * var(--k, 1)); width: 16px; height: 16px; border-radius: 50%; background: #cc0000; }
-.note-it .j { font-weight: 800; font-size: calc(34px * var(--k, 1)); color: #cc0000; }
-.note-it .s { font-weight: 600; font-size: calc(32px * var(--k, 1)); line-height: 1.35; color: #334155; margin-top: 4px; }
-.ib .hint2 { margin-top: 40px; font-size: 32px; font-weight: 600; color: #7a7166; line-height: 1.4; }
+.note-it::before { content: ""; position: absolute; left: 22px; top: calc(22px * var(--k, 1)); width: 14px; height: 14px; border-radius: 50%; background: #cc0000; }
+.note-it .j { font-weight: 800; font-size: calc(30px * var(--k, 1)); color: #cc0000; }
+.note-it .s { font-weight: 600; font-size: calc(28px * var(--k, 1)); line-height: 1.35; color: #334155; margin-top: 2px; }
+.ib .hint2 { margin-top: 40px; font-size: 30px; font-weight: 600; color: #7a7166; line-height: 1.4; }
 
 /* upcoming (Slide 3) */
-.sub { position: absolute; left: 70px; right: 70px; top: 510px; z-index: 3; font-size: 32px; line-height: 1.35; color: #64748b; font-weight: 600; }
-.pg { position: absolute; right: 70px; top: 510px; z-index: 3; font-weight: 800; font-size: 30px; color: #0025cc; }
-.tl { position: absolute; left: 70px; right: 70px; top: 575px; z-index: 3; display: flex; flex-direction: column; gap: 18px; }
+.sub { position: absolute; left: 70px; right: 70px; top: 505px; z-index: 3; font-size: 28px; line-height: 1.35; color: #64748b; font-weight: 600; }
+.pg { position: absolute; right: 70px; top: 505px; z-index: 3; font-weight: 800; font-size: 28px; color: #0025cc; }
+.tl { position: absolute; left: 70px; right: 70px; top: 560px; z-index: 3; display: flex; flex-direction: column; gap: 14px; }
 .it {
   position: relative;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 24px 32px;
+  border-radius: 18px;
+  padding: 20px 28px;
   border-left: 14px solid #cc0000;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
 }
-.it .dt { color: #cc0000; font-weight: 800; font-size: 32px; margin-bottom: 4px; }
-.it .nm { color: #0f172a; font-weight: 800; font-size: 46px; line-height: 1.2; margin-top: 4px; }
-.it .kt { display: inline-block; background: #f8fafc; color: #475569; font-weight: 700; font-size: 24px; padding: 6px 14px; border-radius: 8px; margin-top: 10px; border: 1px solid #e2e8f0; }
+.it .dt { color: #cc0000; font-weight: 800; font-size: 28px; margin-bottom: 2px; }
+.it .nm { color: #0f172a; font-weight: 800; font-size: 40px; line-height: 1.2; margin-top: 2px; }
+.it .kt { display: inline-block; background: #f8fafc; color: #475569; font-weight: 700; font-size: 22px; padding: 4px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid #e2e8f0; }
 .empty { position: absolute; left: 70px; right: 70px; top: 620px; z-index: 3; font-size: 40px; font-weight: 600; color: #7a7166; line-height: 1.4; }
 
 /* transition wipe */
@@ -742,7 +740,9 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
 
   /* ---------- scene loop ---------- */
-  const PER = 5;
+  const PER = 3;         // Maksimal 3 kartu per halaman agar pas di layar & tidak nabrak footer
+  const MAX_PAGES = 3;   // Maksimal 3 halaman (9 diklat terdekat) agar durasi putaran tidak kelamaan
+
   function plan(){
     const L = lists(), out = [];
     if(L.on.length){
@@ -756,11 +756,11 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       out.push({ type: 'g', dur: 11000 });
     }
 
-    // Slide 3: Diklat Mendatang (5 per page, ~10s)
-    const pages = Math.ceil(L.up.length/PER);
-    for(let p=0; p<pages; p++){
-      const items = L.up.slice(p*PER, (p+1)*PER);
-      out.push({ type: 'n', items, page: p, pages, dur: 6000 + items.length*1400 });
+    // Slide 3: Diklat Mendatang (Paginasi 3 per halaman, maks 3 halaman / 9 diklat)
+    const totalPages = Math.min(MAX_PAGES, Math.ceil(L.up.length / PER));
+    for(let p = 0; p < totalPages; p++){
+      const items = L.up.slice(p * PER, (p + 1) * PER);
+      out.push({ type: 'n', items: items, page: p, pages: totalPages, dur: 6000 + items.length * 1400 });
     }
     return out;
   }
