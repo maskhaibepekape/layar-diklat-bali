@@ -1,13 +1,13 @@
 {
   "cleanUrls": true,
   "routes": [
+    { "handle": "filesystem" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/admin/(.*)", "dest": "/admin.html" },
     { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/bali", "dest": "/index.html" },
-    { "src": "/medan", "dest": "/index.html" },
-    { "src": "/makassar", "dest": "/index.html" },
-    { "src": "/ciawi", "dest": "/index.html" },
-    { "handle": "filesystem" }
+    { "src": "/bali", "dest": "/bali/index.html" },
+    { "src": "/medan", "dest": "/medan/index.html" },
+    { "src": "/makassar", "dest": "/makassar/index.html" },
+    { "src": "/ciawi", "dest": "/ciawi/index.html" }
   ]
 }
