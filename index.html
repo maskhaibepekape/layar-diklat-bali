@@ -161,11 +161,6 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 @keyframes wipe{from{left:-2400px}to{left:2300px}}
 
 /* ---------- page chrome ---------- */
-#audioBtn{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;
-  font:600 14px/1 var(--sans);padding:11px 16px;border-radius:999px;border:1px solid var(--line);
-  background:var(--panel-bg);color:var(--panel-fg);cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.18);
-  display:flex;align-items:center;gap:8px;transition:all .3s}
-#audioBtn:hover{border-color:var(--primary);color:var(--primary)}
 #editBtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;
   font:600 15px/1 var(--sans);padding:12px 18px;border-radius:999px;border:1px solid var(--line);
   background:var(--panel-bg);color:var(--panel-fg);cursor:pointer;box-shadow:0 4px 18px rgba(0,0,0,.18);transition:opacity .4s}
@@ -210,7 +205,6 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 </head>
 <body>
 <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
-<button id="audioBtn" type="button" aria-label="Putar atau heningkan musik latar"><span id="audioIcon">🔊</span><span id="audioLabel">Musik</span></button>
 <div id="frame">
   <div id="stage" aria-live="polite">
     <div class="head">
@@ -602,49 +596,22 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   catch(e){ console.error('Data JSON tidak valid:', e); apply(null); }
   startOnce();
 
-  /* ---------- background audio with autoplay unlock & toggle ---------- */
+  /* ---------- background audio (full volume, autoplay & seamless unlock) ---------- */
   const bgm = $('bgm');
-  const audioBtn = $('audioBtn');
-  const audioIcon = $('audioIcon');
-  const audioLabel = $('audioLabel');
-
-  function updateAudioState(playing){
-    if(audioIcon) audioIcon.textContent = playing ? '🔊' : '🔇';
-    if(audioLabel) audioLabel.textContent = playing ? 'Musik Nyala' : 'Musik Mati';
-    if(audioBtn){
-      audioBtn.style.borderColor = playing ? '#1d7a46' : 'var(--line)';
-      audioBtn.style.color = playing ? '#1d7a46' : 'var(--panel-fg)';
-    }
-  }
-
-  function startAudio(){
+  function playFullAudio(){
     if(!bgm) return;
-    bgm.volume = 0.45;
+    bgm.volume = 1.0;
     const p = bgm.play();
     if(p !== undefined){
-      p.then(() => updateAudioState(true))
-       .catch(() => updateAudioState(false));
+      p.catch(()=>{});
     }
   }
 
   if(bgm){
-    bgm.volume = 0.45;
-    startAudio();
-
-    if(audioBtn){
-      audioBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        if(bgm.paused){
-          startAudio();
-        } else {
-          bgm.pause();
-          updateAudioState(false);
-        }
-      });
-    }
-
+    bgm.volume = 1.0;
+    playFullAudio();
     const unlock = () => {
-      if(bgm.paused) startAudio();
+      if(bgm.paused) playFullAudio();
       ['pointerdown','click','keydown','touchstart'].forEach(ev => removeEventListener(ev, unlock));
     };
     ['pointerdown','click','keydown','touchstart'].forEach(ev => addEventListener(ev, unlock, {passive:true}));
