@@ -1,0 +1,24 @@
+{
+  "namaUnit": "PUSDIKLATWAS BPKP",
+  "wilayah": "Wilayah II Bali",
+  "namaBalai": "Pusdiklatwas BPKP Wilayah II Bali",
+  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Denpasar",
+  "wifiNama": "id bpkp bali",
+  "wifiSandi": "bali2025",
+  "notes": [
+    { "judul": "Pengumuman 1", "isi": "Catatan pengumuman pertama." },
+    { "judul": "Pengumuman 2", "isi": "Catatan pengumuman kedua." }
+  ],
+  "trainings": [
+    { "nama": "Diklat A - Investigasi Fraud Keuangan", "mulai": "2026-10-05", "selesai": "2026-10-09", "ruang": "Kelas A", "jam": "08.00–17.00" },
+    { "nama": "Diklat B - Audit Kepatuhan Regulasi", "mulai": "2026-10-05", "selesai": "2026-10-09", "ruang": "Kelas B", "jam": "08.00–17.00" },
+    { "nama": "Diklat C - Manajemen Risiko Sektor Publik", "mulai": "2026-10-06", "selesai": "2026-10-10", "ruang": "Kelas C", "jam": "08.00–17.00" },
+    { "nama": "Diklat D - Forensic Data Analytics", "mulai": "2026-10-06", "selesai": "2026-10-10", "ruang": "Lab Komputer", "jam": "08.00–17.00" },
+    { "nama": "Diklat E - SPIP Terintegrasi Batch 1", "mulai": "2026-10-07", "selesai": "2026-10-11", "ruang": "Aula", "jam": "08.00–17.00" },
+    { "nama": "Diklat F - Pengawasan PBJ Pemerintah", "mulai": "2026-10-07", "selesai": "2026-10-11", "ruang": "Kelas Belakang", "jam": "08.00–17.00" },
+    { "nama": "Diklat G - Evaluasi Akuntabilitas Kinerja", "mulai": "2026-10-08", "selesai": "2026-10-12", "ruang": "Studio PJJ", "jam": "08.00–17.00" },
+    { "nama": "Diklat H - Audit Tata Kelola TI", "mulai": "2026-10-08", "selesai": "2026-10-12", "ruang": "Kelas B2", "jam": "08.00–17.00" },
+    { "nama": "Diklat I - Penilaian Kapabilitas APIP", "mulai": "2026-10-08", "selesai": "2026-10-12", "ruang": "Kelas A2", "jam": "08.00–17.00" },
+    { "nama": "Diklat J - Auditor Ahli Muda Lanjutan", "mulai": "2026-10-08", "selesai": "2026-10-15", "ruang": "Ruang Rapat", "jam": "08.00–17.00" }
+  ]
+}

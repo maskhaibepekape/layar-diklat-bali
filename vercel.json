@@ -1,5 +1,20 @@
 {
   "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/data/(.*)\\.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "Access-Control-Expose-Headers", "value": "Date, Age" }
+      ]
+    },
+    {
+      "source": "/ping.txt",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }
+      ]
+    }
+  ],
   "routes": [
     { "handle": "filesystem" },
     { "src": "/api/(.*)", "dest": "/api/$1" },

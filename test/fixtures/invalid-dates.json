@@ -1,0 +1,19 @@
+{
+  "namaUnit": "PUSDIKLATWAS BPKP",
+  "wilayah": "Wilayah II Bali",
+  "namaBalai": "Pusdiklatwas BPKP Wilayah II Bali",
+  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Denpasar",
+  "notes": [],
+  "trainings": [
+    {
+      "nama": "Diklat Rusak Selesai Sebelum Mulai",
+      "mulai": "2026-10-20",
+      "selesai": "2026-10-10"
+    },
+    {
+      "nama": "Diklat Valid Mendatang",
+      "mulai": "2026-11-01",
+      "selesai": "2026-11-05"
+    }
+  ]
+}

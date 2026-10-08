@@ -1,0 +1,25 @@
+{
+  "namaUnit": "PUSDIKLATWAS BPKP",
+  "wilayah": "Wilayah II Bali",
+  "namaBalai": "Pusdiklatwas BPKP Wilayah II Bali",
+  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Denpasar",
+  "wifiNama": "id bpkp bali",
+  "wifiSandi": "bali2025",
+  "notes": [
+    {
+      "judul": "Catatan Sangat Panjang Sekali Tanpa Batas Yang Memiliki Teks <script>alert(1)</script> dan <img src=x onerror=alert(2)>",
+      "isi": "Isi catatan peserta dengan karakter super panjang dan detail teknis mendalam abcdefghijklmnopqrstuvwxyz1234567890 🚀🔥✨"
+    }
+  ],
+  "trainings": [
+    {
+      "nama": "Pelatihan Super Komprehensif Tata Kelola Keuangan Negara Berbasis Akrual & Audit Forensik Tingkat Lanjut Lintas Kementerian/Lembaga <script>alert('xss')</script> 🔥🏛️",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-15",
+      "ruang": "Ruang Kelas Super Eksekutif Lantai 2 Sayap Kanan Gedung Pembelajaran",
+      "jam": "08.00–17.30 WITA Non-Stop",
+      "peserta": "45 Orang Peserta Utama",
+      "sambutan": "Selamat datang seluruh peserta diklat pada sesi pembelajaran intensif ini!"
+    }
+  ]
+}

@@ -69,14 +69,14 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .socB svg{width:28px;height:28px}
 /* brown footer (info & schedule scenes): like the Canva page 2 */
 #footB{height:230px;background:#3a2a1b;color:#fff;text-align:center;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 80px}
-#footB .gold{position:absolute;inset:0;width:100%;height:100%}
+#footB .gold{position:absolute;top:0;right:0;bottom:0;left:0;width:100%;height:100%}
 #footB .t{position:relative;font-weight:800;font-style:italic;font-size:46px}
 #footB .t span{color:#f2c14e}
 #footB .ad{position:relative;font-size:22px;font-weight:600;color:#e7ded4;margin-top:12px}
 #footB .wl2{position:relative;font-size:22px;color:#e2cdc0;margin-top:6px}
 
 /* ---------- scenes ---------- */
-.scene{position:absolute;inset:0;visibility:hidden;opacity:0;z-index:1;background:#fff;color:#0f172a;pointer-events:none}
+.scene{position:absolute;top:0;right:0;bottom:0;left:0;visibility:hidden;opacity:0;z-index:1;background:#fff;color:#0f172a;pointer-events:none}
 .scene.on{visibility:visible;opacity:1;z-index:4;pointer-events:auto}
 .a{opacity:1;transform:none}
 .scene.on .a{animation:rise .65s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d,0s)}
@@ -89,7 +89,7 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 @keyframes sweep{from{opacity:1;transform:translate(260px,-260px)}to{opacity:1;transform:none}}
 .scene.on .sweepL{animation-name:sweepL;animation-duration:1.1s}
 @keyframes sweepL{from{opacity:1;transform:translate(-260px,260px)}to{opacity:1;transform:none}}
-.stripes{position:absolute;inset:0;width:1080px;height:1920px;z-index:1;pointer-events:none}
+.stripes{position:absolute;top:0;right:0;bottom:0;left:0;width:1080px;height:1920px;z-index:1;pointer-events:none}
 .plane{position:absolute;z-index:1;pointer-events:none}
 .fit{white-space:nowrap}.fit>span{display:inline-block}
 
@@ -164,28 +164,81 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .ib .hint2 { margin-top: 40px; font-size: 32px; font-weight: 600; color: #7a7166; line-height: 1.4; }
 
 /* upcoming (Slide 3) */
-.sub { position: absolute; left: 70px; right: 70px; top: 505px; z-index: 3; font-size: 28px; line-height: 1.35; color: #64748b; font-weight: 600; }
-.pg { position: absolute; right: 70px; top: 505px; z-index: 3; font-weight: 800; font-size: 28px; color: #0025cc; }
-.tl { position: absolute; left: 70px; right: 70px; top: 560px; z-index: 3; display: flex; flex-direction: column; gap: 14px; }
+.next-bar {
+  position: absolute;
+  left: 70px;
+  right: 70px;
+  top: 508px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.next-bar .sub {
+  font-size: 26px;
+  line-height: 1.35;
+  color: #64748b;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+.next-bar .pg {
+  flex-shrink: 0;
+  font-weight: 800;
+  font-size: 26px;
+  color: #0025cc;
+  background: #e0e7ff;
+  padding: 6px 18px;
+  border-radius: 99px;
+  border: 1px solid #c7d2fe;
+}
+.next-bar .pg:empty { display: none; }
+.tl { position: absolute; left: 70px; right: 70px; top: 640px; z-index: 3; display: flex; flex-direction: column; gap: 16px; }
 .it {
   position: relative;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 18px;
-  padding: 20px 28px;
+  padding: 22px 28px;
   border-left: 14px solid #cc0000;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
 }
 .it .dt { color: #cc0000; font-weight: 800; font-size: 28px; margin-bottom: 2px; }
 .it .nm { color: #0f172a; font-weight: 800; font-size: 40px; line-height: 1.2; margin-top: 2px; }
 .it .kt { display: inline-block; background: #f8fafc; color: #475569; font-weight: 700; font-size: 22px; padding: 4px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid #e2e8f0; }
-.empty { position: absolute; left: 70px; right: 70px; top: 620px; z-index: 3; font-size: 40px; font-weight: 600; color: #7a7166; line-height: 1.4; }
+.empty { position: absolute; left: 70px; right: 70px; top: 640px; z-index: 3; font-size: 40px; font-weight: 600; color: #7a7166; line-height: 1.4; }
 
 /* transition wipe */
-.wipe{position:absolute;inset:0;z-index:40;pointer-events:none;overflow:hidden}
+.wipe{position:absolute;top:0;right:0;bottom:0;left:0;z-index:40;pointer-events:none;overflow:hidden}
 .band{position:absolute;top:-400px;height:2720px;width:420px;left:-2400px;transform:skewX(-24deg)}
 .wipe.go .band{animation:wipe 1.25s cubic-bezier(.7,0,.3,1) forwards;animation-delay:var(--d)}
 @keyframes wipe{from{left:-2400px}to{left:2300px}}
+
+/* Debug HUD Overlay */
+#debugHud {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #38bdf8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  z-index: 9999;
+  pointer-events: none;
+  max-width: 480px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  display: none;
+}
+#debugHud.active { display: block; }
+#debugHud .dh-title { color: #f8fafc; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 4px; margin-bottom: 6px; }
+#debugHud .dh-row { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 2px; }
+#debugHud .dh-val { color: #f1f5f9; font-weight: 600; }
+#debugHud .dh-err { color: #f87171; }
 
 /* ---------- page chrome ---------- */
 #editBtn{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;
@@ -321,8 +374,10 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
         <polygon points="0,1440 0,1480 440,1920 400,1920" fill="#1a1a1a"/></g>
       </svg>
       <div class="pill a pop fit" data-max="126" style="--d:.25s"><span>DIKLAT MENDATANG</span></div>
-      <div class="sub a" style="--d:.35s">Jadwal pelatihan tatap muka berikutnya di <span id="nextBalaiText">Pusdiklatwas BPKP</span></div>
-      <div class="pg a" style="--d:.3s" id="nPg"></div>
+      <div class="next-bar a" style="--d:.35s">
+        <div class="sub">Jadwal pelatihan tatap muka berikutnya di <span id="nextBalaiText">Pusdiklatwas BPKP</span></div>
+        <div class="pg" id="nPg"></div>
+      </div>
       <div class="tl" id="nList"></div>
     </section>
 
@@ -350,6 +405,17 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       <div class="socB" id="socB"></div>
     </footer>
   </div>
+
+  <div id="debugHud">
+    <div class="dh-title">📡 TELEMETRY HUD (SIGNAGE)</div>
+    <div class="dh-row"><span>Scene:</span><span class="dh-val" id="dhScene">-</span></div>
+    <div class="dh-row"><span>Tanggal (ISO):</span><span class="dh-val" id="dhDate">-</span></div>
+    <div class="dh-row"><span>Clock Drift:</span><span class="dh-val" id="dhDrift">0 ms</span></div>
+    <div class="dh-row"><span>Reload / SoftRestart:</span><span class="dh-val" id="dhRestarts">0 / 0</span></div>
+    <div class="dh-row"><span>Errors / Timers:</span><span class="dh-val" id="dhErrors">0 / 0</span></div>
+    <div class="dh-row"><span>Speed / Uptime:</span><span class="dh-val" id="dhSpeed">1x / 0s</span></div>
+    <div class="dh-row"><span>Engine:</span><span class="dh-val" id="dhUa" style="font-size:10px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">-</span></div>
+  </div>
 </div>
 
 
@@ -358,12 +424,9 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
      Tanggal ditulis YYYY-MM-DD. Diklat pindah otomatis sesuai tanggal hari ini. -->
 <script id="data" type="application/json">
 {
-  "namaUnit": "PUSDIKLATWAS BPKP",
-  "wilayah": "Pusdiklatwas Ciawi",
-  "namaBalai": "Pusdiklat Pengawasan BPKP Ciawi Bogor",
-  "alamat": "Jl. Raya Ciawi No. 1, Bendungan, Kec. Ciawi, Kabupaten Bogor, Jawa Barat 16720",
-  "wifiNama": "",
-  "wifiSandi": "",
+  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Pemecutan Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80118",
+  "wifiNama": "id bpkp bali",
+  "wifiSandi": "bali2025",
   "ig": "@giacorpu",
   "yt": "GIA CORPU",
   "xx": "@GIA_CORPU",
@@ -373,23 +436,77 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   "notes": [
     {
       "judul": "Waktu Pembelajaran",
-      "isi": "Sesi Pagi: 08.00\u201312.00 WIB \u00b7 Sesi Siang: 13.00\u201317.00 WIB"
+      "isi": "Sesi Pagi: 08.00–12.00 WITA · Sesi Siang: 13.00–17.00 WITA"
     },
     {
       "judul": "Tata Tertib & Fasilitas",
       "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+    },
+    {
+      "judul": "Layanan Resepsionis",
+      "isi": "Informasi kamar wisma dan bantuan operasional dapat menghubungi petugas di Meja Resepsionis Lantai 1."
     }
   ],
   "trainings": [
     {
-      "nama": "Pelatihan Pembentukan Karakter Inti Kepemimpinan (PKIK)",
+      "nama": "Pelatihan Pengawasan Pendapatan Asli Daerah (PAD)",
       "mulai": "2026-10-05",
       "selesai": "2026-10-09",
       "ket": "Tatap Muka",
-      "sambutan": "Selamat datang para peserta Pelatihan PKIK di Pusdiklat Pengawasan BPKP Ciawi Bogor.",
-      "ruang": "Auditorium Graha Pusdiklatwas",
-      "jam": "08.00\u201317.00 WIB",
-      "peserta": "40 orang"
+      "sambutan": "Selamat datang para peserta Pelatihan Pengawasan PAD di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
+      "ruang": "Ruang Kelas B (Lantai 2)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "34 orang"
+    },
+    {
+      "nama": "Diklat AIUEO",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-09",
+      "ket": "Tatap Muka",
+      "sambutan": "Selamat datang peserta Diklat AIUEO di Balai Diklat BPKP Bali.",
+      "ruang": "Ruang Kelas A (Lantai 2)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "25 orang"
+    },
+    {
+      "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
+      "mulai": "2026-10-14",
+      "selesai": "2026-10-29",
+      "ket": "Blended Learning",
+      "sambutan": "",
+      "ruang": "",
+      "jam": "",
+      "peserta": ""
+    },
+    {
+      "nama": "Pelatihan Penilaian Risiko Pemda (PPBR Pemda)",
+      "mulai": "2026-10-26",
+      "selesai": "2026-10-30",
+      "ket": "Tatap Muka",
+      "sambutan": "",
+      "ruang": "",
+      "jam": "",
+      "peserta": ""
+    },
+    {
+      "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 10",
+      "mulai": "2026-10-28",
+      "selesai": "2026-11-12",
+      "ket": "Blended Learning",
+      "sambutan": "",
+      "ruang": "",
+      "jam": "",
+      "peserta": ""
+    },
+    {
+      "nama": "Pelatihan Fungsional Auditor Ahli Pertama",
+      "mulai": "2026-11-02",
+      "selesai": "2026-11-19",
+      "ket": "Tatap Muka",
+      "sambutan": "",
+      "ruang": "",
+      "jam": "",
+      "peserta": ""
     }
   ]
 }
@@ -404,6 +521,24 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   let data = JSON.parse(JSON.stringify(EMPTY));
   const canWrite = false;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- URL Query Parameters & Test Harness ---------- */
+  const queryParams = (function(){
+    try {
+      const sp = new URLSearchParams(window.location.search || '');
+      return {
+        speed: Math.max(0.05, Math.min(100, parseFloat(sp.get('speed')) || 1)),
+        now: sp.get('now') || '',
+        data: sp.get('data') || '',
+        poll: Math.max(1, parseInt(sp.get('poll'), 10) || 20),
+        debug: sp.has('debug') && sp.get('debug') !== '0',
+        test: sp.has('test') && sp.get('test') !== '0'
+      };
+    } catch(e){
+      return { speed: 1, now: '', data: '', poll: 20, debug: false, test: false };
+    }
+  })();
+  const SPEED = queryParams.speed;
 
   /* ---------- scaling ---------- */
   const stage = $('stage'), frame = $('frame');
@@ -431,17 +566,31 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
 
   /* ---------- dates & timezone logic ---------- */
-  const APP_VERSION = 2;
+  const APP_VERSION = 3;
   const OFFSET = { bali: 8, makassar: 8, medan: 7, ciawi: 7 };
   let clockCorrection = 0;
   let lastTick = Date.now();
+  const bootRealTime = Date.now();
+  const bootSimulatedTime = queryParams.now ? Date.parse(queryParams.now) : null;
+  let lastKnownServerMs = +(localStorage.getItem('layar_last_server_ms') || 0);
+
+  function getEffectiveNowMs(){
+    if(bootSimulatedTime != null && !isNaN(bootSimulatedTime)){
+      return bootSimulatedTime + (Date.now() - bootRealTime) * SPEED;
+    }
+    const realNow = Date.now();
+    if(lastKnownServerMs > 0 && realNow < (lastKnownServerMs - 86400000)){
+      return lastKnownServerMs + (realNow - bootRealTime);
+    }
+    return realNow + clockCorrection;
+  }
 
   const pad = n => String(n).padStart(2,'0');
   function parse(s){ if(!s) return null; const [y,m,d] = s.split('-').map(Number); return (y&&m&&d) ? new Date(y,m-1,d) : null; }
   
   function todayISO(tenant){
-    const now = Date.now() + clockCorrection;
-    const off = OFFSET[tenant || 'bali'] || 8;
+    const now = getEffectiveNowMs();
+    const off = OFFSET[tenant || getLocationKey() || 'bali'] || 8;
     return new Date(now + off * 3600000).toISOString().slice(0, 10);
   }
 
@@ -478,6 +627,45 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
   const notesList = () => (data.notes||[]).filter(n => n && (n.judul || n.isi));
   const hasInfo = t => !!(t.ruang || t.jam || t.peserta || notesList().length);
+
+  /* ---------- metrics & telemetry ---------- */
+  function getMetric(key, def){
+    try { return +(localStorage.getItem('layar_metric_' + key) || def || 0); } catch(e){ return def || 0; }
+  }
+  function incMetric(key){
+    try {
+      const v = getMetric(key, 0) + 1;
+      localStorage.setItem('layar_metric_' + key, String(v));
+      return v;
+    } catch(e){ return 0; }
+  }
+  let errCount = getMetric('errCount', 0);
+  window.addEventListener('error', function(e){
+    errCount = incMetric('errCount');
+    updateDebugHud();
+  });
+
+  function updateDebugHud(currentSceneName){
+    if(!queryParams.debug) return;
+    const hud = $('debugHud');
+    if(!hud) return;
+    hud.classList.add('active');
+
+    const sName = currentSceneName || (SCENES[plan()[idx] ? plan()[idx].type : ''] || '-');
+    const iso = todayISO(getLocationKey());
+    const uptimeSec = Math.floor((Date.now() - bootRealTime) / 1000);
+    const rCount = getMetric('reloadCount', 0);
+    const sCount = getMetric('softRestartCount', 0);
+    const tCount = (loopTimer ? 1 : 0) + (microTimer ? 1 : 0);
+
+    const elSc = $('dhScene'); if(elSc) elSc.textContent = sName;
+    const elDt = $('dhDate'); if(elDt) elDt.textContent = iso + (queryParams.now ? ' (SIMULATED)' : '');
+    const elDf = $('dhDrift'); if(elDf) elDf.textContent = Math.round(clockCorrection/1000) + 's (' + clockCorrection + ' ms)';
+    const elRs = $('dhRestarts'); if(elRs) elRs.textContent = rCount + ' / ' + sCount;
+    const elEr = $('dhErrors'); if(elEr) { elEr.textContent = errCount + ' / ' + tCount; if(errCount > 0) elEr.className = 'dh-val dh-err'; }
+    const elSp = $('dhSpeed'); if(elSp) elSp.textContent = SPEED + 'x / ' + uptimeSec + 's';
+    const elUa = $('dhUa'); if(elUa) elUa.textContent = navigator.userAgent;
+  }
 
   /* ---------- social ---------- */
   const ICON = {
@@ -560,6 +748,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     }
 
     document.title = 'Layar Diklat · ' + namaBalai;
+    updateDebugHud();
   }
 
   /* ---------- scene fillers ---------- */
@@ -575,10 +764,11 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       return;
     }
 
-    // 2+ Active Trainings: 3s Micro-Loop Rotation (3 passes)
+    // 2+ Active Trainings: 3s Micro-Loop Rotation (scaled with SPEED)
     let step = 0;
     fillDiklatSingle(activeList[0]);
     const box = $('wdBox');
+    const intervalMs = Math.max(200, Math.round(3000 / SPEED));
 
     microTimer = setInterval(() => {
       step++;
@@ -590,11 +780,11 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
           fillDiklatSingle(current);
           box.classList.remove('out');
           box.classList.add('in');
-        }, 350);
+        }, Math.max(50, Math.round(350 / SPEED)));
       } else {
         fillDiklatSingle(current);
       }
-    }, 3000);
+    }, intervalMs);
   }
 
   function fillDiklatSingle(t){
@@ -702,21 +892,22 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   function plan(){
     const L = lists(), out = [];
     if(L.on.length){
-      // Slide 1: Welcome (3s micro-loop jika 2+ diklat, misal 2 x 3s x 3 = 18s)
-      const durSlide1 = L.on.length > 1 ? (L.on.length * 3000 * 3) : 10000;
-      out.push({ type: 'd', items: L.on, dur: durSlide1 });
+      // Slide 1: Welcome (3s micro-loop jika 2+ diklat, maks 20s)
+      const rawDurSlide1 = L.on.length > 1 ? Math.min(20000, L.on.length * 3000 * 3) : 10000;
+      out.push({ type: 'd', items: L.on, dur: Math.max(800, Math.round(rawDurSlide1 / SPEED)) });
 
       // Slide 2: Info Ruang Kelas Semua Diklat Aktif (Opsi A) + Notes (~12s)
-      out.push({ type: 'i', items: L.on, dur: 12000 });
+      out.push({ type: 'i', items: L.on, dur: Math.max(800, Math.round(12000 / SPEED)) });
     } else {
-      out.push({ type: 'g', dur: 11000 });
+      out.push({ type: 'g', dur: Math.max(800, Math.round(11000 / SPEED)) });
     }
 
     // Slide 3: Diklat Mendatang (Paginasi 3 per halaman, maks 3 halaman / 9 diklat)
     const totalPages = Math.min(MAX_PAGES, Math.ceil(L.up.length / PER));
     for(let p = 0; p < totalPages; p++){
       const items = L.up.slice(p * PER, (p + 1) * PER);
-      out.push({ type: 'n', items: items, page: p, pages: totalPages, dur: 6000 + items.length * 1400 });
+      const rawDurSlide3 = 6000 + items.length * 1400;
+      out.push({ type: 'n', items: items, page: p, pages: totalPages, dur: Math.max(800, Math.round(rawDurSlide3 / SPEED)) });
     }
     return out;
   }
@@ -735,6 +926,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       else if(sc.type === 'n') fillNext(sc.items || [], sc.page || 0, sc.pages || 1);
     } catch(err){
       console.error('[show] render error:', err);
+      incMetric('errCount');
     }
 
     Object.keys(SCENES).forEach(k => {
@@ -749,16 +941,22 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     target.classList.remove('on');
     void target.offsetWidth;
     target.classList.add('on');
+    updateDebugHud(SCENES[sc.type]);
   }
   function next(){
+    if(window.__freeze) return;
     const p = plan(); if(idx >= p.length) idx = 0;
     const sc = p[idx]; show(sc);
-    loopTimer = setTimeout(()=>{ idx = (idx+1) % plan().length; transition(next); }, sc.dur);
+    loopTimer = setTimeout(()=>{
+      if(window.__freeze) return;
+      idx = (idx+1) % plan().length;
+      transition(next);
+    }, sc.dur);
   }
   function transition(cb){
-    if(reduce){ cb(); return; }
+    if(reduce || SPEED >= 10){ cb(); return; }
     const wp = $('wipe'); wp.classList.remove('go'); void wp.offsetWidth; wp.classList.add('go');
-    setTimeout(cb, 620);
+    setTimeout(cb, Math.max(100, Math.round(620 / SPEED)));
   }
   function skip(){ clearTimeout(loopTimer); idx = (idx+1) % plan().length; transition(next); }
   let started = false;
@@ -810,16 +1008,34 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   async function fetchCloudData(){
     const lokasi = getLocationKey();
     const prefix = getAssetPrefix();
-    const targetUrl = prefix + 'data/' + lokasi + '.json?t=' + Date.now();
+    let targetUrl;
+    if(queryParams.data){
+      targetUrl = queryParams.data.startsWith('/') ? (prefix + queryParams.data.slice(1)) : (prefix + queryParams.data);
+    } else {
+      targetUrl = prefix + 'data/' + lokasi + '.json?cb=' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    }
+
     try {
       const res = await fetch(targetUrl, { cache: 'no-store' });
       if(res.ok){
         // Read Date header for clock correction
         const serverDateStr = res.headers.get('date');
+        const ageSec = +(res.headers.get('age') || 0);
         if(serverDateStr){
-          const serverMs = new Date(serverDateStr).getTime();
-          if(!isNaN(serverMs) && Math.abs(serverMs - Date.now()) > 120000){
-            clockCorrection = serverMs - Date.now();
+          const parsedServerMs = new Date(serverDateStr).getTime();
+          if(!isNaN(parsedServerMs)){
+            const serverMs = parsedServerMs + (ageSec * 1000);
+            lastKnownServerMs = serverMs;
+            try { localStorage.setItem('layar_last_server_ms', String(serverMs)); } catch(e){}
+
+            const calculatedOffset = serverMs - Date.now();
+            const drift = Math.abs(calculatedOffset - clockCorrection);
+            clockCorrection = calculatedOffset;
+
+            // Jika koreksi melompat > 60 detik (misal jam pagi terkoreksi), langsung update jadwal
+            if(drift > 60000 && typeof softRestart === 'function'){
+              softRestart();
+            }
           }
         }
 
@@ -827,35 +1043,61 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
         // Validation guard: must have trainings array
         if(cloudData && Array.isArray(cloudData.trainings)){
           if(cloudData.appVersion && cloudData.appVersion > APP_VERSION){
-            safeReload();
-            return;
+            const tried = +(localStorage.getItem('layar_tried_version') || 0);
+            if(tried < cloudData.appVersion){
+              localStorage.setItem('layar_tried_version', String(cloudData.appVersion));
+              triggerVersionUpgrade(cloudData.appVersion);
+              return;
+            }
           }
           apply(cloudData);
           localStorage.setItem('layar_diklat_data_' + lokasi, JSON.stringify(cloudData));
+          updateDebugHud();
         }
       }
     } catch(err){}
   }
-  fetchCloudData();
-  setInterval(fetchCloudData, 20000);
 
-  function safeReload(){
+  function triggerVersionUpgrade(newVer){
+    const cleanPath = window.location.pathname;
+    const search = new URLSearchParams(window.location.search || '');
+    search.set('v', newVer);
+    search.set('t', Date.now());
+    window.location.replace(cleanPath + '?' + search.toString());
+  }
+
+  fetchCloudData();
+  const pollIntervalMs = Math.max(1000, Math.round((queryParams.poll * 1000) / SPEED));
+  setInterval(fetchCloudData, pollIntervalMs);
+
+  function checkPing(cb){
     try {
+      const prefix = getAssetPrefix();
       const xhr = new XMLHttpRequest();
-      xhr.open('HEAD', window.location.pathname + '?ping=' + Date.now(), true);
+      xhr.open('GET', prefix + 'ping.txt?t=' + Date.now(), true);
       xhr.timeout = 8000;
       xhr.onload = function(){
-        if(xhr.status >= 200 && xhr.status < 400){
-          window.location.reload();
+        if(xhr.status === 200 && xhr.responseText && xhr.responseText.trim() === 'LAYAR-OK'){
+          cb(true);
         } else {
-          softRestart();
+          cb(false);
         }
       };
-      xhr.onerror = xhr.ontimeout = softRestart;
+      xhr.onerror = xhr.ontimeout = function(){ cb(false); };
       xhr.send();
-    } catch(e){
-      softRestart();
-    }
+    } catch(e){ cb(false); }
+  }
+
+  function safeReload(){
+    checkPing(function(ok){
+      if(ok){
+        incMetric('reloadCount');
+        window.location.reload();
+      } else {
+        incMetric('softRestartCount');
+        softRestart();
+      }
+    });
   }
 
   function softRestart(){
@@ -863,6 +1105,36 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     stopMicroLoop();
     idx = 0;
     if(started) transition(next);
+  }
+
+  function stopAllTimers(){
+    clearTimeout(loopTimer);
+    stopMicroLoop();
+  }
+
+  // Standby Wake-up Detector (WAKE_GAP: 5 Menit)
+  var WAKE_GAP = 5 * 60 * 1000;
+  var lastBeat = Date.now();
+  setInterval(function () {
+    var now = Date.now(), gap = now - lastBeat;
+    lastBeat = now;
+    // Maju > 5 menit = bangun dari standby; mundur > 1 menit = jam TV diubah NTP
+    if (gap > WAKE_GAP || gap < -60000) onWake(gap);
+  }, 5000);
+
+  function onWake(gap) {
+    lastTick = Date.now();
+    stopAllTimers();
+    tryPlayAudio();
+    checkPing(function(ok){
+      if(ok){
+        incMetric('reloadCount');
+        window.location.reload();
+      } else {
+        incMetric('softRestartCount');
+        softRestart();
+      }
+    });
   }
 
   // Watchdog checking freeze every 20s
@@ -906,7 +1178,9 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       p.then(() => {
         if(notice) notice.style.display = 'none';
       }).catch(() => {
-        if(notice) notice.style.display = 'block';
+        if(notice && (queryParams.debug || queryParams.test || matchMedia('(hover: hover)').matches)){
+          notice.style.display = 'block';
+        }
       });
     }
   }
@@ -931,6 +1205,24 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       });
     }
   }
+
+  /* ---------- Global Testing & Telemetry Hooks ---------- */
+  window.__freeze = false;
+  window.__timers = {
+    get size(){
+      let count = 0;
+      if(loopTimer) count++;
+      if(microTimer) count++;
+      return count;
+    }
+  };
+  window.__metrics = {
+    get heap(){ return (performance && performance.memory) ? performance.memory.usedJSHeapSize : 0; },
+    get domNodes(){ return document.getElementsByTagName('*').length; },
+    get clockCorrection(){ return clockCorrection; },
+    get today(){ return todayISO(getLocationKey()); },
+    get appVersion(){ return APP_VERSION; }
+  };
 })();
 </script>
 </body>

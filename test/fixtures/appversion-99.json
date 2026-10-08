@@ -1,0 +1,14 @@
+{
+  "appVersion": 99,
+  "namaUnit": "PUSDIKLATWAS BPKP",
+  "wilayah": "Wilayah II Bali",
+  "namaBalai": "Pusdiklatwas BPKP Wilayah II Bali",
+  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Denpasar",
+  "trainings": [
+    {
+      "nama": "Diklat Version 99 Test",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-10"
+    }
+  ]
+}

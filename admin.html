@@ -697,7 +697,7 @@ body {
 <div id="toastBar" class="toast-bar"></div>
 
 <script>
-const ADMIN_PASSWORD = "layarbali2026";
+let adminKey = sessionStorage.getItem('layar_admin_key') || '';
 
 let currentLoc = "bali";
 let masterData = {};
@@ -717,8 +717,7 @@ function getInitialLocFromUrl() {
 
 /* Auth Functions */
 function checkAuthOnLoad() {
-  const authed = sessionStorage.getItem('layar_admin_auth');
-  if (authed === ADMIN_PASSWORD) {
+  if (adminKey && adminKey.trim().length > 0) {
     showMainApp();
   } else {
     document.getElementById('authScreen').style.display = 'flex';
@@ -728,9 +727,10 @@ function checkAuthOnLoad() {
 
 function handleAuthSubmit(e) {
   e.preventDefault();
-  const input = document.getElementById('authPass').value;
-  if (input === ADMIN_PASSWORD) {
-    sessionStorage.setItem('layar_admin_auth', ADMIN_PASSWORD);
+  const input = document.getElementById('authPass').value.trim();
+  if (input) {
+    adminKey = input;
+    sessionStorage.setItem('layar_admin_key', input);
     document.getElementById('authErr').style.display = 'none';
     showMainApp();
   } else {
@@ -739,7 +739,8 @@ function handleAuthSubmit(e) {
 }
 
 function lockAdminSession() {
-  sessionStorage.removeItem('layar_admin_auth');
+  sessionStorage.removeItem('layar_admin_key');
+  adminKey = '';
   document.getElementById('authPass').value = '';
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('mainApp').style.display = 'none';
@@ -990,7 +991,7 @@ function handleUploadFoto(e) {
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, targetW, targetH);
 
-      const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.78);
       document.getElementById('inpFoto').value = optimizedDataUrl;
       updateMediaPreviews();
       saveAllData('Foto gedung baru berhasil diunggah!');
@@ -1004,16 +1005,41 @@ function handleUploadLogo(e) {
   const file = e.target.files[0];
   if (!file) return;
 
-  if (file.size > 1 * 1024 * 1024) {
-    alert('Ukuran logo terlalu besar! Maksimal ukuran logo adalah 1 MB.');
+  if (file.size > 1.5 * 1024 * 1024) {
+    alert('Ukuran logo terlalu besar! Maksimal ukuran logo adalah 1.5 MB.');
     return;
   }
 
   const reader = new FileReader();
   reader.onload = function(evt) {
-    document.getElementById('inpLogo').value = evt.target.result;
-    updateMediaPreviews();
-    saveAllData('Logo baru berhasil diunggah!');
+    const rawDataUrl = evt.target.result;
+    const img = new Image();
+    img.onload = function() {
+      const maxW = 600;
+      let targetW = img.width;
+      let targetH = img.height;
+
+      if (targetW > maxW) {
+        targetH = Math.round((maxW / targetW) * targetH);
+        targetW = maxW;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, targetW, targetH);
+      ctx.drawImage(img, 0, 0, targetW, targetH);
+
+      // Gunakan image/png agar alpha transparency logo tidak berubah jadi kotak hitam!
+      const isPng = (file.type === 'image/png') || rawDataUrl.startsWith('data:image/png');
+      const optimizedDataUrl = isPng ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.85);
+
+      document.getElementById('inpLogo').value = optimizedDataUrl;
+      updateMediaPreviews();
+      saveAllData('Logo balai baru berhasil diunggah (transparansi terjaga)!');
+    };
+    img.src = rawDataUrl;
   };
   reader.readAsDataURL(file);
 }
@@ -1066,6 +1092,10 @@ function submitDiklatItem() {
   const selesai = document.getElementById('mDiklatSelesai').value;
   if (!nama || !mulai || !selesai) {
     alert('Nama pelatihan, tanggal mulai, dan tanggal selesai wajib diisi.');
+    return;
+  }
+  if (selesai < mulai) {
+    alert('Tanggal selesai tidak boleh mendahului tanggal mulai!');
     return;
   }
 
@@ -1181,24 +1211,40 @@ async function saveAllData(msg) {
   } catch(e){}
 
   renderCurrentLoc();
-  showToast(msg || 'Data disimpan.');
+  showToast(msg || 'Data disimpan secara lokal.');
 
   const badge = document.getElementById('syncBadge');
   if (badge) { badge.textContent = '● Menyinkronkan...'; badge.style.color = '#f59e0b'; }
 
+  const authKey = adminKey || sessionStorage.getItem('layar_admin_key') || '';
+
   try {
-    const res = await fetch('/api/save', {
+    const res = await fetch(`/api/save?lokasi=${currentLoc}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-admin-key': ADMIN_PASSWORD
+        'x-admin-key': authKey
       },
-      body: JSON.stringify(masterData)
+      body: JSON.stringify({
+        tenant: currentLoc,
+        data: locData
+      })
     });
+
+    const resData = await res.json().catch(() => ({}));
+
     if (res.ok) {
-      if (badge) { badge.textContent = '● Tersinkronisasi'; badge.style.color = 'var(--green)'; }
+      if (badge) { badge.textContent = '● Tersinkronisasi (Tampil di TV ±1-2 menit)'; badge.style.color = 'var(--green)'; }
+      showToast(resData.message || `Data ${currentLoc.toUpperCase()} berhasil disinkronkan ke TV!`);
+    } else if (res.status === 401) {
+      if (badge) { badge.textContent = '● Akses Ditolak (401)'; badge.style.color = 'var(--rose)'; }
+      showToast(`❌ Sandi admin ditolak untuk wilayah ${currentLoc.toUpperCase()}.`);
+    } else if (res.status === 413) {
+      if (badge) { badge.textContent = '● Payload Terlalu Besar (413)'; badge.style.color = 'var(--rose)'; }
+      showToast('❌ Ukuran data melebihi 200 KB.');
     } else {
       if (badge) { badge.textContent = '● Tersimpan Lokal'; badge.style.color = 'var(--text-muted)'; }
+      showToast(`⚠️ Server: ${resData.error || 'Tersimpan lokal'}`);
     }
   } catch(err) {
     if (badge) { badge.textContent = '● Tersimpan Lokal'; badge.style.color = 'var(--text-muted)'; }
