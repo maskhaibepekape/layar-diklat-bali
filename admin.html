@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pengelola Layar Diklat · Pusdiklatwas BPKP Bali</title>
+<title>Pengelola Layar Diklat · Pusdiklatwas BPKP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Zilla+Slab:wght@600;700&display=swap" rel="stylesheet">
@@ -35,12 +35,12 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
-  padding: 24px 16px;
+  padding: 20px 16px;
   -webkit-font-smoothing: antialiased;
 }
 
 .container {
-  max-width: 860px;
+  max-width: 880px;
   margin: 0 auto;
 }
 
@@ -66,7 +66,6 @@ body {
 .auth-card h2 {
   font-size: 16px;
   font-weight: 800;
-  letter-spacing: -0.01em;
   color: var(--text);
   margin-bottom: 4px;
 }
@@ -74,16 +73,65 @@ body {
 .auth-card p {
   font-size: 13px;
   color: var(--text-muted);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-/* App Header */
+/* Location Selector Bar */
+.location-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.location-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.location-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.loc-chip {
+  padding: 6px 12px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.loc-chip:hover { color: var(--text); background: #f1f5f9; }
+.loc-chip.active {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+  font-weight: 700;
+}
+
+/* Header */
 .header {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 20px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -115,7 +163,7 @@ body {
 .nav-tabs {
   display: flex;
   gap: 6px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
   overflow-x: auto;
@@ -143,7 +191,7 @@ body {
   font-weight: 700;
 }
 
-/* Cards & Sections */
+/* Section Panel */
 .section-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -160,14 +208,14 @@ body {
 }
 
 .panel-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
 }
 
-/* Training / Item Row */
+/* Item Rows */
 .item-row {
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -236,7 +284,7 @@ body {
   gap: 6px;
 }
 
-/* Form Elements */
+/* Form Fields */
 .field {
   margin-bottom: 14px;
 }
@@ -299,7 +347,7 @@ body {
 .btn-danger:hover { background: var(--rose-bg); }
 .btn-sm { padding: 4px 8px; font-size: 12px; }
 
-/* Modal */
+/* Modals */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -374,7 +422,7 @@ body {
 <!-- 1. Layar Kunci Password Admin -->
 <div id="authScreen">
   <div class="auth-card">
-    <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Pusdiklatwas BPKP Bali</div>
+    <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px;">Pusdiklatwas BPKP</div>
     <h2>Pengelola Layar Lobby</h2>
     <p>Masukkan kata sandi untuk mengelola jadwal.</p>
     <form onsubmit="handleAuthSubmit(event)">
@@ -388,17 +436,28 @@ body {
   </div>
 </div>
 
-<!-- 2. Panel CMS Utama (Terbuka setelah Login) -->
+<!-- 2. Panel CMS Utama -->
 <div id="mainApp" class="container" style="display: none;">
+  <!-- Location Selector Bar -->
+  <div class="location-bar">
+    <span class="location-label">Pilih Lokasi Balai:</span>
+    <div class="location-chips">
+      <button type="button" class="loc-chip active" id="chip-bali" onclick="switchLocation('bali')">🏝️ Wilayah II Bali</button>
+      <button type="button" class="loc-chip" id="chip-medan" onclick="switchLocation('medan')">🌲 Wilayah I Medan</button>
+      <button type="button" class="loc-chip" id="chip-makassar" onclick="switchLocation('makassar')">🌊 Wilayah III Makassar</button>
+      <button type="button" class="loc-chip" id="chip-ciawi" onclick="switchLocation('ciawi')">🏛️ Pusdiklatwas Ciawi</button>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="header">
     <div>
-      <div class="brand-meta">Pusdiklatwas BPKP Wilayah II Bali</div>
+      <div class="brand-meta" id="headerUnitText">PUSDIKLATWAS BPKP WILAYAH II BALI</div>
       <div class="brand-name">Pengelola Layar Lobby</div>
     </div>
     <div class="header-tools">
       <span id="syncBadge" style="font-size: 12px; font-weight: 600; color: var(--green); margin-right: 6px;">● Tersinkronisasi</span>
-      <a href="index.html" target="_blank" class="btn btn-sm">Lihat Layar TV</a>
+      <a href="index.html" id="linkTvPreview" target="_blank" class="btn btn-sm">Lihat Layar TV</a>
       <button type="button" class="btn btn-sm" onclick="lockAdminSession()">Kunci</button>
     </div>
   </header>
@@ -407,14 +466,14 @@ body {
   <nav class="nav-tabs">
     <button type="button" class="tab-link active" onclick="setTab('diklat')">Pelatihan (<span id="countDiklat">0</span>)</button>
     <button type="button" class="tab-link" onclick="setTab('notes')">Catatan Peserta (<span id="countNotes">0</span>)</button>
-    <button type="button" class="tab-link" onclick="setTab('fasilitas')">Fasilitas &amp; Wi-Fi</button>
+    <button type="button" class="tab-link" onclick="setTab('fasilitas')">Identitas Balai &amp; Wi-Fi</button>
   </nav>
 
   <!-- Tab 1: Daftar Pelatihan -->
   <div id="tab-diklat" class="tab-content">
     <section class="section-panel">
       <div class="panel-head">
-        <span class="panel-title">Daftar Pelatihan</span>
+        <span class="panel-title">Daftar Pelatihan (<span id="panelLocName">Bali</span>)</span>
         <button type="button" class="btn btn-primary btn-sm" onclick="openDiklatModal()">+ Tambah Pelatihan</button>
       </div>
       <div id="diklatList"></div>
@@ -436,20 +495,44 @@ body {
   <div id="tab-fasilitas" class="tab-content" style="display: none;">
     <section class="section-panel">
       <div class="panel-head">
-        <span class="panel-title">Identitas &amp; Konektivitas Balai</span>
-      </div>
-      <div class="field">
-        <label>Alamat Balai:</label>
-        <textarea id="inpAlamat" rows="2"></textarea>
+        <span class="panel-title">Identitas Balai, Alamat &amp; Akses Wi-Fi</span>
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>Nama SSID Wi-Fi:</label>
-          <input type="text" id="inpWifiNama">
+          <label>Unit / Instansi:</label>
+          <input type="text" id="inpNamaUnit" placeholder="PUSDIKLATWAS BPKP">
         </div>
         <div class="field">
-          <label>Sandi Wi-Fi:</label>
-          <input type="text" id="inpWifiSandi">
+          <label>Wilayah / Penamaan:</label>
+          <input type="text" id="inpWilayah" placeholder="Wilayah II Bali">
+        </div>
+      </div>
+      <div class="field">
+        <label>Nama Balai Lengkap (Tampil di Layar):</label>
+        <input type="text" id="inpNamaBalai" placeholder="Pusdiklatwas BPKP Wilayah II Bali">
+      </div>
+      <div class="field">
+        <label>Alamat Lengkap Balai:</label>
+        <textarea id="inpAlamat" rows="2" placeholder="Jl. Cokroaminoto..."></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Nama SSID Wi-Fi / Login User ID:</label>
+          <input type="text" id="inpWifiNama" placeholder="id bpkp bali / username">
+        </div>
+        <div class="field">
+          <label>Sandi Wi-Fi / Password:</label>
+          <input type="text" id="inpWifiSandi" placeholder="bali2025 / password">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>File / URL Foto Gedung:</label>
+          <input type="text" id="inpFoto" placeholder="foto-gedung.png">
+        </div>
+        <div class="field">
+          <label>File / URL Logo:</label>
+          <input type="text" id="inpLogo" placeholder="logo-bpkp.png">
         </div>
       </div>
       <div class="grid-2">
@@ -473,7 +556,7 @@ body {
         </div>
       </div>
       <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
-        <button type="button" class="btn btn-primary" onclick="saveAllData('Pengaturan fasilitas disimpan.')">Simpan Pengaturan</button>
+        <button type="button" class="btn btn-primary" onclick="saveAllData('Pengaturan fasilitas balai disimpan.')">Simpan Identitas Balai</button>
       </div>
     </section>
   </div>
@@ -485,7 +568,7 @@ body {
       <button type="button" class="btn btn-sm" onclick="triggerImportJSON()">Pulihkan Data</button>
       <input type="file" id="importInput" accept=".json" style="display: none;" onchange="handleImportJSON(event)">
     </div>
-    <button type="button" class="btn btn-primary" onclick="saveAllData('Semua data berhasil disinkronkan ke TV Lobby!')">Simpan &amp; Sinkronkan ke TV</button>
+    <button type="button" class="btn btn-primary" onclick="saveAllData('Semua data lokasi berhasil disinkronkan ke TV Lobby!')">Simpan &amp; Sinkronkan ke TV</button>
   </div>
 </div>
 
@@ -527,9 +610,11 @@ body {
           <datalist id="presetRuang">
             <option value="Ruang Kelas B (Lantai 2)">
             <option value="Ruang Kelas A (Lantai 2)">
-            <option value="Ruang Kelas Belakang (Sayap Belakang)">
-            <option value="Ruang Widyaiswara (Lantai 2)">
-            <option value="Auditorium / Aula Bawah (Lantai 1)">
+            <option value="Ruang Kelas Belakang">
+            <option value="Ruang Widyaiswara">
+            <option value="Auditorium / Aula Bawah">
+            <option value="Ruang Kelas Toba">
+            <option value="Ruang Kelas Phinisi">
           </datalist>
         </div>
       </div>
@@ -586,95 +671,21 @@ body {
 <script>
 const ADMIN_PASSWORD = "layarbali2026";
 
-const DEFAULT_DATA = {
-  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Pemecutan Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80118",
-  "wifiNama": "id bpkp bali",
-  "wifiSandi": "bali2025",
-  "ig": "@giacorpu",
-  "yt": "GIA CORPU",
-  "xx": "@GIA_CORPU",
-  "fb": "@giacorpu",
-  "logo": "logo-bpkp.png",
-  "foto": "foto-gedung.png",
-  "notes": [
-    {
-      "judul": "Waktu Pembelajaran",
-      "isi": "Sesi Pagi: 08.00–12.00 WITA · Sesi Siang: 13.00–17.00 WITA"
-    },
-    {
-      "judul": "Tata Tertib & Fasilitas",
-      "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
-    },
-    {
-      "judul": "Layanan Resepsionis",
-      "isi": "Informasi kamar wisma dan bantuan operasional dapat menghubungi petugas di Meja Resepsionis Lantai 1."
-    }
-  ],
-  "trainings": [
-    {
-      "nama": "Pelatihan Pengawasan Pendapatan Asli Daerah (PAD)",
-      "mulai": "2026-10-05",
-      "selesai": "2026-10-09",
-      "ket": "Tatap Muka",
-      "sambutan": "Selamat datang para peserta Pelatihan Pengawasan PAD di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
-      "ruang": "Ruang Kelas B (Lantai 2)",
-      "jam": "08.00–17.00 WITA",
-      "peserta": "34 orang"
-    },
-    {
-      "nama": "Diklat AIUEO",
-      "mulai": "2026-10-05",
-      "selesai": "2026-10-09",
-      "ket": "Tatap Muka",
-      "sambutan": "Selamat datang peserta Diklat AIUEO di Balai Diklat BPKP Bali.",
-      "ruang": "Ruang Kelas A (Lantai 2)",
-      "jam": "08.00–17.00 WITA",
-      "peserta": "25 orang"
-    },
-    {
-      "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
-      "mulai": "2026-10-14",
-      "selesai": "2026-10-29",
-      "ket": "Blended Learning",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    },
-    {
-      "nama": "Pelatihan Penilaian Risiko Pemda (PPBR Pemda)",
-      "mulai": "2026-10-26",
-      "selesai": "2026-10-30",
-      "ket": "Tatap Muka",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    },
-    {
-      "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 10",
-      "mulai": "2026-10-28",
-      "selesai": "2026-11-12",
-      "ket": "Blended Learning",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    },
-    {
-      "nama": "Pelatihan Fungsional Auditor Ahli Pertama",
-      "mulai": "2026-11-02",
-      "selesai": "2026-11-19",
-      "ket": "Tatap Muka",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    }
-  ]
-};
+let currentLoc = "bali";
+let masterData = {};
 
-let currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+function getInitialLocFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const param = urlParams.get('lokasi');
+  if (param && ['bali','medan','makassar','ciawi'].includes(param.toLowerCase())) {
+    return param.toLowerCase();
+  }
+  const path = window.location.pathname.toLowerCase().replace(/^\/admin\/|^\/|\/$/g, '');
+  if (['bali','medan','makassar','ciawi'].includes(path)) {
+    return path;
+  }
+  return "bali";
+}
 
 /* Auth Functions */
 function checkAuthOnLoad() {
@@ -709,36 +720,87 @@ function lockAdminSession() {
 function showMainApp() {
   document.getElementById('authScreen').style.display = 'none';
   document.getElementById('mainApp').style.display = 'block';
+  currentLoc = getInitialLocFromUrl();
   loadData();
+}
+
+/* Location Switcher */
+function switchLocation(loc) {
+  currentLoc = loc;
+  document.querySelectorAll('.loc-chip').forEach(c => c.classList.remove('active'));
+  const activeChip = document.getElementById('chip-' + loc);
+  if (activeChip) activeChip.classList.add('active');
+
+  // Update URL preview link
+  const linkPreview = document.getElementById('linkTvPreview');
+  if (linkPreview) {
+    linkPreview.href = `${loc === 'bali' ? 'index.html' : 'index.html?lokasi=' + loc}`;
+  }
+
+  renderCurrentLoc();
 }
 
 /* Data Loading */
 async function loadData() {
-  const saved = localStorage.getItem('layar_diklat_data');
+  const saved = localStorage.getItem('layar_diklat_master_data');
   if (saved) {
     try {
-      currentData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), JSON.parse(saved));
-    } catch(e) {}
-  } else {
-    try {
-      const res = await fetch('./data.json?t=' + Date.now());
-      if (res.ok) {
-        const cloudData = await res.json();
-        if (cloudData && Array.isArray(cloudData.trainings)) {
-          currentData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), cloudData);
-        }
-      }
+      masterData = JSON.parse(saved);
     } catch(e) {}
   }
-  renderAll();
+
+  try {
+    const res = await fetch('./data.json?t=' + Date.now());
+    if (res.ok) {
+      const cloudData = await res.json();
+      if (cloudData && typeof cloudData === 'object') {
+        masterData = Object.assign({}, cloudData, masterData);
+      }
+    }
+  } catch(e) {}
+
+  switchLocation(currentLoc);
 }
 
-function renderAll() {
+function getCurrentLocData() {
+  if (!masterData[currentLoc]) {
+    masterData[currentLoc] = {
+      namaUnit: "PUSDIKLATWAS BPKP",
+      wilayah: currentLoc.toUpperCase(),
+      namaBalai: `Pusdiklatwas BPKP ${currentLoc.toUpperCase()}`,
+      alamat: "",
+      wifiNama: `id bpkp ${currentLoc}`,
+      wifiSandi: "bpkp2026",
+      ig: "@giacorpu",
+      yt: "GIA CORPU",
+      xx: "@GIA_CORPU",
+      fb: "@giacorpu",
+      logo: "logo-bpkp.png",
+      foto: "foto-gedung.png",
+      notes: [],
+      trainings: []
+    };
+  }
+  if (!Array.isArray(masterData[currentLoc].trainings)) masterData[currentLoc].trainings = [];
+  if (!Array.isArray(masterData[currentLoc].notes)) masterData[currentLoc].notes = [];
+  return masterData[currentLoc];
+}
+
+function renderCurrentLoc() {
+  const locData = getCurrentLocData();
+  
+  const headerUnit = document.getElementById('headerUnitText');
+  if (headerUnit) headerUnit.textContent = (locData.namaBalai || `PUSDIKLATWAS BPKP ${currentLoc.toUpperCase()}`).toUpperCase();
+
+  const panelLoc = document.getElementById('panelLocName');
+  if (panelLoc) panelLoc.textContent = locData.wilayah || currentLoc.toUpperCase();
+
   renderDiklatList();
   renderNotesList();
   renderFasilitasForm();
-  document.getElementById('countDiklat').textContent = (currentData.trainings || []).length;
-  document.getElementById('countNotes').textContent = (currentData.notes || []).length;
+
+  document.getElementById('countDiklat').textContent = (locData.trainings || []).length;
+  document.getElementById('countNotes').textContent = (locData.notes || []).length;
 }
 
 function getTodayStr() {
@@ -756,10 +818,11 @@ function getStatus(mulai, selesai) {
 
 function renderDiklatList() {
   const container = document.getElementById('diklatList');
-  const items = currentData.trainings || [];
+  const locData = getCurrentLocData();
+  const items = locData.trainings || [];
 
   if (items.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;">Belum ada jadwal pelatihan.</div>';
+    container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;">Belum ada jadwal pelatihan di lokasi ini.</div>';
     return;
   }
 
@@ -796,7 +859,8 @@ function renderDiklatList() {
 
 function renderNotesList() {
   const container = document.getElementById('notesList');
-  const items = currentData.notes || [];
+  const locData = getCurrentLocData();
+  const items = locData.notes || [];
 
   if (items.length === 0) {
     container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;">Belum ada catatan peserta.</div>';
@@ -818,13 +882,19 @@ function renderNotesList() {
 }
 
 function renderFasilitasForm() {
-  document.getElementById('inpAlamat').value = currentData.alamat || '';
-  document.getElementById('inpWifiNama').value = currentData.wifiNama || '';
-  document.getElementById('inpWifiSandi').value = currentData.wifiSandi || '';
-  document.getElementById('inpIg').value = currentData.ig || '';
-  document.getElementById('inpYt').value = currentData.yt || '';
-  document.getElementById('inpXx').value = currentData.xx || '';
-  document.getElementById('inpFb').value = currentData.fb || '';
+  const locData = getCurrentLocData();
+  document.getElementById('inpNamaUnit').value = locData.namaUnit || 'PUSDIKLATWAS BPKP';
+  document.getElementById('inpWilayah').value = locData.wilayah || '';
+  document.getElementById('inpNamaBalai').value = locData.namaBalai || '';
+  document.getElementById('inpAlamat').value = locData.alamat || '';
+  document.getElementById('inpWifiNama').value = locData.wifiNama || '';
+  document.getElementById('inpWifiSandi').value = locData.wifiSandi || '';
+  document.getElementById('inpFoto').value = locData.foto || 'foto-gedung.png';
+  document.getElementById('inpLogo').value = locData.logo || 'logo-bpkp.png';
+  document.getElementById('inpIg').value = locData.ig || '';
+  document.getElementById('inpYt').value = locData.yt || '';
+  document.getElementById('inpXx').value = locData.xx || '';
+  document.getElementById('inpFb').value = locData.fb || '';
 }
 
 function setTab(name) {
@@ -839,7 +909,7 @@ function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
 function openDiklatModal() {
-  document.getElementById('modalDiklatTitle').textContent = 'Tambah Pelatihan Baru';
+  document.getElementById('modalDiklatTitle').textContent = `Tambah Pelatihan (${currentLoc.toUpperCase()})`;
   document.getElementById('editDiklatIdx').value = '-1';
   document.getElementById('mDiklatNama').value = '';
   document.getElementById('mDiklatMulai').value = '';
@@ -853,9 +923,10 @@ function openDiklatModal() {
 }
 
 function openEditDiklat(idx) {
-  const t = currentData.trainings[idx];
+  const locData = getCurrentLocData();
+  const t = locData.trainings[idx];
   if (!t) return;
-  document.getElementById('modalDiklatTitle').textContent = 'Ubah Pelatihan';
+  document.getElementById('modalDiklatTitle').textContent = `Ubah Pelatihan (${currentLoc.toUpperCase()})`;
   document.getElementById('editDiklatIdx').value = idx;
   document.getElementById('mDiklatNama').value = t.nama || '';
   document.getElementById('mDiklatMulai').value = t.mulai || '';
@@ -888,28 +959,30 @@ function submitDiklatItem() {
     peserta: document.getElementById('mDiklatPeserta').value.trim()
   };
 
+  const locData = getCurrentLocData();
   const idx = parseInt(document.getElementById('editDiklatIdx').value, 10);
   if (idx >= 0) {
-    currentData.trainings[idx] = obj;
+    locData.trainings[idx] = obj;
   } else {
-    currentData.trainings.push(obj);
+    locData.trainings.push(obj);
   }
 
-  currentData.trainings.sort((a,b) => (a.mulai||'').localeCompare(b.mulai||''));
+  locData.trainings.sort((a,b) => (a.mulai||'').localeCompare(b.mulai||''));
   closeModal('modalDiklat');
   saveAllData('Pelatihan berhasil disimpan.');
 }
 
 function deleteDiklat(idx) {
-  if (confirm(`Hapus pelatihan "${currentData.trainings[idx].nama}"?`)) {
-    currentData.trainings.splice(idx, 1);
+  const locData = getCurrentLocData();
+  if (confirm(`Hapus pelatihan "${locData.trainings[idx].nama}"?`)) {
+    locData.trainings.splice(idx, 1);
     saveAllData('Pelatihan dihapus.');
   }
 }
 
 /* Notes */
 function openNoteModal() {
-  document.getElementById('modalNoteTitle').textContent = 'Tambah Catatan Peserta';
+  document.getElementById('modalNoteTitle').textContent = `Tambah Catatan (${currentLoc.toUpperCase()})`;
   document.getElementById('editNoteIdx').value = '-1';
   document.getElementById('mNoteJudul').value = '';
   document.getElementById('mNoteIsi').value = '';
@@ -917,7 +990,8 @@ function openNoteModal() {
 }
 
 function openEditNote(idx) {
-  const n = currentData.notes[idx];
+  const locData = getCurrentLocData();
+  const n = locData.notes[idx];
   if (!n) return;
   document.getElementById('modalNoteTitle').textContent = 'Ubah Catatan';
   document.getElementById('editNoteIdx').value = idx;
@@ -935,11 +1009,12 @@ function submitNoteItem() {
   }
 
   const obj = { judul: judul, isi: isi };
+  const locData = getCurrentLocData();
   const idx = parseInt(document.getElementById('editNoteIdx').value, 10);
   if (idx >= 0) {
-    currentData.notes[idx] = obj;
+    locData.notes[idx] = obj;
   } else {
-    currentData.notes.push(obj);
+    locData.notes.push(obj);
   }
 
   closeModal('modalNote');
@@ -947,31 +1022,44 @@ function submitNoteItem() {
 }
 
 function deleteNote(idx) {
+  const locData = getCurrentLocData();
   if (confirm('Hapus catatan pengumuman ini?')) {
-    currentData.notes.splice(idx, 1);
+    locData.notes.splice(idx, 1);
     saveAllData('Catatan dihapus.');
   }
 }
 
 /* Save & Sync */
 async function saveAllData(msg) {
+  const locData = getCurrentLocData();
   if (document.getElementById('inpAlamat')) {
-    currentData.alamat = document.getElementById('inpAlamat').value.trim();
-    currentData.wifiNama = document.getElementById('inpWifiNama').value.trim();
-    currentData.wifiSandi = document.getElementById('inpWifiSandi').value.trim();
-    currentData.ig = document.getElementById('inpIg').value.trim();
-    currentData.yt = document.getElementById('inpYt').value.trim();
-    currentData.xx = document.getElementById('inpXx').value.trim();
-    currentData.fb = document.getElementById('inpFb').value.trim();
+    locData.namaUnit = document.getElementById('inpNamaUnit').value.trim() || 'PUSDIKLATWAS BPKP';
+    locData.wilayah = document.getElementById('inpWilayah').value.trim() || currentLoc.toUpperCase();
+    locData.namaBalai = document.getElementById('inpNamaBalai').value.trim() || `${locData.namaUnit} ${locData.wilayah}`;
+    locData.alamat = document.getElementById('inpAlamat').value.trim();
+    locData.wifiNama = document.getElementById('inpWifiNama').value.trim();
+    locData.wifiSandi = document.getElementById('inpWifiSandi').value.trim();
+    locData.foto = document.getElementById('inpFoto').value.trim() || 'foto-gedung.png';
+    locData.logo = document.getElementById('inpLogo').value.trim() || 'logo-bpkp.png';
+    locData.ig = document.getElementById('inpIg').value.trim();
+    locData.yt = document.getElementById('inpYt').value.trim();
+    locData.xx = document.getElementById('inpXx').value.trim();
+    locData.fb = document.getElementById('inpFb').value.trim();
   }
 
-  localStorage.setItem('layar_diklat_data', JSON.stringify(currentData));
+  masterData[currentLoc] = locData;
+  localStorage.setItem('layar_diklat_master_data', JSON.stringify(masterData));
+  localStorage.setItem('layar_diklat_data_' + currentLoc, JSON.stringify(locData));
+  if (currentLoc === 'bali') {
+    localStorage.setItem('layar_diklat_data', JSON.stringify(locData));
+  }
+
   try {
     const ch = new BroadcastChannel('layar_diklat_channel');
-    ch.postMessage(currentData);
+    ch.postMessage({ lokasi: currentLoc, data: locData });
   } catch(e){}
 
-  renderAll();
+  renderCurrentLoc();
   showToast(msg || 'Data disimpan.');
 
   const badge = document.getElementById('syncBadge');
@@ -984,7 +1072,7 @@ async function saveAllData(msg) {
         'Content-Type': 'application/json',
         'x-admin-key': ADMIN_PASSWORD
       },
-      body: JSON.stringify(currentData)
+      body: JSON.stringify(masterData)
     });
     if (res.ok) {
       if (badge) { badge.textContent = '● Tersinkronisasi'; badge.style.color = 'var(--green)'; }
@@ -1008,10 +1096,10 @@ function escapeHtml(str) {
 }
 
 function exportDataJSON() {
-  const jsonStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentData, null, 2));
+  const jsonStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(masterData, null, 2));
   const a = document.createElement('a');
   a.setAttribute("href", jsonStr);
-  a.setAttribute("download", "data-layar-diklat.json");
+  a.setAttribute("download", "data-layar-diklat-semua-balai.json");
   document.body.appendChild(a);
   a.click();
   a.remove();
@@ -1025,9 +1113,9 @@ function handleImportJSON(e) {
   reader.onload = function(evt) {
     try {
       const parsed = JSON.parse(evt.target.result);
-      if (parsed && Array.isArray(parsed.trainings)) {
-        currentData = parsed;
-        saveAllData('Data berhasil dipulihkan dari cadangan.');
+      if (parsed && typeof parsed === 'object') {
+        masterData = parsed;
+        saveAllData('Data semua balai berhasil dipulihkan dari cadangan.');
       } else {
         alert('Format berkas JSON tidak valid.');
       }

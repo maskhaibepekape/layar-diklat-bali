@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/admin/:lokasi", "destination": "/admin.html?lokasi=:lokasi" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/bali", "destination": "/index.html?lokasi=bali" },
+    { "source": "/medan", "destination": "/index.html?lokasi=medan" },
+    { "source": "/makassar", "destination": "/index.html?lokasi=makassar" },
+    { "source": "/ciawi", "destination": "/index.html?lokasi=ciawi" },
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ]
+}

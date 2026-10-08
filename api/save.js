@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   try {
     const data = req.body;
-    if (!data || !data.trainings) {
+    if (!data || (typeof data !== 'object') || (!data.trainings && !data.bali && !data.medan && !data.makassar && !data.ciawi)) {
       return res.status(400).json({ error: 'Format data tidak valid' });
     }
 

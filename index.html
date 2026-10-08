@@ -252,7 +252,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       </div>
       <div class="photo a reveal" style="--d:.6s" data-photo></div>
       <div class="card a" style="--d:1.6s">
-        <div class="lc2">di Learning Center<b>Pusdiklatwas BPKP Wilayah II Bali</b></div>
+        <div class="lc2">di Learning Center<b id="cardBalaiText">Pusdiklatwas BPKP Wilayah II Bali</b></div>
         <div class="ad2"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#3a2a1b" d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg><span data-addr></span></div>
       </div>
     </section>
@@ -284,8 +284,8 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       <div class="pill a pop fit" data-max="126" style="--d:.25s"><span>SELAMAT DATANG</span></div>
       <div class="wl di a" style="--d:.5s">di</div>
       <div class="wl lc a fit" data-max="92" style="--d:.62s"><span>Learning Center</span></div>
-      <div class="wl pb a fit" data-max="106" style="--d:.74s"><span>PUSDIKLATWAS BPKP</span></div>
-      <div class="wl wy a" style="--d:.86s">Wilayah II Bali</div>
+      <div class="wl pb a fit" data-max="106" style="--d:.74s"><span id="genUnitText">PUSDIKLATWAS BPKP</span></div>
+      <div class="wl wy a" id="genWilayahText" style="--d:.86s">Wilayah II Bali</div>
       <div class="wl ad a" style="--d:.98s"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#3a2a1b" d="M12 3 2 11h3v9h5v-6h4v6h5v-9h3z"/></svg><span data-addr></span></div>
       <div class="photo a reveal" style="--d:.6s" data-photo></div>
     </section>
@@ -303,7 +303,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       </svg>
       <div class="h2n a" style="--d:.2s">Diklat mendatang</div>
       <div class="pg a" style="--d:.3s" id="nPg"></div>
-      <div class="sub a" style="--d:.35s">Jadwal pelatihan tatap muka berikutnya di Pusdiklatwas BPKP Wilayah II Bali</div>
+      <div class="sub a" style="--d:.35s">Jadwal pelatihan tatap muka berikutnya di <span id="nextBalaiText">Pusdiklatwas BPKP Wilayah II Bali</span></div>
       <div class="tl" id="nList"></div>
     </section>
 
@@ -518,20 +518,46 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 
   /* ---------- shared info ---------- */
   function paintInfo(){
+    const namaUnit = data.namaUnit || 'PUSDIKLATWAS BPKP';
+    const wilayah = data.wilayah || 'Wilayah II Bali';
+    const namaBalai = data.namaBalai || (namaUnit + ' ' + wilayah);
+
     document.querySelectorAll('[data-addr]').forEach(e => e.textContent = data.alamat || '');
+
+    const cardB = $('cardBalaiText'); if(cardB) cardB.textContent = namaBalai;
+    const genU = $('genUnitText'); if(genU) genU.textContent = namaUnit;
+    const genW = $('genWilayahText'); if(genW) genW.textContent = wilayah;
+    const nextB = $('nextBalaiText'); if(nextB) nextB.textContent = namaBalai;
+
     $('aWifi').textContent = data.wifiNama || '';
     $('aPass').textContent = data.wifiSandi || '';
-    $('wfA').style.visibility = data.wifiNama ? 'visible' : 'hidden';
+    $('wfA').style.visibility = (data.wifiNama || data.wifiSandi) ? 'visible' : 'hidden';
+
     paintSocial($('socA'), false); paintSocial($('socB'), true);
+
     const logo = $('logo');
     logo.onerror = () => { logo.hidden = true; $('logoSvg').style.display = ''; };
     if(data.logo){ logo.src = data.logo; logo.hidden = false; $('logoSvg').style.display = 'none'; }
     else { logo.hidden = true; logo.removeAttribute('src'); $('logoSvg').style.display = ''; }
+
     document.querySelectorAll('[data-photo]').forEach(ph => {
       ph.textContent = '';
-      if(data.foto){ const im = new Image(); im.alt = 'Gedung Learning Center Pusdiklatwas BPKP Wilayah II Bali'; im.src = data.foto; im.onerror = ()=>im.remove(); ph.appendChild(im); }
-      else if(canWrite){ const h = document.createElement('div'); h.className='hint'; h.textContent='Unggah foto gedung lewat tombol Ubah isi layar'; ph.appendChild(h); }
+      if(data.foto){
+        const im = new Image();
+        im.alt = 'Gedung ' + namaBalai;
+        im.src = data.foto;
+        im.onerror = ()=>im.remove();
+        ph.appendChild(im);
+      }
+      else if(canWrite){
+        const h = document.createElement('div');
+        h.className='hint';
+        h.textContent='Unggah foto gedung lewat tombol Ubah isi layar';
+        ph.appendChild(h);
+      }
     });
+
+    document.title = 'Layar Diklat · ' + namaBalai;
   }
 
   /* ---------- scene fillers ---------- */
@@ -689,26 +715,47 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     paintInfo();
   }
   /* ---------- data loader: read from cloud data.json, localStorage, or embedded JSON ---------- */
+  function getLocationKey(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const param = urlParams.get('lokasi');
+    if(param) return param.toLowerCase();
+
+    const path = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
+    if(path === 'medan' || path === 'makassar' || path === 'ciawi' || path === 'bali') return path;
+    return 'bali';
+  }
+
   function loadInitialData(){
-    const saved = localStorage.getItem('layar_diklat_data');
+    const lokasi = getLocationKey();
+    const saved = localStorage.getItem('layar_diklat_data_' + lokasi) || localStorage.getItem('layar_diklat_data');
     if(saved){
-      try { return JSON.parse(saved); } catch(e){}
+      try {
+        const parsed = JSON.parse(saved);
+        if(parsed[lokasi]) return parsed[lokasi];
+        if(parsed.trainings) return parsed;
+      } catch(e){}
     }
-    try { return JSON.parse($('data').textContent); } catch(e){}
+    try {
+      const emb = JSON.parse($('data').textContent);
+      if(emb[lokasi]) return emb[lokasi];
+      if(emb.trainings) return emb;
+    } catch(e){}
     return null;
   }
   apply(loadInitialData());
   startOnce();
 
-  // Background Cloud Sync (Silent background update)
+  // Background Cloud Sync (Silent background update per location)
   async function fetchCloudData(){
+    const lokasi = getLocationKey();
     try {
       const res = await fetch('./data.json?t=' + Date.now(), { cache: 'no-store' });
       if(res.ok){
         const cloudData = await res.json();
-        if(cloudData && Array.isArray(cloudData.trainings)){
-          apply(cloudData);
-          localStorage.setItem('layar_diklat_data', JSON.stringify(cloudData));
+        const locData = cloudData[lokasi] || (cloudData.trainings ? cloudData : null);
+        if(locData && Array.isArray(locData.trainings)){
+          apply(locData);
+          localStorage.setItem('layar_diklat_data_' + lokasi, JSON.stringify(locData));
         }
       }
     } catch(err){}
