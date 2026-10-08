@@ -462,6 +462,12 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     return 'Hari ke-'+n+' dari '+total;
   }
   function lists(){
+    const current = loadInitialData();
+    if(current) {
+      data = Object.assign(JSON.parse(JSON.stringify(EMPTY)), current);
+      if(!Array.isArray(data.trainings)) data.trainings = [];
+      if(!Array.isArray(data.notes)) data.notes = [];
+    }
     const today = todayISO();
     const ts = (data.trainings||[]).filter(t => t && t.nama).slice().sort((a,b)=> (a.mulai||'').localeCompare(b.mulai||''));
     return { on: ts.filter(t=>status(t,today)==='on'), up: ts.filter(t=>status(t,today)==='up') };
@@ -604,14 +610,30 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   apply(loadInitialData());
   startOnce();
 
+  function resetAndPlayNext(){
+    clearTimeout(loopTimer);
+    idx = 0;
+    if(started) transition(next);
+  }
+
   window.addEventListener('storage', e => {
     if(e.key === 'layar_diklat_data' && e.newValue){
       try {
         apply(JSON.parse(e.newValue));
-        if(started) next();
+        resetAndPlayNext();
       } catch(err){}
     }
   });
+
+  try {
+    const syncChannel = new BroadcastChannel('layar_diklat_channel');
+    syncChannel.onmessage = (e) => {
+      if(e.data){
+        apply(e.data);
+        resetAndPlayNext();
+      }
+    };
+  } catch(e){}
 
   /* ---------- background audio (hardware gain boost, autoplay & reliable unlock) ---------- */
   const bgm = $('bgm');

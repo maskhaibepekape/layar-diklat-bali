@@ -886,15 +886,13 @@ function simpanItemDiklat() {
   currentData.trainings.sort((a,b) => (a.mulai||'').localeCompare(b.mulai||''));
 
   tutupModal('modalDiklat');
-  renderAll();
-  showToast('Pelatihan berhasil disimpan ke daftar.');
+  autoSaveAndBroadcast('✅ Pelatihan berhasil disimpan & layar TV langsung ter-update!');
 }
 
 function hapusDiklat(idx) {
   if (confirm(`Hapus pelatihan "${currentData.trainings[idx].nama}"?`)) {
     currentData.trainings.splice(idx, 1);
-    renderAll();
-    showToast('Pelatihan dihapus.');
+    autoSaveAndBroadcast('Pelatihan dihapus dari daftar.');
   }
 }
 
@@ -934,29 +932,42 @@ function simpanItemNote() {
   }
 
   tutupModal('modalNote');
-  renderAll();
-  showToast('Catatan pengumuman disimpan.');
+  autoSaveAndBroadcast('Catatan pengumuman disimpan & diperbarui.');
 }
 
 function hapusNote(idx) {
   if (confirm('Hapus catatan pengumuman ini?')) {
     currentData.notes.splice(idx, 1);
-    renderAll();
-    showToast('Pengumuman dihapus.');
+    autoSaveAndBroadcast('Pengumuman dihapus.');
   }
+}
+
+/* Auto-Save & Cross-Tab Broadcast */
+function autoSaveAndBroadcast(msg) {
+  if (document.getElementById('inpAlamat')) {
+    currentData.alamat = document.getElementById('inpAlamat').value.trim();
+    currentData.wifiNama = document.getElementById('inpWifiNama').value.trim();
+    currentData.wifiSandi = document.getElementById('inpWifiSandi').value.trim();
+    currentData.ig = document.getElementById('inpIg').value.trim();
+    currentData.yt = document.getElementById('inpYt').value.trim();
+    currentData.xx = document.getElementById('inpXx').value.trim();
+    currentData.fb = document.getElementById('inpFb').value.trim();
+  }
+
+  localStorage.setItem('layar_diklat_data', JSON.stringify(currentData));
+  try {
+    const ch = new BroadcastChannel('layar_diklat_channel');
+    ch.postMessage(currentData);
+  } catch(e){}
+
+  renderAll();
+  showToast(msg || '✅ Data disimpan & layar TV otomatis diperbarui!');
 }
 
 /* Save to Storage */
 function simpanSemuaKeLayar() {
-  currentData.alamat = document.getElementById('inpAlamat').value.trim();
-  currentData.wifiNama = document.getElementById('inpWifiNama').value.trim();
-  currentData.wifiSandi = document.getElementById('inpWifiSandi').value.trim();
-  currentData.ig = document.getElementById('inpIg').value.trim();
-  currentData.yt = document.getElementById('inpYt').value.trim();
-  currentData.xx = document.getElementById('inpXx').value.trim();
-  currentData.fb = document.getElementById('inpFb').value.trim();
-
-  localStorage.setItem('layar_diklat_data', JSON.stringify(currentData));
+  autoSaveAndBroadcast('✅ Seluruh data berhasil disimpan! Monitor TV otomatis ter-update.');
+}
   showToast('✅ Data berhasil disimpan! Monitor TV otomatis ter-update.');
 }
 
