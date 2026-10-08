@@ -205,6 +205,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 </head>
 <body>
 <audio id="bgm" src="bgm.mp3" loop preload="auto"></audio>
+<div id="audioUnlockNotice" style="display:none;position:fixed;top:24px;left:50%;transform:translateX(-50%);z-index:999;background:rgba(0,37,204,0.92);color:#fff;padding:12px 26px;border-radius:999px;font-size:15px;font-weight:700;box-shadow:0 8px 30px rgba(0,0,0,0.35);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);cursor:pointer;font-family:var(--sans)">🔊 Klik di mana saja untuk menyalakan musik latar</div>
 <div id="frame">
   <div id="stage" aria-live="polite">
     <div class="head">
@@ -596,25 +597,42 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   catch(e){ console.error('Data JSON tidak valid:', e); apply(null); }
   startOnce();
 
-  /* ---------- background audio (full volume, autoplay & seamless unlock) ---------- */
+  /* ---------- background audio (full volume, autoplay & reliable unlock) ---------- */
   const bgm = $('bgm');
-  function playFullAudio(){
+  const notice = $('audioUnlockNotice');
+
+  function tryPlayAudio(){
     if(!bgm) return;
     bgm.volume = 1.0;
     const p = bgm.play();
     if(p !== undefined){
-      p.catch(()=>{});
+      p.then(() => {
+        if(notice) notice.style.display = 'none';
+      }).catch(() => {
+        if(notice) notice.style.display = 'block';
+      });
     }
   }
 
   if(bgm){
     bgm.volume = 1.0;
-    playFullAudio();
-    const unlock = () => {
-      if(bgm.paused) playFullAudio();
-      ['pointerdown','click','keydown','touchstart'].forEach(ev => removeEventListener(ev, unlock));
+    tryPlayAudio();
+
+    const handleInteraction = () => {
+      tryPlayAudio();
     };
-    ['pointerdown','click','keydown','touchstart'].forEach(ev => addEventListener(ev, unlock, {passive:true}));
+
+    ['pointerdown', 'mousedown', 'click', 'keydown', 'touchstart'].forEach(ev => {
+      window.addEventListener(ev, handleInteraction, { passive: true });
+      document.addEventListener(ev, handleInteraction, { passive: true });
+    });
+
+    if(notice){
+      notice.addEventListener('click', e => {
+        e.stopPropagation();
+        tryPlayAudio();
+      });
+    }
   }
 })();
 </script>
