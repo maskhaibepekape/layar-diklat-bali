@@ -76,11 +76,11 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 #footB .wl2{position:relative;font-size:22px;color:#e2cdc0;margin-top:6px}
 
 /* ---------- scenes ---------- */
-.scene{position:absolute;inset:0;visibility:hidden;opacity:0}
-.scene.on{visibility:visible;opacity:1}
-.a{opacity:1}
-.scene.on .a{animation:rise .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0s)}
-@keyframes rise{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+.scene{position:absolute;inset:0;visibility:hidden;opacity:0;z-index:1;background:#fff;color:#0f172a;pointer-events:none}
+.scene.on{visibility:visible;opacity:1;z-index:4;pointer-events:auto}
+.a{opacity:1;transform:none}
+.scene.on .a{animation:rise .65s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d,0s)}
+@keyframes rise{0%{opacity:0.01;transform:translateY(28px)}100%{opacity:1;transform:none}}
 .scene.on .pop{animation-name:pop}
 @keyframes pop{0%{opacity:0;transform:scale(.86)}60%{opacity:1;transform:scale(1.02)}100%{opacity:1;transform:none}}
 .scene.on .reveal{animation-name:reveal;animation-duration:1.3s}
@@ -465,10 +465,14 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
   fitText();
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitText);
-  // shrink a block (via --k) until it fits a height
-  function fitBlock(el, maxH){
-    let k = 1; el.style.setProperty('--k', k); let g = 0;
-    while(el.offsetHeight > maxH && k > 0.55 && g++ < 60){ k -= 0.03; el.style.setProperty('--k', k.toFixed(2)); }
+  // shrink a block (via --k) until it fits a height (safe calculation)
+  function fitBlock(box, maxH){
+    if(!box) return;
+    box.style.setProperty('--k', '1');
+    const h = box.scrollHeight;
+    if(!h || !isFinite(h)) return;
+    const k = Math.max(0.65, Math.min(1, maxH / h));
+    box.style.setProperty('--k', k.toFixed(3));
   }
 
   /* ---------- dates & timezone logic ---------- */
@@ -646,36 +650,49 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     fitBlock($('wdBox'), 1000 - 508 - 40);
   }
 
-  function el(tag, cls, text, d){ const e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; if(d != null){ e.classList.add('a'); e.style.setProperty('--d', d+'s'); } return e; }
-  function elHtml(tag, cls, html, d){ const e = document.createElement(tag); if(cls) e.className = cls; if(html != null) e.innerHTML = html; if(d != null){ e.classList.add('a'); e.style.setProperty('--d', d+'s'); } return e; }
+  function metaItem(label, val){
+    const s = document.createElement('span');
+    const b = document.createElement('b');
+    s.appendChild(document.createTextNode(label + ': '));
+    b.textContent = String(val);
+    s.appendChild(b);
+    return s;
+  }
 
   function fillInfoScene(activeList){
     stopMicroLoop();
-    const fb = $('ibFacts'); fb.textContent = '';
-    const nb = $('ibNotes'); nb.textContent = '';
-    $('ibName').textContent = 'Informasi Ruang Kelas & Catatan';
+    const fb = $('ibFacts'); if(fb) fb.textContent = '';
+    const nb = $('ibNotes'); if(nb) nb.textContent = '';
+    const nameEl = $('ibName'); if(nameEl) nameEl.textContent = 'Informasi Ruang Kelas & Catatan';
 
-    if(!activeList || !activeList.length) return;
+    const ibBox = $('ibBox');
+    if(ibBox){
+      ibBox.style.setProperty('--k', '1');
+      ibBox.style.transform = 'none';
+    }
 
-    // Dual/Multi-Card Layout (Opsi A)
-    const dualWrap = el('div', 'dual-wrap');
-    activeList.forEach((t, i) => {
-      const card = el('div', 'dual-card', null, 0.4 + i*0.15);
-      const title = el('div', 't-name', t.nama);
-      const meta = el('div', 't-meta');
-      if(t.ruang) meta.appendChild(elHtml('span', null, `Ruang: <b>${escapeHtml(t.ruang)}</b>`));
-      if(t.jam) meta.appendChild(elHtml('span', null, `Waktu: <b>${escapeHtml(t.jam)}</b>`));
-      if(t.peserta) meta.appendChild(elHtml('span', null, `Peserta: <b>${escapeHtml(t.peserta)}</b>`));
-      if(!t.ruang && !t.jam && !t.peserta) meta.appendChild(el('span', null, t.ket || 'Tatap Muka'));
+    if(!activeList || !activeList.length){
+      if(fb) fb.appendChild(el('div', 'dual-card', 'Tidak ada sesi pelatihan aktif saat ini.', 0.3));
+    } else {
+      const dualWrap = el('div', 'dual-wrap');
+      activeList.forEach((t, i) => {
+        const card = el('div', 'dual-card', null, 0.4 + i*0.15);
+        const title = el('div', 't-name', t.nama || '-');
+        const meta = el('div', 't-meta');
+        if(t.ruang) meta.appendChild(metaItem('Ruang', t.ruang));
+        if(t.jam) meta.appendChild(metaItem('Waktu', t.jam));
+        if(t.peserta) meta.appendChild(metaItem('Peserta', t.peserta));
+        if(!t.ruang && !t.jam && !t.peserta) meta.appendChild(el('span', null, t.ket || 'Tatap Muka'));
 
-      card.append(title, meta);
-      dualWrap.appendChild(card);
-    });
-    fb.appendChild(dualWrap);
+        card.appendChild(title);
+        card.appendChild(meta);
+        dualWrap.appendChild(card);
+      });
+      if(fb) fb.appendChild(dualWrap);
+    }
 
-    // Notes list below
     const ns = notesList();
-    if(ns.length){
+    if(ns && ns.length && nb){
       nb.appendChild(el('div', 'nt', 'Catatan untuk peserta', 0.8));
       ns.forEach((n,i) => {
         const it = el('div', 'note-it', null, 0.9 + i*0.15);
@@ -684,18 +701,31 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
         nb.appendChild(it);
       });
     }
-    fitBlock($('ibBox'), 1740 - 318 - 50);
+
+    if(ibBox){
+      requestAnimationFrame(() => {
+        fitBlock(ibBox, 1740 - 510 - 240);
+      });
+    }
   }
 
   function fillNext(items, page, pages){
     stopMicroLoop();
-    const box = $('nList'); box.textContent = '';
-    $('nPg').textContent = pages > 1 ? (page+1)+' / '+pages : '';
-    if(!items.length){ box.appendChild(el('div','empty','Belum ada jadwal diklat berikutnya.', 0.6)); return; }
-    items.forEach((t,k)=>{
-      const it = el('div','it',null,0.7+k*0.32);
-      it.append(el('div','dot'), el('div','dt',fmtRange(t.mulai, t.selesai)), el('div','nm',t.nama));
-      if(t.ket) it.appendChild(el('div','kt',t.ket));
+    const box = $('nList'); if(!box) return;
+    box.textContent = '';
+    const pgEl = $('nPg');
+    if(pgEl) pgEl.textContent = pages > 1 ? (page+1)+' / '+pages : '';
+    if(!items || !items.length){
+      box.appendChild(el('div','empty','Belum ada jadwal diklat berikutnya.', 0.6));
+      return;
+    }
+    items.forEach((t, k) => {
+      if(!t || !t.nama) return;
+      const it = el('div', 'it', null, 0.5 + k*0.15);
+      it.appendChild(el('div', 'dot'));
+      it.appendChild(el('div', 'dt', fmtRange(t.mulai, t.selesai)));
+      it.appendChild(el('div', 'nm', t.nama || ''));
+      if(t.ket) it.appendChild(el('div', 'kt', t.ket));
       box.appendChild(it);
     });
   }
@@ -727,14 +757,31 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   let idx = 0, loopTimer = null;
   function show(sc){
     stopMicroLoop();
-    Object.values(SCENES).forEach(id => $(id).classList.remove('on'));
-    paintInfo();
-    if(sc.type === 'd') fillDiklatScene(sc.items);
-    else if(sc.type === 'i') fillInfoScene(sc.items);
-    else if(sc.type === 'n') fillNext(sc.items, sc.page, sc.pages);
+    lastTick = Date.now();
+    const target = $(SCENES[sc.type]);
+    if(!target) return;
+
+    try {
+      paintInfo();
+      if(sc.type === 'd') fillDiklatScene(sc.items);
+      else if(sc.type === 'i') fillInfoScene(sc.items);
+      else if(sc.type === 'n') fillNext(sc.items || [], sc.page || 0, sc.pages || 1);
+    } catch(err){
+      console.error('[show] render error:', err);
+    }
+
+    Object.keys(SCENES).forEach(k => {
+      const elScene = $(SCENES[k]);
+      if(elScene && elScene !== target) elScene.classList.remove('on');
+    });
+
     const white = sc.type === 'd' || sc.type === 'g';
-    $('footA').classList.toggle('show', white); $('footB').classList.toggle('show', !white);
-    const s = $(SCENES[sc.type]); void s.offsetWidth; s.classList.add('on');
+    $('footA').classList.toggle('show', white);
+    $('footB').classList.toggle('show', !white);
+
+    target.classList.remove('on');
+    void target.offsetWidth;
+    target.classList.add('on');
   }
   function next(){
     const p = plan(); if(idx >= p.length) idx = 0;
