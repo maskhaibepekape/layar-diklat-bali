@@ -194,20 +194,20 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
   border: 1px solid #c7d2fe;
 }
 .next-bar .pg:empty { display: none; }
-.tl { position: absolute; left: 70px; right: 70px; top: 640px; z-index: 3; display: flex; flex-direction: column; gap: 16px; }
+.tl { position: absolute; left: 70px; right: 70px; top: 670px; z-index: 3; display: flex; flex-direction: column; gap: 14px; }
 .it {
   position: relative;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 18px;
-  padding: 22px 28px;
+  padding: 16px 26px;
   border-left: 14px solid #cc0000;
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
 }
-.it .dt { color: #cc0000; font-weight: 800; font-size: 28px; margin-bottom: 2px; }
-.it .nm { color: #0f172a; font-weight: 800; font-size: 40px; line-height: 1.2; margin-top: 2px; }
-.it .kt { display: inline-block; background: #f8fafc; color: #475569; font-weight: 700; font-size: 22px; padding: 4px 12px; border-radius: 6px; margin-top: 6px; border: 1px solid #e2e8f0; }
-.empty { position: absolute; left: 70px; right: 70px; top: 640px; z-index: 3; font-size: 40px; font-weight: 600; color: #7a7166; line-height: 1.4; }
+.it .dt { color: #cc0000; font-weight: 800; font-size: 26px; margin-bottom: 2px; }
+.it .nm { color: #0f172a; font-weight: 800; font-size: 34px; line-height: 1.18; margin-top: 2px; }
+.it .kt { display: inline-block; background: #f8fafc; color: #475569; font-weight: 700; font-size: 20px; padding: 3px 10px; border-radius: 6px; margin-top: 4px; border: 1px solid #e2e8f0; }
+.empty { position: absolute; left: 70px; right: 70px; top: 670px; z-index: 3; font-size: 40px; font-weight: 600; color: #7a7166; line-height: 1.4; }
 
 /* transition wipe */
 .wipe{position:absolute;top:0;right:0;bottom:0;left:0;z-index:40;pointer-events:none;overflow:hidden}
@@ -886,8 +886,8 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
 
   /* ---------- scene loop ---------- */
-  const PER = 3;         // Maksimal 3 kartu per halaman agar pas di layar & tidak nabrak footer
-  const MAX_PAGES = 3;   // Maksimal 3 halaman (9 diklat terdekat) agar durasi putaran tidak kelamaan
+  const PER = 4;         // 4 kartu per halaman agar efisien, proporsional & tidak nabrak footer
+  const MAX_PAGES = 3;   // Maksimal 3 halaman (12 diklat terdekat) agar durasi putaran tidak kelamaan
 
   function plan(){
     const L = lists(), out = [];
