@@ -578,6 +578,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
 
   function el(tag, cls, text, d){ const e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; if(d != null){ e.classList.add('a'); e.style.setProperty('--d', d+'s'); } return e; }
+  function elHtml(tag, cls, html, d){ const e = document.createElement(tag); if(cls) e.className = cls; if(html != null) e.innerHTML = html; if(d != null){ e.classList.add('a'); e.style.setProperty('--d', d+'s'); } return e; }
 
   function fillInfoScene(activeList){
     stopMicroLoop();
@@ -593,10 +594,10 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       const card = el('div', 'dual-card', null, 0.4 + i*0.15);
       const title = el('div', 't-name', t.nama);
       const meta = el('div', 't-meta');
-      if(t.ruang) meta.appendChild(el('span', null, `🏛️ Ruang: <b>${t.ruang}</b>`));
-      if(t.jam) meta.appendChild(el('span', null, `⏰ Jam: <b>${t.jam}</b>`));
-      if(t.peserta) meta.appendChild(el('span', null, `👥 Peserta: <b>${t.peserta}</b>`));
-      if(!t.ruang && !t.jam && !t.peserta) meta.appendChild(el('span', null, `🏷️ ${t.ket || 'Tatap Muka'}`));
+      if(t.ruang) meta.appendChild(elHtml('span', null, `Ruang: <b>${escapeHtml(t.ruang)}</b>`));
+      if(t.jam) meta.appendChild(elHtml('span', null, `Waktu: <b>${escapeHtml(t.jam)}</b>`));
+      if(t.peserta) meta.appendChild(elHtml('span', null, `Peserta: <b>${escapeHtml(t.peserta)}</b>`));
+      if(!t.ruang && !t.jam && !t.peserta) meta.appendChild(el('span', null, t.ket || 'Tatap Muka'));
 
       card.append(title, meta);
       dualWrap.appendChild(card);
