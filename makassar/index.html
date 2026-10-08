@@ -128,41 +128,61 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .card .ad2{display:flex;gap:14px;align-items:flex-start;font-size:27px;font-weight:600;line-height:1.35;color:#3a2a1b;margin-top:14px}
 .card .ad2 svg{flex:0 0 38px;height:38px;margin-top:2px}
 
-/* participant info */
-.ib{position:absolute;left:96px;right:96px;top:318px;z-index:3;--k:1}
-.ib .h2{font-family:var(--slab);font-weight:700;font-size:calc(96px*var(--k));line-height:1.02;color:#3a2a1b}
-.ib .tn{font-weight:800;font-size:calc(38px*var(--k));line-height:1.25;color:#0025cc;margin-top:calc(18px*var(--k))}
-.facts{display:flex;flex-direction:column;gap:16px;margin-top:calc(36px*var(--k))}
-.fact{background:#f4ece6;border-radius:22px;padding:calc(26px*var(--k)) 34px;display:flex;justify-content:space-between;align-items:baseline;gap:30px;border-left:12px solid #0025cc}
-.fact .l{font-size:calc(28px*var(--k));font-weight:600;color:#7a7166;flex-shrink:0}
-.fact .v{font-size:calc(44px*var(--k));font-weight:800;color:#3a2a1b;line-height:1.2;text-align:right;overflow-wrap:anywhere}
+/* participant info (Slide 2) */
+.ib{position:absolute;left:80px;right:80px;top:510px;z-index:3;--k:1}
 
 /* Dual cards for Slide 2 (Opsi A) */
-.dual-wrap{display:flex;flex-direction:column;gap:16px;width:100%}
-.dual-card{background:#f4ece6;border-radius:20px;padding:calc(22px*var(--k)) 30px;border-left:12px solid #0025cc;display:flex;flex-direction:column;gap:6px}
-.dual-card .t-name{font-size:calc(40px*var(--k));font-weight:800;color:#3a2a1b;line-height:1.2}
-.dual-card .t-meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:calc(8px*var(--k));font-size:calc(26px*var(--k));font-weight:600;color:#554b40}
+.dual-wrap{display:flex;flex-direction:column;gap:18px;width:100%}
+.dual-card{
+  background:#fff;
+  border-radius:22px;
+  padding:calc(26px*var(--k)) 32px;
+  border-left:14px solid #0025cc;
+  box-shadow:0 10px 35px rgba(0,0,0,0.06);
+  border-top:1px solid #eee;
+  border-right:1px solid #eee;
+  border-bottom:1px solid #eee;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.dual-card .t-name{font-size:calc(42px*var(--k));font-weight:800;color:#1e293b;line-height:1.2}
+.dual-card .t-meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:calc(6px*var(--k));font-size:calc(26px*var(--k));font-weight:600;color:#475569}
+.dual-card .t-meta span{background:#f1f5f9;padding:6px 14px;border-radius:8px;border:1px solid #e2e8f0}
 .dual-card .t-meta span b{color:#0025cc}
 
-.ib .nt{font-family:var(--slab);font-weight:700;font-size:calc(46px*var(--k));margin-top:calc(48px*var(--k));color:#3a2a1b}
-.note-it{position:relative;padding-left:46px;margin-top:calc(22px*var(--k))}
-.note-it::before{content:"";position:absolute;left:0;top:calc(12px*var(--k));width:20px;height:20px;border-radius:50%;background:#cc0000}
+.ib .nt{font-family:var(--slab);font-weight:700;font-size:calc(48px*var(--k));margin-top:calc(40px*var(--k));color:#1e293b}
+.note-it{
+  position:relative;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:14px;
+  padding:calc(18px*var(--k)) 24px calc(18px*var(--k)) 54px;
+  margin-top:calc(16px*var(--k));
+  box-shadow:0 4px 15px rgba(0,0,0,0.03);
+}
+.note-it::before{content:"";position:absolute;left:22px;top:calc(24px*var(--k));width:14px;height:14px;border-radius:50%;background:#cc0000}
 .note-it .j{font-weight:800;font-size:calc(32px*var(--k));color:#cc0000}
-.note-it .s{font-weight:600;font-size:calc(34px*var(--k));line-height:1.35;color:#141413;margin-top:4px}
+.note-it .s{font-weight:600;font-size:calc(30px*var(--k));line-height:1.35;color:#334155;margin-top:4px}
 .ib .hint2{margin-top:40px;font-size:32px;font-weight:600;color:#7a7166;line-height:1.4}
 
-/* upcoming */
-.h2n{position:absolute;left:96px;right:96px;top:318px;z-index:3;font-family:var(--slab);font-weight:700;font-size:100px;line-height:1.02;color:#3a2a1b}
-.sub{position:absolute;left:96px;right:200px;top:430px;z-index:3;font-size:30px;line-height:1.35;color:#7a7166}
-.pg{position:absolute;right:96px;top:345px;z-index:3;font-weight:800;font-size:30px;color:#0025cc}
-.tl{position:absolute;left:96px;right:96px;top:560px;z-index:3}
-.tl::before{content:"";position:absolute;left:11px;top:14px;bottom:30px;width:4px;background:#e2cdc0;border-radius:4px}
-.it{position:relative;padding-left:62px;margin-bottom:40px}
-.it .dot{position:absolute;left:0;top:6px;width:26px;height:26px;border-radius:50%;background:#cc0000;box-shadow:0 0 0 7px #fff}
-.it .dt{color:#cc0000;font-weight:800;font-size:33px}
-.it .nm{color:#141413;font-weight:800;font-size:48px;line-height:1.22;margin-top:6px}
-.it .kt{color:#7a7166;font-weight:600;font-size:26px;margin-top:6px}
-.empty{position:absolute;left:96px;right:96px;top:620px;z-index:3;font-size:40px;font-weight:600;color:#7a7166;line-height:1.4}
+/* upcoming (Slide 3) */
+.sub{position:absolute;left:80px;right:80px;top:500px;z-index:3;font-size:30px;line-height:1.35;color:#64748b;font-weight:600}
+.pg{position:absolute;right:80px;top:500px;z-index:3;font-weight:800;font-size:28px;color:#0025cc}
+.tl{position:absolute;left:80px;right:80px;top:570px;z-index:3;display:flex;flex-direction:column;gap:18px}
+.it{
+  position:relative;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:18px;
+  padding:24px 28px;
+  border-left:12px solid #cc0000;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+.it .dt{color:#cc0000;font-weight:800;font-size:32px;margin-bottom:4px}
+.it .nm{color:#0f172a;font-weight:800;font-size:44px;line-height:1.2;margin-top:4px}
+.it .kt{display:inline-block;background:#f1f5f9;color:#475569;font-weight:700;font-size:22px;padding:4px 12px;border-radius:6px;margin-top:10px;border:1px solid #e2e8f0}
+.empty{position:absolute;left:80px;right:80px;top:620px;z-index:3;font-size:40px;font-weight:600;color:#7a7166;line-height:1.4}
 
 /* transition wipe */
 .wipe{position:absolute;inset:0;z-index:40;pointer-events:none;overflow:hidden}
@@ -342,7 +362,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   "namaUnit": "PUSDIKLATWAS BPKP",
   "wilayah": "Wilayah III Makassar",
   "namaBalai": "Pusdiklatwas BPKP Wilayah III Makassar",
-  "alamat": "Jl. Tamalanrea Raya No. 3 (Kompleks BPKP), Tamalanrea Indah, Kec. Tamalanrea, Kota Makassar, Sulawesi Selatan 90245",
+  "alamat": "",
   "wifiNama": "",
   "wifiSandi": "",
   "ig": "@giacorpu",
@@ -359,10 +379,6 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     {
       "judul": "Tata Tertib & Fasilitas",
       "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
-    },
-    {
-      "judul": "Layanan Resepsionis",
-      "isi": "Informasi kamar wisma dan sarana dapat menghubungi petugas di Meja Resepsionis Lantai 1."
     }
   ],
   "trainings": [
@@ -411,10 +427,21 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     while(el.offsetHeight > maxH && k > 0.55 && g++ < 60){ k -= 0.03; el.style.setProperty('--k', k.toFixed(2)); }
   }
 
-  /* ---------- dates ---------- */
+  /* ---------- dates & timezone logic ---------- */
+  const APP_VERSION = 2;
+  const OFFSET = { bali: 8, makassar: 8, medan: 7, ciawi: 7 };
+  let clockCorrection = 0;
+  let lastTick = Date.now();
+
   const pad = n => String(n).padStart(2,'0');
   function parse(s){ if(!s) return null; const [y,m,d] = s.split('-').map(Number); return (y&&m&&d) ? new Date(y,m-1,d) : null; }
-  function todayISO(){ const t = new Date(); return t.getFullYear()+'-'+pad(t.getMonth()+1)+'-'+pad(t.getDate()); }
+  
+  function todayISO(tenant){
+    const now = Date.now() + clockCorrection;
+    const off = OFFSET[tenant || 'bali'] || 8;
+    return new Date(now + off * 3600000).toISOString().slice(0, 10);
+  }
+
   function fmtRange(a,b){
     const A = parse(a), B = parse(b) || A; if(!A) return '';
     const dm = x => pad(x.getDate())+' '+MON[x.getMonth()];
@@ -422,18 +449,16 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     if(A.getFullYear() !== B.getFullYear()) return dm(A)+' '+A.getFullYear()+' – '+dm(B)+' '+B.getFullYear();
     return dm(A)+' – '+dm(B)+' '+B.getFullYear();
   }
-  function status(t, today){
-    if(!t.mulai) return 'none';
-    const end = t.selesai || t.mulai;
-    if(end < today) return 'past';
-    if(t.mulai > today) return 'up';
-    return 'on';
-  }
+
   function dayInfo(t){
-    const A = parse(t.mulai), B = parse(t.selesai || t.mulai), T = parse(todayISO());
-    const total = Math.round((B-A)/864e5)+1, n = Math.round((T-A)/864e5)+1;
-    return 'Hari ke-'+n+' dari '+total;
+    const A = parse(t.mulai), B = parse(t.selesai || t.mulai);
+    const T = parse(todayISO(getLocationKey()));
+    if(!A || !B || !T) return '';
+    const total = Math.round((B - A) / 864e5) + 1;
+    const n = Math.round((T - A) / 864e5) + 1;
+    return 'Hari ke-' + n + ' dari ' + total;
   }
+
   function lists(){
     const current = loadInitialData();
     if(current) {
@@ -441,9 +466,12 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       if(!Array.isArray(data.trainings)) data.trainings = [];
       if(!Array.isArray(data.notes)) data.notes = [];
     }
-    const today = todayISO();
-    const ts = (data.trainings||[]).filter(t => t && t.nama).slice().sort((a,b)=> (a.mulai||'').localeCompare(b.mulai||''));
-    return { on: ts.filter(t=>status(t,today)==='on'), up: ts.filter(t=>status(t,today)==='up') };
+    const today = todayISO(getLocationKey());
+    const ts = (data.trainings||[]).filter(t => t && t.nama && t.mulai).slice().sort((a,b)=> (a.mulai||'').localeCompare(b.mulai||''));
+    return {
+      on: ts.filter(t => (t.mulai <= today && today <= (t.selesai || t.mulai))),
+      up: ts.filter(t => (t.mulai > today))
+    };
   }
   const notesList = () => (data.notes||[]).filter(n => n && (n.judul || n.isi));
   const hasInfo = t => !!(t.ruang || t.jam || t.peserta || notesList().length);
@@ -716,36 +744,79 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   apply(loadInitialData());
   startOnce();
 
-  // Background Cloud Sync (Silent background update per location)
+  // Background Cloud Sync, Clock Correction & App Version Check
   async function fetchCloudData(){
     const lokasi = getLocationKey();
     const prefix = getAssetPrefix();
+    const targetUrl = prefix + 'data/' + lokasi + '.json?t=' + Date.now();
     try {
-      const res = await fetch(prefix + 'data.json?t=' + Date.now(), { cache: 'no-store' });
+      const res = await fetch(targetUrl, { cache: 'no-store' });
       if(res.ok){
+        // Read Date header for clock correction
+        const serverDateStr = res.headers.get('date');
+        if(serverDateStr){
+          const serverMs = new Date(serverDateStr).getTime();
+          if(!isNaN(serverMs) && Math.abs(serverMs - Date.now()) > 120000){
+            clockCorrection = serverMs - Date.now();
+          }
+        }
+
         const cloudData = await res.json();
-        const locData = cloudData[lokasi] || (cloudData.trainings ? cloudData : null);
-        if(locData && Array.isArray(locData.trainings)){
-          apply(locData);
-          localStorage.setItem('layar_diklat_data_' + lokasi, JSON.stringify(locData));
+        // Validation guard: must have trainings array
+        if(cloudData && Array.isArray(cloudData.trainings)){
+          if(cloudData.appVersion && cloudData.appVersion > APP_VERSION){
+            safeReload();
+            return;
+          }
+          apply(cloudData);
+          localStorage.setItem('layar_diklat_data_' + lokasi, JSON.stringify(cloudData));
         }
       }
     } catch(err){}
   }
   fetchCloudData();
-  setInterval(fetchCloudData, 30000);
+  setInterval(fetchCloudData, 20000);
 
-  function resetAndPlayNext(){
+  function safeReload(){
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open('HEAD', window.location.pathname + '?ping=' + Date.now(), true);
+      xhr.timeout = 8000;
+      xhr.onload = function(){
+        if(xhr.status >= 200 && xhr.status < 400){
+          window.location.reload();
+        } else {
+          softRestart();
+        }
+      };
+      xhr.onerror = xhr.ontimeout = softRestart;
+      xhr.send();
+    } catch(e){
+      softRestart();
+    }
+  }
+
+  function softRestart(){
     clearTimeout(loopTimer);
+    stopMicroLoop();
     idx = 0;
     if(started) transition(next);
   }
 
+  // Watchdog checking freeze every 20s
+  setInterval(function(){
+    if(Date.now() - lastTick > 120000){
+      lastTick = Date.now();
+      safeReload();
+    }
+  }, 20000);
+
   window.addEventListener('storage', e => {
-    if(e.key === 'layar_diklat_data' && e.newValue){
+    const lokasi = getLocationKey();
+    if((e.key === 'layar_diklat_data_' + lokasi || e.key === 'layar_diklat_data') && e.newValue){
       try {
         apply(JSON.parse(e.newValue));
-        resetAndPlayNext();
+        softRestart();
       } catch(err){}
     }
   });
@@ -753,9 +824,10 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   try {
     const syncChannel = new BroadcastChannel('layar_diklat_channel');
     syncChannel.onmessage = (e) => {
-      if(e.data){
-        apply(e.data);
-        resetAndPlayNext();
+      const lokasi = getLocationKey();
+      if(e.data && (e.data.lokasi === lokasi || !e.data.lokasi)){
+        apply(e.data.data || e.data);
+        softRestart();
       }
     };
   } catch(e){}

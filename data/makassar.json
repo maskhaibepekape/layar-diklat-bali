@@ -1,0 +1,37 @@
+{
+  "namaUnit": "PUSDIKLATWAS BPKP",
+  "wilayah": "Wilayah III Makassar",
+  "namaBalai": "Pusdiklatwas BPKP Wilayah III Makassar",
+  "alamat": "",
+  "wifiNama": "",
+  "wifiSandi": "",
+  "ig": "@giacorpu",
+  "yt": "GIA CORPU",
+  "xx": "@GIA_CORPU",
+  "fb": "@giacorpu",
+  "logo": "logo-bpkp.png",
+  "foto": "foto-gedung.png",
+  "notes": [
+    {
+      "judul": "Waktu Pembelajaran",
+      "isi": "Sesi Pagi: 08.00\u201312.00 WITA \u00b7 Sesi Siang: 13.00\u201317.00 WITA"
+    },
+    {
+      "judul": "Tata Tertib & Fasilitas",
+      "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+    }
+  ],
+  "trainings": [
+    {
+      "nama": "Pelatihan Manajemen Risiko Sektor Publik",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-09",
+      "ket": "Tatap Muka",
+      "sambutan": "Selamat datang peserta Pelatihan Manajemen Risiko di Balai Diklat BPKP Makassar.",
+      "ruang": "Ruang Kelas Phinisi",
+      "jam": "08.00\u201317.00 WITA",
+      "peserta": "32 orang"
+    }
+  ],
+  "appVersion": 1
+}

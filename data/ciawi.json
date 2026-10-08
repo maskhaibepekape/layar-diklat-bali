@@ -1,0 +1,37 @@
+{
+  "namaUnit": "PUSDIKLATWAS BPKP",
+  "wilayah": "Pusdiklatwas Ciawi",
+  "namaBalai": "Pusdiklat Pengawasan BPKP Ciawi Bogor",
+  "alamat": "Jl. Raya Ciawi No. 1, Bendungan, Kec. Ciawi, Kabupaten Bogor, Jawa Barat 16720",
+  "wifiNama": "",
+  "wifiSandi": "",
+  "ig": "@giacorpu",
+  "yt": "GIA CORPU",
+  "xx": "@GIA_CORPU",
+  "fb": "@giacorpu",
+  "logo": "logo-bpkp.png",
+  "foto": "foto-gedung.png",
+  "notes": [
+    {
+      "judul": "Waktu Pembelajaran",
+      "isi": "Sesi Pagi: 08.00\u201312.00 WIB \u00b7 Sesi Siang: 13.00\u201317.00 WIB"
+    },
+    {
+      "judul": "Tata Tertib & Fasilitas",
+      "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+    }
+  ],
+  "trainings": [
+    {
+      "nama": "Pelatihan Pembentukan Karakter Inti Kepemimpinan (PKIK)",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-09",
+      "ket": "Tatap Muka",
+      "sambutan": "Selamat datang para peserta Pelatihan PKIK di Pusdiklat Pengawasan BPKP Ciawi Bogor.",
+      "ruang": "Auditorium Graha Pusdiklatwas",
+      "jam": "08.00\u201317.00 WIB",
+      "peserta": "40 orang"
+    }
+  ],
+  "appVersion": 1
+}
