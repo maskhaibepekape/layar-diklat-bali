@@ -1,81 +1,200 @@
 {
-  "namaUnit": "PUSDIKLATWAS BPKP",
-  "wilayah": "Wilayah II Bali",
-  "namaBalai": "Pusdiklatwas BPKP Wilayah II Bali",
-  "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Pemecutan Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80118",
-  "wifiNama": "id bpkp bali",
-  "wifiSandi": "bali2025",
-  "ig": "@giacorpu",
-  "yt": "GIA CORPU",
-  "xx": "@GIA_CORPU",
-  "fb": "@giacorpu",
-  "logo": "logo-bpkp.png",
-  "foto": "foto-gedung.png",
-  "notes": [
-    {
-      "judul": "Waktu Pembelajaran",
-      "isi": "Sesi Pagi: 08.00\u201312.00 WITA \u00b7 Sesi Siang: 13.00\u201317.00 WITA"
-    },
-    {
-      "judul": "Tata Tertib & Fasilitas",
-      "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
-    },
-    {
-      "judul": "Layanan Resepsionis",
-      "isi": "Informasi kamar wisma dan bantuan operasional dapat menghubungi petugas di Meja Resepsionis Lantai 1."
-    }
-  ],
-  "trainings": [
-    {
-      "nama": "Pelatihan Pengawasan Pendapatan Asli Daerah (PAD)",
-      "mulai": "2026-10-05",
-      "selesai": "2026-10-09",
-      "ket": "Tatap Muka",
-      "sambutan": "Selamat datang para peserta Pelatihan Pengawasan PAD di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
-      "ruang": "Ruang Kelas B (Lantai 2)",
-      "jam": "08.00\u201317.00 WITA",
-      "peserta": "34 orang"
-    },
-    {
-      "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung \u2013 Batch 5",
-      "mulai": "2026-10-14",
-      "selesai": "2026-10-29",
-      "ket": "Blended Learning",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    },
-    {
-      "nama": "Pelatihan Penilaian Risiko Pemda (PPBR Pemda)",
-      "mulai": "2026-10-26",
-      "selesai": "2026-10-30",
-      "ket": "Tatap Muka",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    },
-    {
-      "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung \u2013 Batch 10",
-      "mulai": "2026-10-28",
-      "selesai": "2026-11-12",
-      "ket": "Blended Learning",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    },
-    {
-      "nama": "Pelatihan Fungsional Auditor Ahli Pertama",
-      "mulai": "2026-11-02",
-      "selesai": "2026-11-19",
-      "ket": "Tatap Muka",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
-    }
-  ],
-  "appVersion": 1
+  "bali": {
+    "namaUnit": "PUSDIKLATWAS BPKP",
+    "wilayah": "Wilayah II Bali",
+    "namaBalai": "Pusdiklatwas BPKP Wilayah II Bali",
+    "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Pemecutan Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80118",
+    "wifiNama": "id bpkp bali",
+    "wifiSandi": "bali2025",
+    "ig": "@giacorpu",
+    "yt": "GIA CORPU",
+    "xx": "@GIA_CORPU",
+    "fb": "@giacorpu",
+    "logo": "logo-bpkp.png",
+    "foto": "foto-gedung.png",
+    "notes": [
+      {
+        "judul": "Waktu Pembelajaran",
+        "isi": "Sesi Pagi: 08.00–12.00 WITA · Sesi Siang: 13.00–17.00 WITA"
+      },
+      {
+        "judul": "Tata Tertib & Fasilitas",
+        "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      },
+      {
+        "judul": "Layanan Resepsionis",
+        "isi": "Informasi kamar wisma dan bantuan operasional dapat menghubungi petugas di Meja Resepsionis Lantai 1."
+      }
+    ],
+    "trainings": [
+      {
+        "nama": "Pelatihan Pengawasan Pendapatan Asli Daerah (PAD)",
+        "mulai": "2026-10-05",
+        "selesai": "2026-10-09",
+        "ket": "Tatap Muka",
+        "sambutan": "Selamat datang para peserta Pelatihan Pengawasan PAD di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
+        "ruang": "Ruang Kelas B (Lantai 2)",
+        "jam": "08.00–17.00 WITA",
+        "peserta": "34 orang"
+      },
+      {
+        "nama": "Diklat Dumbo",
+        "mulai": "2026-10-07",
+        "selesai": "2026-10-09",
+        "ket": "Tatap Muka",
+        "sambutan": "",
+        "ruang": "Ruang Kelas A (Lantai 2)",
+        "jam": "08.00–17.00 WITA",
+        "peserta": "24"
+      },
+      {
+        "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
+        "mulai": "2026-10-14",
+        "selesai": "2026-10-29",
+        "ket": "Blended Learning",
+        "sambutan": "",
+        "ruang": "",
+        "jam": "",
+        "peserta": ""
+      },
+      {
+        "nama": "Pelatihan Penilaian Risiko Pemda (PPBR Pemda)",
+        "mulai": "2026-10-26",
+        "selesai": "2026-10-30",
+        "ket": "Tatap Muka",
+        "sambutan": "",
+        "ruang": "",
+        "jam": "",
+        "peserta": ""
+      },
+      {
+        "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 10",
+        "mulai": "2026-10-28",
+        "selesai": "2026-11-12",
+        "ket": "Blended Learning",
+        "sambutan": "",
+        "ruang": "",
+        "jam": "",
+        "peserta": ""
+      },
+      {
+        "nama": "Pelatihan Fungsional Auditor Ahli Pertama",
+        "mulai": "2026-11-02",
+        "selesai": "2026-11-19",
+        "ket": "Tatap Muka",
+        "sambutan": "",
+        "ruang": "",
+        "jam": "",
+        "peserta": ""
+      }
+    ]
+  },
+  "medan": {
+    "namaUnit": "PUSDIKLATWAS BPKP",
+    "wilayah": "Wilayah I Medan",
+    "namaBalai": "Pusdiklatwas BPKP Wilayah I Medan",
+    "alamat": "",
+    "wifiNama": "",
+    "wifiSandi": "",
+    "ig": "@giacorpu",
+    "yt": "GIA CORPU",
+    "xx": "@GIA_CORPU",
+    "fb": "@giacorpu",
+    "logo": "logo-bpkp.png",
+    "foto": "foto-gedung.png",
+    "notes": [
+      {
+        "judul": "Waktu Pembelajaran",
+        "isi": "Sesi Pagi: 08.00–12.00 WIB · Sesi Siang: 13.00–17.00 WIB"
+      },
+      {
+        "judul": "Tata Tertib & Fasilitas",
+        "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      }
+    ],
+    "trainings": [
+      {
+        "nama": "Pelatihan Audit Forensik & Investigatif",
+        "mulai": "2026-10-05",
+        "selesai": "2026-10-09",
+        "ket": "Tatap Muka",
+        "sambutan": "Selamat datang peserta Pelatihan Audit Forensik di Balai Diklat BPKP Medan.",
+        "ruang": "Ruang Kelas Toba",
+        "jam": "08.00–17.00 WIB",
+        "peserta": "30 orang"
+      }
+    ]
+  },
+  "makassar": {
+    "namaUnit": "PUSDIKLATWAS BPKP",
+    "wilayah": "Wilayah III Makassar",
+    "namaBalai": "Pusdiklatwas BPKP Wilayah III Makassar",
+    "alamat": "",
+    "wifiNama": "",
+    "wifiSandi": "",
+    "ig": "@giacorpu",
+    "yt": "GIA CORPU",
+    "xx": "@GIA_CORPU",
+    "fb": "@giacorpu",
+    "logo": "logo-bpkp.png",
+    "foto": "foto-gedung.png",
+    "notes": [
+      {
+        "judul": "Waktu Pembelajaran",
+        "isi": "Sesi Pagi: 08.00–12.00 WITA · Sesi Siang: 13.00–17.00 WITA"
+      },
+      {
+        "judul": "Tata Tertib & Fasilitas",
+        "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      }
+    ],
+    "trainings": [
+      {
+        "nama": "Pelatihan Manajemen Risiko Sektor Publik",
+        "mulai": "2026-10-05",
+        "selesai": "2026-10-09",
+        "ket": "Tatap Muka",
+        "sambutan": "Selamat datang peserta Pelatihan Manajemen Risiko di Balai Diklat BPKP Makassar.",
+        "ruang": "Ruang Kelas Phinisi",
+        "jam": "08.00–17.00 WITA",
+        "peserta": "32 orang"
+      }
+    ]
+  },
+  "ciawi": {
+    "namaUnit": "PUSDIKLATWAS BPKP",
+    "wilayah": "Pusdiklatwas Ciawi",
+    "namaBalai": "Pusdiklat Pengawasan BPKP Ciawi Bogor",
+    "alamat": "Jl. Raya Ciawi No. 1, Bendungan, Kec. Ciawi, Kabupaten Bogor, Jawa Barat 16720",
+    "wifiNama": "",
+    "wifiSandi": "",
+    "ig": "@giacorpu",
+    "yt": "GIA CORPU",
+    "xx": "@GIA_CORPU",
+    "fb": "@giacorpu",
+    "logo": "logo-bpkp.png",
+    "foto": "foto-gedung.png",
+    "notes": [
+      {
+        "judul": "Waktu Pembelajaran",
+        "isi": "Sesi Pagi: 08.00–12.00 WIB · Sesi Siang: 13.00–17.00 WIB"
+      },
+      {
+        "judul": "Tata Tertib & Fasilitas",
+        "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      }
+    ],
+    "trainings": [
+      {
+        "nama": "Pelatihan Pembentukan Karakter Inti Kepemimpinan (PKIK)",
+        "mulai": "2026-10-05",
+        "selesai": "2026-10-09",
+        "ket": "Tatap Muka",
+        "sambutan": "Selamat datang para peserta Pelatihan PKIK di Pusdiklat Pengawasan BPKP Ciawi Bogor.",
+        "ruang": "Auditorium Graha Pusdiklatwas",
+        "jam": "08.00–17.00 WIB",
+        "peserta": "40 orang"
+      }
+    ]
+  }
 }
