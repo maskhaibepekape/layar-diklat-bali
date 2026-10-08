@@ -666,6 +666,16 @@ const DEFAULT_DATA = {
       "peserta": "34 orang"
     },
     {
+      "nama": "Diklat AIUEO",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-09",
+      "ket": "Tatap Muka",
+      "sambutan": "Selamat datang peserta Diklat AIUEO di Balai Diklat BPKP Bali.",
+      "ruang": "Ruang Kelas A (Lantai 2)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "25 orang"
+    },
+    {
       "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
       "mulai": "2026-10-14",
       "selesai": "2026-10-29",
@@ -710,11 +720,21 @@ const DEFAULT_DATA = {
 
 let currentData = JSON.parse(JSON.stringify(DEFAULT_DATA));
 
-function loadSavedData() {
+async function loadSavedData() {
   const saved = localStorage.getItem('layar_diklat_data');
   if (saved) {
     try {
       currentData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), JSON.parse(saved));
+    } catch(e) {}
+  } else {
+    try {
+      const res = await fetch('./data.json?t=' + Date.now());
+      if (res.ok) {
+        const cloudData = await res.json();
+        if (cloudData && Array.isArray(cloudData.trainings)) {
+          currentData = Object.assign(JSON.parse(JSON.stringify(DEFAULT_DATA)), cloudData);
+        }
+      }
     } catch(e) {}
   }
   renderAll();
@@ -942,8 +962,8 @@ function hapusNote(idx) {
   }
 }
 
-/* Auto-Save & Cross-Tab Broadcast */
-function autoSaveAndBroadcast(msg) {
+/* Auto-Save & Cloud Sync */
+async function autoSaveAndBroadcast(msg) {
   if (document.getElementById('inpAlamat')) {
     currentData.alamat = document.getElementById('inpAlamat').value.trim();
     currentData.wifiNama = document.getElementById('inpWifiNama').value.trim();
@@ -954,6 +974,7 @@ function autoSaveAndBroadcast(msg) {
     currentData.fb = document.getElementById('inpFb').value.trim();
   }
 
+  // 1. Local storage & broadcast
   localStorage.setItem('layar_diklat_data', JSON.stringify(currentData));
   try {
     const ch = new BroadcastChannel('layar_diklat_channel');
@@ -961,21 +982,51 @@ function autoSaveAndBroadcast(msg) {
   } catch(e){}
 
   renderAll();
-  showToast(msg || '✅ Data disimpan & layar TV otomatis diperbarui!');
+  showToast(msg || '✅ Data disimpan secara lokal!');
+
+  // 2. Cloud Serverless Sync (/api/save)
+  const syncStatusEl = document.getElementById('statusSyncText');
+  if (syncStatusEl) {
+    syncStatusEl.textContent = 'Menyinkronkan ke Cloud...';
+    syncStatusEl.style.color = '#f59e0b';
+  }
+
+  try {
+    const res = await fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(currentData)
+    });
+    if (res.ok) {
+      if (syncStatusEl) {
+        syncStatusEl.textContent = 'Tersinkronisasi ke Seluruh TV (Cloud)';
+        syncStatusEl.style.color = '#059669';
+      }
+      showToast('☁️ Data berhasil disinkronkan ke cloud & layar TV!');
+    } else {
+      if (syncStatusEl) {
+        syncStatusEl.textContent = 'Tersimpan Lokal (Device Ini)';
+        syncStatusEl.style.color = '#0284c7';
+      }
+    }
+  } catch(err) {
+    if (syncStatusEl) {
+      syncStatusEl.textContent = 'Tersimpan Lokal';
+      syncStatusEl.style.color = '#0284c7';
+    }
+  }
 }
 
 /* Save to Storage */
 function simpanSemuaKeLayar() {
   autoSaveAndBroadcast('✅ Seluruh data berhasil disimpan! Monitor TV otomatis ter-update.');
 }
-  showToast('✅ Data berhasil disimpan! Monitor TV otomatis ter-update.');
-}
 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(() => t.classList.remove('show'), 3500);
 }
 
 function escapeHtml(str) {

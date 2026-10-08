@@ -364,6 +364,16 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "peserta": "34 orang"
     },
     {
+      "nama": "Diklat AIUEO",
+      "mulai": "2026-10-05",
+      "selesai": "2026-10-09",
+      "ket": "Tatap Muka",
+      "sambutan": "Selamat datang peserta Diklat AIUEO di Balai Diklat BPKP Bali.",
+      "ruang": "Ruang Kelas A (Lantai 2)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "25 orang"
+    },
+    {
       "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
       "mulai": "2026-10-14",
       "selesai": "2026-10-29",
@@ -598,7 +608,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     if(!Array.isArray(data.notes)) data.notes = [];
     paintInfo();
   }
-  /* ---------- data loader: read from localStorage (CMS) or embedded JSON ---------- */
+  /* ---------- data loader: read from cloud data.json, localStorage, or embedded JSON ---------- */
   function loadInitialData(){
     const saved = localStorage.getItem('layar_diklat_data');
     if(saved){
@@ -609,6 +619,27 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
   apply(loadInitialData());
   startOnce();
+
+  // Background Cloud Sync (Poll data.json every 12 seconds)
+  async function fetchCloudData(){
+    try {
+      const res = await fetch('./data.json?t=' + Date.now(), { cache: 'no-store' });
+      if(res.ok){
+        const cloudData = await res.json();
+        if(cloudData && Array.isArray(cloudData.trainings)){
+          const currentStr = JSON.stringify(data);
+          const newStr = JSON.stringify(cloudData);
+          if(currentStr !== newStr){
+            apply(cloudData);
+            localStorage.setItem('layar_diklat_data', newStr);
+            resetAndPlayNext();
+          }
+        }
+      }
+    } catch(err){}
+  }
+  fetchCloudData();
+  setInterval(fetchCloudData, 12000);
 
   function resetAndPlayNext(){
     clearTimeout(loopTimer);
