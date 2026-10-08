@@ -597,17 +597,41 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   catch(e){ console.error('Data JSON tidak valid:', e); apply(null); }
   startOnce();
 
-  /* ---------- background audio (full volume, autoplay & reliable unlock) ---------- */
+  /* ---------- background audio (hardware gain boost, autoplay & reliable unlock) ---------- */
   const bgm = $('bgm');
   const notice = $('audioUnlockNotice');
+  let audioCtx = null;
+  let gainNode = null;
+  let sourceNode = null;
+
+  function initWebAudioBoost(){
+    if(!audioCtx){
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if(AudioContext){
+        try {
+          audioCtx = new AudioContext();
+          sourceNode = audioCtx.createMediaElementSource(bgm);
+          gainNode = audioCtx.createGain();
+          gainNode.gain.value = 2.2; // 220% Audio Amplification Boost for TV speakers
+          sourceNode.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+        } catch(e){}
+      }
+    }
+    if(audioCtx && audioCtx.state === 'suspended'){
+      audioCtx.resume().catch(()=>{});
+    }
+  }
 
   function tryPlayAudio(){
     if(!bgm) return;
+    initWebAudioBoost();
     bgm.volume = 1.0;
     const p = bgm.play();
     if(p !== undefined){
       p.then(() => {
         if(notice) notice.style.display = 'none';
+        if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
       }).catch(() => {
         if(notice) notice.style.display = 'block';
       });
