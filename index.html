@@ -658,6 +658,17 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     fitBlock($('wdBox'), 1000 - 508 - 40);
   }
 
+  function el(tag, cls, text, d){
+    const e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(text != null) e.textContent = text;
+    if(d != null){
+      e.classList.add('a');
+      e.style.setProperty('--d', d + 's');
+    }
+    return e;
+  }
+
   function metaItem(label, val){
     const s = document.createElement('span');
     const b = document.createElement('b');
@@ -730,7 +741,6 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     items.forEach((t, k) => {
       if(!t || !t.nama) return;
       const it = el('div', 'it', null, 0.5 + k*0.15);
-      it.appendChild(el('div', 'dot'));
       it.appendChild(el('div', 'dt', fmtRange(t.mulai, t.selesai)));
       it.appendChild(el('div', 'nm', t.nama || ''));
       if(t.ket) it.appendChild(el('div', 'kt', t.ket));
@@ -814,12 +824,16 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
   /* ---------- data loader: read from cloud data.json, localStorage, or embedded JSON ---------- */
   function getLocationKey(){
-    const urlParams = new URLSearchParams(window.location.search);
-    const param = urlParams.get('lokasi');
-    if(param) return param.toLowerCase();
+    try {
+      const search = window.location.search || '';
+      const m = search.match(/[?&]lokasi=([^&]+)/i);
+      if(m && m[1]) return decodeURIComponent(m[1]).toLowerCase();
+    } catch(e){}
 
-    const path = window.location.pathname.toLowerCase().replace(/^\/|\/$/g, '');
-    if(path === 'medan' || path === 'makassar' || path === 'ciawi' || path === 'bali') return path;
+    try {
+      const path = (window.location.pathname || '').toLowerCase().replace(/^\/|\/$/g, '');
+      if(path === 'medan' || path === 'makassar' || path === 'ciawi' || path === 'bali') return path;
+    } catch(e){}
     return 'bali';
   }
 
@@ -936,7 +950,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   const notice = $('audioUnlockNotice');
 
   function tryPlayAudio(){
-    if(!bgm) return;
+    if(!bgm || typeof bgm.play !== 'function') return;
     bgm.volume = 1.0;
     const p = bgm.play();
     if(p !== undefined){
@@ -961,7 +975,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       document.addEventListener(ev, handleInteraction, { passive: true });
     });
 
-    if(notice){
+    if(notice && typeof notice.addEventListener === 'function'){
       notice.addEventListener('click', e => {
         e.stopPropagation();
         tryPlayAudio();
