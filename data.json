@@ -93,9 +93,9 @@
     "namaUnit": "PUSDIKLATWAS BPKP",
     "wilayah": "Wilayah I Medan",
     "namaBalai": "Pusdiklatwas BPKP Wilayah I Medan",
-    "alamat": "Jl. Binjai Km. 9.5 No. 34, Medan, Sumatera Utara 20128",
-    "wifiNama": "id bpkp medan",
-    "wifiSandi": "medan2026",
+    "alamat": "",
+    "wifiNama": "",
+    "wifiSandi": "",
     "ig": "@giacorpu",
     "yt": "GIA CORPU",
     "xx": "@GIA_CORPU",
@@ -110,10 +110,6 @@
       {
         "judul": "Tata Tertib & Fasilitas",
         "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
-      },
-      {
-        "judul": "Layanan Resepsionis",
-        "isi": "Informasi kamar wisma dan sarana dapat menghubungi petugas di Meja Resepsionis Lantai 1."
       }
     ],
     "trainings": [
@@ -123,19 +119,9 @@
         "selesai": "2026-10-09",
         "ket": "Tatap Muka",
         "sambutan": "Selamat datang peserta Pelatihan Audit Forensik di Balai Diklat BPKP Medan.",
-        "ruang": "Ruang Kelas Toba (Lantai 2)",
+        "ruang": "Ruang Kelas Toba",
         "jam": "08.00–17.00 WIB",
         "peserta": "30 orang"
-      },
-      {
-        "nama": "Pelatihan Fungsional Auditor Ahli Pertama",
-        "mulai": "2026-10-19",
-        "selesai": "2026-11-06",
-        "ket": "Tatap Muka",
-        "sambutan": "",
-        "ruang": "",
-        "jam": "",
-        "peserta": ""
       }
     ]
   },
@@ -143,9 +129,9 @@
     "namaUnit": "PUSDIKLATWAS BPKP",
     "wilayah": "Wilayah III Makassar",
     "namaBalai": "Pusdiklatwas BPKP Wilayah III Makassar",
-    "alamat": "Jl. Bonto Lempangan No. 45, Sawerigading, Kec. Ujung Pandang, Kota Makassar, Sulawesi Selatan 90115",
-    "wifiNama": "id bpkp makassar",
-    "wifiSandi": "makassar2026",
+    "alamat": "",
+    "wifiNama": "",
+    "wifiSandi": "",
     "ig": "@giacorpu",
     "yt": "GIA CORPU",
     "xx": "@GIA_CORPU",
@@ -160,10 +146,6 @@
       {
         "judul": "Tata Tertib & Fasilitas",
         "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
-      },
-      {
-        "judul": "Layanan Resepsionis",
-        "isi": "Informasi kamar wisma dan sarana dapat menghubungi petugas di Meja Resepsionis Lantai 1."
       }
     ],
     "trainings": [
@@ -173,19 +155,9 @@
         "selesai": "2026-10-09",
         "ket": "Tatap Muka",
         "sambutan": "Selamat datang peserta Pelatihan Manajemen Risiko di Balai Diklat BPKP Makassar.",
-        "ruang": "Ruang Kelas Phinisi (Lantai 2)",
+        "ruang": "Ruang Kelas Phinisi",
         "jam": "08.00–17.00 WITA",
         "peserta": "32 orang"
-      },
-      {
-        "nama": "Pelatihan Tata Kelola Pengawasan Keuangan Desa",
-        "mulai": "2026-10-20",
-        "selesai": "2026-10-24",
-        "ket": "Tatap Muka",
-        "sambutan": "",
-        "ruang": "",
-        "jam": "",
-        "peserta": ""
       }
     ]
   },
@@ -194,8 +166,8 @@
     "wilayah": "Pusdiklatwas Ciawi",
     "namaBalai": "Pusdiklat Pengawasan BPKP Ciawi Bogor",
     "alamat": "Jl. Raya Ciawi No. 1, Bendungan, Kec. Ciawi, Kabupaten Bogor, Jawa Barat 16720",
-    "wifiNama": "id bpkp ciawi",
-    "wifiSandi": "ciawi2026",
+    "wifiNama": "",
+    "wifiSandi": "",
     "ig": "@giacorpu",
     "yt": "GIA CORPU",
     "xx": "@GIA_CORPU",
@@ -210,10 +182,6 @@
       {
         "judul": "Tata Tertib & Fasilitas",
         "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
-      },
-      {
-        "judul": "Layanan Resepsionis",
-        "isi": "Bantuan kamar asrama dan logistik dapat menghubungi resepsionis di Gedung Utama."
       }
     ],
     "trainings": [
@@ -226,16 +194,6 @@
         "ruang": "Auditorium Graha Pusdiklatwas",
         "jam": "08.00–17.00 WIB",
         "peserta": "40 orang"
-      },
-      {
-        "nama": "Pelatihan Kepemimpinan Pengawas (PKP) Angkatan IV",
-        "mulai": "2026-10-15",
-        "selesai": "2026-11-10",
-        "ket": "Blended Learning",
-        "sambutan": "",
-        "ruang": "",
-        "jam": "",
-        "peserta": ""
       }
     ]
   }
