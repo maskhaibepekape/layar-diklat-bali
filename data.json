@@ -93,7 +93,7 @@
     "namaUnit": "PUSDIKLATWAS BPKP",
     "wilayah": "Wilayah I Medan",
     "namaBalai": "Pusdiklatwas BPKP Wilayah I Medan",
-    "alamat": "",
+    "alamat": "Jl. Jamin Ginting Km. 14,5, Kel. Lau Cih, Kec. Medan Tuntungan, Kota Medan, Sumatera Utara 20137",
     "wifiNama": "",
     "wifiSandi": "",
     "ig": "@giacorpu",
@@ -110,6 +110,10 @@
       {
         "judul": "Tata Tertib & Fasilitas",
         "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      },
+      {
+        "judul": "Layanan Resepsionis",
+        "isi": "Informasi kamar wisma dan sarana dapat menghubungi petugas di Meja Resepsionis Lantai 1."
       }
     ],
     "trainings": [
@@ -129,7 +133,7 @@
     "namaUnit": "PUSDIKLATWAS BPKP",
     "wilayah": "Wilayah III Makassar",
     "namaBalai": "Pusdiklatwas BPKP Wilayah III Makassar",
-    "alamat": "",
+    "alamat": "Jl. Tamalanrea Raya No. 3 (Kompleks BPKP), Tamalanrea Indah, Kec. Tamalanrea, Kota Makassar, Sulawesi Selatan 90245",
     "wifiNama": "",
     "wifiSandi": "",
     "ig": "@giacorpu",
@@ -146,6 +150,10 @@
       {
         "judul": "Tata Tertib & Fasilitas",
         "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      },
+      {
+        "judul": "Layanan Resepsionis",
+        "isi": "Informasi kamar wisma dan sarana dapat menghubungi petugas di Meja Resepsionis Lantai 1."
       }
     ],
     "trainings": [
@@ -165,7 +173,7 @@
     "namaUnit": "PUSDIKLATWAS BPKP",
     "wilayah": "Pusdiklatwas Ciawi",
     "namaBalai": "Pusdiklat Pengawasan BPKP Ciawi Bogor",
-    "alamat": "Jl. Raya Ciawi No. 1, Bendungan, Kec. Ciawi, Kabupaten Bogor, Jawa Barat 16720",
+    "alamat": "Jl. Beringin II, Desa Pandansari, Kec. Ciawi, Kabupaten Bogor, Jawa Barat 16720",
     "wifiNama": "",
     "wifiSandi": "",
     "ig": "@giacorpu",
@@ -182,6 +190,10 @@
       {
         "judul": "Tata Tertib & Fasilitas",
         "isi": "Peserta wajib mengenakan ID Card resmi dan berpakaian rapi selama kegiatan diklat berlangsung."
+      },
+      {
+        "judul": "Layanan Resepsionis",
+        "isi": "Bantuan kamar asrama dan logistik dapat menghubungi resepsionis di Gedung Utama."
       }
     ],
     "trainings": [
