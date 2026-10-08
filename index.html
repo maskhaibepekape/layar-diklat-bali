@@ -592,10 +592,26 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     if(!Array.isArray(data.notes)) data.notes = [];
     paintInfo();
   }
-  /* ---------- data: read from the <script id="data"> block ---------- */
-  try{ apply(JSON.parse($('data').textContent)); }
-  catch(e){ console.error('Data JSON tidak valid:', e); apply(null); }
+  /* ---------- data loader: read from localStorage (CMS) or embedded JSON ---------- */
+  function loadInitialData(){
+    const saved = localStorage.getItem('layar_diklat_data');
+    if(saved){
+      try { return JSON.parse(saved); } catch(e){}
+    }
+    try { return JSON.parse($('data').textContent); } catch(e){}
+    return null;
+  }
+  apply(loadInitialData());
   startOnce();
+
+  window.addEventListener('storage', e => {
+    if(e.key === 'layar_diklat_data' && e.newValue){
+      try {
+        apply(JSON.parse(e.newValue));
+        if(started) next();
+      } catch(err){}
+    }
+  });
 
   /* ---------- background audio (hardware gain boost, autoplay & reliable unlock) ---------- */
   const bgm = $('bgm');
