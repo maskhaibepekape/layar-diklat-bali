@@ -76,11 +76,11 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 #footB .wl2{position:relative;font-size:22px;color:#e2cdc0;margin-top:6px}
 
 /* ---------- scenes ---------- */
-.scene{position:absolute;inset:0;visibility:hidden}
-.scene.on{visibility:visible}
-.a{opacity:0}
-.scene.on .a{animation:rise .9s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d,0s)}
-@keyframes rise{from{opacity:0;transform:translateY(46px)}to{opacity:1;transform:none}}
+.scene{position:absolute;inset:0;visibility:hidden;opacity:0}
+.scene.on{visibility:visible;opacity:1}
+.a{opacity:1}
+.scene.on .a{animation:rise .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0s)}
+@keyframes rise{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
 .scene.on .pop{animation-name:pop}
 @keyframes pop{0%{opacity:0;transform:scale(.86)}60%{opacity:1;transform:scale(1.02)}100%{opacity:1;transform:none}}
 .scene.on .reveal{animation-name:reveal;animation-duration:1.3s}
