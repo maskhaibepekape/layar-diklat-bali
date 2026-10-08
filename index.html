@@ -114,7 +114,9 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .wl.ad svg{flex:0 0 46px;height:46px}
 
 /* welcome for a specific training */
-.wd{position:absolute;left:96px;right:96px;top:508px;z-index:3;--k:1}
+.wd{position:absolute;left:96px;right:96px;top:508px;z-index:3;--k:1;transition:opacity .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1)}
+.wd.out{opacity:0;transform:translateY(-16px)}
+.wd.in{opacity:1;transform:translateY(0)}
 .wd .to{font-family:var(--slab);font-weight:600;font-size:calc(48px*var(--k));color:#aa2247}
 .wd .nm{font-weight:800;font-size:calc(80px*var(--k));line-height:1.12;color:#3a2a1b;margin-top:calc(10px*var(--k))}
 .wd .dt{font-weight:800;font-size:calc(36px*var(--k));color:#cc0000;margin-top:calc(22px*var(--k))}
@@ -130,12 +132,20 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .ib{position:absolute;left:96px;right:96px;top:318px;z-index:3;--k:1}
 .ib .h2{font-family:var(--slab);font-weight:700;font-size:calc(96px*var(--k));line-height:1.02;color:#3a2a1b}
 .ib .tn{font-weight:800;font-size:calc(38px*var(--k));line-height:1.25;color:#0025cc;margin-top:calc(18px*var(--k))}
-.facts{display:flex;flex-direction:column;gap:16px;margin-top:calc(40px*var(--k))}
+.facts{display:flex;flex-direction:column;gap:16px;margin-top:calc(36px*var(--k))}
 .fact{background:#f4ece6;border-radius:22px;padding:calc(26px*var(--k)) 34px;display:flex;justify-content:space-between;align-items:baseline;gap:30px;border-left:12px solid #0025cc}
 .fact .l{font-size:calc(28px*var(--k));font-weight:600;color:#7a7166;flex-shrink:0}
 .fact .v{font-size:calc(44px*var(--k));font-weight:800;color:#3a2a1b;line-height:1.2;text-align:right;overflow-wrap:anywhere}
-.ib .nt{font-family:var(--slab);font-weight:700;font-size:calc(46px*var(--k));margin-top:calc(54px*var(--k));color:#3a2a1b}
-.note-it{position:relative;padding-left:46px;margin-top:calc(26px*var(--k))}
+
+/* Dual cards for Slide 2 (Opsi A) */
+.dual-wrap{display:flex;flex-direction:column;gap:16px;width:100%}
+.dual-card{background:#f4ece6;border-radius:20px;padding:calc(22px*var(--k)) 30px;border-left:12px solid #0025cc;display:flex;flex-direction:column;gap:6px}
+.dual-card .t-name{font-size:calc(40px*var(--k));font-weight:800;color:#3a2a1b;line-height:1.2}
+.dual-card .t-meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:calc(8px*var(--k));font-size:calc(26px*var(--k));font-weight:600;color:#554b40}
+.dual-card .t-meta span b{color:#0025cc}
+
+.ib .nt{font-family:var(--slab);font-weight:700;font-size:calc(46px*var(--k));margin-top:calc(48px*var(--k));color:#3a2a1b}
+.note-it{position:relative;padding-left:46px;margin-top:calc(22px*var(--k))}
 .note-it::before{content:"";position:absolute;left:0;top:calc(12px*var(--k));width:20px;height:20px;border-radius:50%;background:#cc0000}
 .note-it .j{font-weight:800;font-size:calc(32px*var(--k));color:#cc0000}
 .note-it .s{font-weight:600;font-size:calc(34px*var(--k));line-height:1.35;color:#141413;margin-top:4px}
@@ -525,31 +535,90 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
 
   /* ---------- scene fillers ---------- */
-  function fillDiklat(t){
+  let microTimer = null;
+  function stopMicroLoop(){ if(microTimer){ clearInterval(microTimer); microTimer = null; } }
+
+  function fillDiklatScene(activeList){
+    stopMicroLoop();
+    if(!activeList || !activeList.length) return;
+
+    if(activeList.length === 1){
+      fillDiklatSingle(activeList[0]);
+      return;
+    }
+
+    // 2+ Active Trainings: 3s Micro-Loop Rotation (3 passes)
+    let step = 0;
+    fillDiklatSingle(activeList[0]);
+    const box = $('wdBox');
+
+    microTimer = setInterval(() => {
+      step++;
+      const current = activeList[step % activeList.length];
+      if(box){
+        box.classList.remove('in');
+        box.classList.add('out');
+        setTimeout(() => {
+          fillDiklatSingle(current);
+          box.classList.remove('out');
+          box.classList.add('in');
+        }, 350);
+      } else {
+        fillDiklatSingle(current);
+      }
+    }, 3000);
+  }
+
+  function fillDiklatSingle(t){
     $('wdName').textContent = t.nama;
     $('wdDate').textContent = fmtRange(t.mulai, t.selesai);
     $('wdDay').textContent = (t.ket ? t.ket+'. ' : '') + dayInfo(t);
     const ms = $('wdMsg'); ms.textContent = t.sambutan || ''; ms.style.display = t.sambutan ? '' : 'none';
     fitBlock($('wdBox'), 1000 - 508 - 40);
   }
+
   function el(tag, cls, text, d){ const e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; if(d != null){ e.classList.add('a'); e.style.setProperty('--d', d+'s'); } return e; }
-  function fillInfo(t){
-    $('ibName').textContent = t.nama;
-    const facts = [['Ruang kelas', t.ruang], ['Waktu', t.jam], ['Jumlah peserta', t.peserta]].filter(f => f[1]);
+
+  function fillInfoScene(activeList){
+    stopMicroLoop();
     const fb = $('ibFacts'); fb.textContent = '';
-    facts.forEach((f,i) => { const c = el('div','fact',null,0.55+i*0.15); c.append(el('div','l',f[0]), el('div','v',f[1])); fb.appendChild(c); });
     const nb = $('ibNotes'); nb.textContent = '';
+    $('ibName').textContent = 'Informasi Ruang Kelas & Catatan';
+
+    if(!activeList || !activeList.length) return;
+
+    // Dual/Multi-Card Layout (Opsi A)
+    const dualWrap = el('div', 'dual-wrap');
+    activeList.forEach((t, i) => {
+      const card = el('div', 'dual-card', null, 0.4 + i*0.15);
+      const title = el('div', 't-name', t.nama);
+      const meta = el('div', 't-meta');
+      if(t.ruang) meta.appendChild(el('span', null, `🏛️ Ruang: <b>${t.ruang}</b>`));
+      if(t.jam) meta.appendChild(el('span', null, `⏰ Jam: <b>${t.jam}</b>`));
+      if(t.peserta) meta.appendChild(el('span', null, `👥 Peserta: <b>${t.peserta}</b>`));
+      if(!t.ruang && !t.jam && !t.peserta) meta.appendChild(el('span', null, `🏷️ ${t.ket || 'Tatap Muka'}`));
+
+      card.append(title, meta);
+      dualWrap.appendChild(card);
+    });
+    fb.appendChild(dualWrap);
+
+    // Notes list below
     const ns = notesList();
     if(ns.length){
-      nb.appendChild(el('div','nt','Catatan untuk peserta', 0.9));
-      ns.forEach((n,i) => { const it = el('div','note-it',null,1.05+i*0.25); if(n.judul) it.appendChild(el('div','j',n.judul)); if(n.isi) it.appendChild(el('div','s',n.isi)); nb.appendChild(it); });
-    }
-    if(!facts.length && !ns.length && canWrite){
-      nb.appendChild(el('div','hint2','Isi ruang kelas, waktu, jumlah peserta, atau catatan untuk peserta lewat tombol Ubah isi layar. Layar ini hanya tampil bila ada isinya.', 0.6));
+      nb.appendChild(el('div', 'nt', 'Catatan untuk peserta', 0.8));
+      ns.forEach((n,i) => {
+        const it = el('div', 'note-it', null, 0.9 + i*0.15);
+        if(n.judul) it.appendChild(el('div', 'j', n.judul));
+        if(n.isi) it.appendChild(el('div', 's', n.isi));
+        nb.appendChild(it);
+      });
     }
     fitBlock($('ibBox'), 1740 - 318 - 50);
   }
+
   function fillNext(items, page, pages){
+    stopMicroLoop();
     const box = $('nList'); box.textContent = '';
     $('nPg').textContent = pages > 1 ? (page+1)+' / '+pages : '';
     if(!items.length){ box.appendChild(el('div','empty','Belum ada jadwal diklat berikutnya.', 0.6)); return; }
@@ -566,22 +635,32 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   function plan(){
     const L = lists(), out = [];
     if(L.on.length){
-      L.on.forEach(t => {
-        out.push({type:'d', t, dur: t.sambutan ? 12000 : 10000});
-        if(hasInfo(t) || canWrite) out.push({type:'i', t, dur: 9000 + notesList().length*1500});
-      });
-    } else out.push({type:'g', dur: 11000});
+      // Slide 1: Welcome (3s micro-loop jika 2+ diklat, misal 2 x 3s x 3 = 18s)
+      const durSlide1 = L.on.length > 1 ? (L.on.length * 3000 * 3) : 10000;
+      out.push({ type: 'd', items: L.on, dur: durSlide1 });
+
+      // Slide 2: Info Ruang Kelas Semua Diklat Aktif (Opsi A) + Notes (~12s)
+      out.push({ type: 'i', items: L.on, dur: 12000 });
+    } else {
+      out.push({ type: 'g', dur: 11000 });
+    }
+
+    // Slide 3: Diklat Mendatang (5 per page, ~10s)
     const pages = Math.ceil(L.up.length/PER);
-    for(let p=0;p<pages;p++){ const items = L.up.slice(p*PER,(p+1)*PER); out.push({type:'n', items, page:p, pages, dur: 6000+items.length*1400}); }
+    for(let p=0; p<pages; p++){
+      const items = L.up.slice(p*PER, (p+1)*PER);
+      out.push({ type: 'n', items, page: p, pages, dur: 6000 + items.length*1400 });
+    }
     return out;
   }
   const SCENES = {d:'sDiklat', i:'sInfo', g:'sGeneral', n:'sNext'};
   let idx = 0, loopTimer = null;
   function show(sc){
+    stopMicroLoop();
     Object.values(SCENES).forEach(id => $(id).classList.remove('on'));
     paintInfo();
-    if(sc.type === 'd') fillDiklat(sc.t);
-    else if(sc.type === 'i') fillInfo(sc.t);
+    if(sc.type === 'd') fillDiklatScene(sc.items);
+    else if(sc.type === 'i') fillInfoScene(sc.items);
     else if(sc.type === 'n') fillNext(sc.items, sc.page, sc.pages);
     const white = sc.type === 'd' || sc.type === 'g';
     $('footA').classList.toggle('show', white); $('footB').classList.toggle('show', !white);

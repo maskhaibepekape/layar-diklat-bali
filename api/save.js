@@ -8,6 +8,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Verifikasi Kata Sandi Admin
+  const ADMIN_PASS = 'layarbali2026';
+  const incomingKey = req.headers['x-admin-key'] || req.headers['authorization'];
+  if (incomingKey !== ADMIN_PASS && incomingKey !== `Bearer ${ADMIN_PASS}`) {
+    return res.status(401).json({ error: 'Akses ditolak: Kata sandi admin tidak sah.' });
+  }
+
   try {
     const data = req.body;
     if (!data || !data.trainings) {
