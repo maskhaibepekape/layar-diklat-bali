@@ -699,26 +699,21 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   apply(loadInitialData());
   startOnce();
 
-  // Background Cloud Sync (Poll data.json every 12 seconds)
+  // Background Cloud Sync (Silent background update)
   async function fetchCloudData(){
     try {
       const res = await fetch('./data.json?t=' + Date.now(), { cache: 'no-store' });
       if(res.ok){
         const cloudData = await res.json();
         if(cloudData && Array.isArray(cloudData.trainings)){
-          const currentStr = JSON.stringify(data);
-          const newStr = JSON.stringify(cloudData);
-          if(currentStr !== newStr){
-            apply(cloudData);
-            localStorage.setItem('layar_diklat_data', newStr);
-            resetAndPlayNext();
-          }
+          apply(cloudData);
+          localStorage.setItem('layar_diklat_data', JSON.stringify(cloudData));
         }
       }
     } catch(err){}
   }
   fetchCloudData();
-  setInterval(fetchCloudData, 12000);
+  setInterval(fetchCloudData, 30000);
 
   function resetAndPlayNext(){
     clearTimeout(loopTimer);
@@ -745,41 +740,17 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     };
   } catch(e){}
 
-  /* ---------- background audio (hardware gain boost, autoplay & reliable unlock) ---------- */
+  /* ---------- background audio (natural clear studio sound, autoplay & unlock) ---------- */
   const bgm = $('bgm');
   const notice = $('audioUnlockNotice');
-  let audioCtx = null;
-  let gainNode = null;
-  let sourceNode = null;
-
-  function initWebAudioBoost(){
-    if(!audioCtx){
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if(AudioContext){
-        try {
-          audioCtx = new AudioContext();
-          sourceNode = audioCtx.createMediaElementSource(bgm);
-          gainNode = audioCtx.createGain();
-          gainNode.gain.value = 2.2; // 220% Audio Amplification Boost for TV speakers
-          sourceNode.connect(gainNode);
-          gainNode.connect(audioCtx.destination);
-        } catch(e){}
-      }
-    }
-    if(audioCtx && audioCtx.state === 'suspended'){
-      audioCtx.resume().catch(()=>{});
-    }
-  }
 
   function tryPlayAudio(){
     if(!bgm) return;
-    initWebAudioBoost();
     bgm.volume = 1.0;
     const p = bgm.play();
     if(p !== undefined){
       p.then(() => {
         if(notice) notice.style.display = 'none';
-        if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
       }).catch(() => {
         if(notice) notice.style.display = 'block';
       });
