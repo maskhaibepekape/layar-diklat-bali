@@ -527,12 +527,40 @@ body {
       </div>
       <div class="grid-2">
         <div class="field">
-          <label>File / URL Foto Gedung:</label>
-          <input type="text" id="inpFoto" placeholder="foto-gedung.png">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <label style="margin-bottom: 0;">Foto Gedung Balai:</label>
+            <button type="button" class="btn btn-sm" onclick="document.getElementById('uploadFotoFile').click()">📁 Unggah Foto</button>
+            <input type="file" id="uploadFotoFile" accept="image/png,image/jpeg,image/webp" style="display: none;" onchange="handleUploadFoto(event)">
+          </div>
+          <input type="text" id="inpFoto" placeholder="foto-gedung.png atau https://..." oninput="updateMediaPreviews()">
+          <div style="font-size: 11.5px; color: #475569; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 10px; margin-top: 6px; line-height: 1.4;">
+            <div>📐 <b>Rekomendasi Resolusi:</b> 1790 × 900 px (Rasio 16:9 / 2:1 Lanskap)</div>
+            <div>📦 <b>Ukuran Maksimal:</b> 3 MB (Format: JPG / PNG / WebP)</div>
+          </div>
+          <div id="previewFotoBox" style="margin-top: 8px; display: none;">
+            <img id="previewFotoImg" src="" style="width: 100%; max-height: 130px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+              <button type="button" class="btn btn-sm btn-danger" onclick="resetFotoGedung()">Hapus / Reset Foto</button>
+            </div>
+          </div>
         </div>
         <div class="field">
-          <label>File / URL Logo:</label>
-          <input type="text" id="inpLogo" placeholder="logo-bpkp.png">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <label style="margin-bottom: 0;">Logo Balai / Instansi:</label>
+            <button type="button" class="btn btn-sm" onclick="document.getElementById('uploadLogoFile').click()">📁 Unggah Logo</button>
+            <input type="file" id="uploadLogoFile" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display: none;" onchange="handleUploadLogo(event)">
+          </div>
+          <input type="text" id="inpLogo" placeholder="logo-bpkp.png atau https://..." oninput="updateMediaPreviews()">
+          <div style="font-size: 11.5px; color: #475569; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 10px; margin-top: 6px; line-height: 1.4;">
+            <div>📐 <b>Rekomendasi Resolusi:</b> 240 × 120 px (Rasio 2:1)</div>
+            <div>📦 <b>Ukuran Maksimal:</b> 1 MB (Disarankan PNG Transparan)</div>
+          </div>
+          <div id="previewLogoBox" style="margin-top: 8px; display: none;">
+            <img id="previewLogoImg" src="" style="max-height: 55px; object-fit: contain; border-radius: 6px; border: 1px solid var(--border); padding: 4px; background: #fff;">
+            <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+              <button type="button" class="btn btn-sm btn-danger" onclick="resetLogoBalai()">Hapus / Reset Logo</button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="grid-2">
@@ -895,6 +923,99 @@ function renderFasilitasForm() {
   document.getElementById('inpYt').value = locData.yt || '';
   document.getElementById('inpXx').value = locData.xx || '';
   document.getElementById('inpFb').value = locData.fb || '';
+  updateMediaPreviews();
+}
+
+function updateMediaPreviews() {
+  const fotoVal = (document.getElementById('inpFoto').value || '').trim();
+  const logoVal = (document.getElementById('inpLogo').value || '').trim();
+
+  const pFotoBox = document.getElementById('previewFotoBox');
+  const pFotoImg = document.getElementById('previewFotoImg');
+  if (fotoVal) {
+    pFotoImg.src = fotoVal;
+    pFotoBox.style.display = 'block';
+  } else {
+    pFotoBox.style.display = 'none';
+  }
+
+  const pLogoBox = document.getElementById('previewLogoBox');
+  const pLogoImg = document.getElementById('previewLogoImg');
+  if (logoVal) {
+    pLogoImg.src = logoVal;
+    pLogoBox.style.display = 'block';
+  } else {
+    pLogoBox.style.display = 'none';
+  }
+}
+
+function resetFotoGedung() {
+  document.getElementById('inpFoto').value = 'foto-gedung.png';
+  updateMediaPreviews();
+  saveAllData('Foto gedung di-reset ke default.');
+}
+
+function resetLogoBalai() {
+  document.getElementById('inpLogo').value = 'logo-bpkp.png';
+  updateMediaPreviews();
+  saveAllData('Logo balai di-reset ke default.');
+}
+
+function handleUploadFoto(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Ukuran foto terlalu besar! Maksimal ukuran foto adalah 3 MB.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const rawDataUrl = evt.target.result;
+    const img = new Image();
+    img.onload = function() {
+      const maxW = 1790;
+      let targetW = img.width;
+      let targetH = img.height;
+
+      if (targetW > maxW) {
+        targetH = Math.round((maxW / targetW) * targetH);
+        targetW = maxW;
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = targetW;
+      canvas.height = targetH;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, targetW, targetH);
+
+      const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      document.getElementById('inpFoto').value = optimizedDataUrl;
+      updateMediaPreviews();
+      saveAllData('Foto gedung baru berhasil diunggah!');
+    };
+    img.src = rawDataUrl;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleUploadLogo(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (file.size > 1 * 1024 * 1024) {
+    alert('Ukuran logo terlalu besar! Maksimal ukuran logo adalah 1 MB.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    document.getElementById('inpLogo').value = evt.target.result;
+    updateMediaPreviews();
+    saveAllData('Logo baru berhasil diunggah!');
+  };
+  reader.readAsDataURL(file);
 }
 
 function setTab(name) {
