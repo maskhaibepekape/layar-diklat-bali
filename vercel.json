@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "headers": [
     {
-      "source": "/data/(.*)\\.json",
+      "source": "/data/:path*.json",
       "headers": [
         { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
         { "key": "Access-Control-Expose-Headers", "value": "Date, Age" }
@@ -15,14 +15,13 @@
       ]
     }
   ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/admin/(.*)", "dest": "/admin.html" },
-    { "src": "/admin", "dest": "/admin.html" },
-    { "src": "/bali", "dest": "/bali/index.html" },
-    { "src": "/medan", "dest": "/medan/index.html" },
-    { "src": "/makassar", "dest": "/makassar/index.html" },
-    { "src": "/ciawi", "dest": "/ciawi/index.html" }
+  "rewrites": [
+    { "source": "/api/:match*", "destination": "/api/:match*" },
+    { "source": "/admin/:match*", "destination": "/admin.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/bali", "destination": "/bali/index.html" },
+    { "source": "/medan", "destination": "/medan/index.html" },
+    { "source": "/makassar", "destination": "/makassar/index.html" },
+    { "source": "/ciawi", "destination": "/ciawi/index.html" }
   ]
 }
