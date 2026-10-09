@@ -464,9 +464,9 @@ body {
 
   <!-- Navigation Tabs -->
   <nav class="nav-tabs">
-    <button type="button" class="tab-link active" onclick="setTab('diklat')">Pelatihan (<span id="countDiklat">0</span>)</button>
-    <button type="button" class="tab-link" onclick="setTab('notes')">Catatan Peserta (<span id="countNotes">0</span>)</button>
-    <button type="button" class="tab-link" onclick="setTab('fasilitas')">Identitas Balai &amp; Wi-Fi</button>
+    <button type="button" class="tab-link active" onclick="setTab('diklat', this)">Pelatihan (<span id="countDiklat">0</span>)</button>
+    <button type="button" class="tab-link" onclick="setTab('notes', this)">Catatan Peserta (<span id="countNotes">0</span>)</button>
+    <button type="button" class="tab-link" onclick="setTab('fasilitas', this)">Identitas Balai &amp; Wi-Fi</button>
   </nav>
 
   <!-- Tab 1: Daftar Pelatihan -->
@@ -759,7 +759,7 @@ function showMainApp() {
 }
 
 /* Location Switcher */
-function switchLocation(loc) {
+async function switchLocation(loc) {
   currentLoc = loc;
   document.querySelectorAll('.loc-chip').forEach(c => c.classList.remove('active'));
   const activeChip = document.getElementById('chip-' + loc);
@@ -770,6 +770,20 @@ function switchLocation(loc) {
   if (linkPreview) {
     linkPreview.href = `${loc === 'bali' ? 'index.html' : 'index.html?lokasi=' + loc}`;
   }
+
+  // Tarik data segar khusus untuk lokasi ini
+  try {
+    const res = await fetch(`./data/${loc}.json?t=${Date.now()}`);
+    if (res.ok) {
+      const cloudData = await res.json();
+      if (cloudData && typeof cloudData === 'object') {
+        const locData = cloudData[loc] || cloudData;
+        if (locData && Array.isArray(locData.trainings)) {
+          masterData[loc] = locData;
+        }
+      }
+    }
+  } catch(e) {}
 
   renderCurrentLoc();
 }
@@ -783,15 +797,22 @@ async function loadData() {
     } catch(e) {}
   }
 
-  try {
-    const res = await fetch('./data.json?t=' + Date.now());
-    if (res.ok) {
-      const cloudData = await res.json();
-      if (cloudData && typeof cloudData === 'object') {
-        masterData = Object.assign({}, cloudData, masterData);
+  // Tarik data seluruh balai secara paralel
+  const locations = ['bali', 'medan', 'makassar', 'ciawi'];
+  await Promise.all(locations.map(async (loc) => {
+    try {
+      const res = await fetch(`./data/${loc}.json?t=${Date.now()}`);
+      if (res.ok) {
+        const cloudData = await res.json();
+        if (cloudData && typeof cloudData === 'object') {
+          const locData = cloudData[loc] || cloudData;
+          if (locData && Array.isArray(locData.trainings)) {
+            masterData[loc] = locData;
+          }
+        }
       }
-    }
-  } catch(e) {}
+    } catch(e) {}
+  }));
 
   switchLocation(currentLoc);
 }
@@ -1049,11 +1070,17 @@ function handleUploadLogo(e) {
   reader.readAsDataURL(file);
 }
 
-function setTab(name) {
+function setTab(name, btn) {
   document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.tab-link').forEach(btn => btn.classList.remove('active'));
-  document.getElementById('tab-' + name).style.display = 'block';
-  event.target.classList.add('active');
+  document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+  const targetTab = document.getElementById('tab-' + name);
+  if (targetTab) targetTab.style.display = 'block';
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const defaultBtn = document.querySelector(`.tab-link[onclick*="'${name}'"]`);
+    if (defaultBtn) defaultBtn.classList.add('active');
+  }
 }
 
 /* Modals */
