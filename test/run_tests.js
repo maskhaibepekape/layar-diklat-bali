@@ -36,11 +36,11 @@ runTest('S2: Whitelist ketat tenant hanya 4 balai (bali, medan, makassar, ciawi)
   assert(saveCode.includes('hasOwnProperty.call(KEYS, tenant)'), 'Harus whitelist tenant via hasOwnProperty');
 });
 
-runTest('S2b: Isolasi Sandi Silang & Master Key (layarsapi2026 super admin & sandi regional)', () => {
+runTest('S2b: Isolasi Sandi Silang & Master Key (layarsapi2026 super admin & sandi regional makassar2026/medan2026)', () => {
   const saveCode = fs.readFileSync(path.join(__dirname, '../api/save.js'), 'utf8');
   assert(saveCode.includes('layarsapi2026'), 'Harus memiliki default Master Key layarsapi2026');
-  assert(saveCode.includes('layarbali2026') && saveCode.includes('layarmakassar2026'), 'Harus memiliki default key berbeda per wilayah');
-  assert(saveCode.includes('incomingKey === MASTER_KEY || incomingKey === expectedRegionalKey'), 'Harus mengizinkan Master Key atau Regional Key');
+  assert(saveCode.includes('makassar2026') && saveCode.includes('medan2026'), 'Harus mendukung format makassar2026 dan medan2026');
+  assert(saveCode.includes('incomingKey === MASTER_KEY || regionalKeys.includes(incomingKey)'), 'Harus mengizinkan Master Key atau Regional Key');
 });
 
 runTest('S3: Proteksi Payload > 200 KB (HTTP 413)', () => {
