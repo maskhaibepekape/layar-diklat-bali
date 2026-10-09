@@ -9,11 +9,12 @@ export default async function handler(req, res) {
   }
 
   // 1. Whitelist Tenant & Validasi Kunci Akses Per Wilayah
+  // Prioritas: Vercel Env (KEY_BALI dsb.) -> Global ADMIN_KEY -> Default Isolated Key per Wilayah
   const KEYS = {
-    bali: process.env.KEY_BALI || process.env.ADMIN_KEY,
-    medan: process.env.KEY_MEDAN || process.env.ADMIN_KEY,
-    makassar: process.env.KEY_MAKASSAR || process.env.ADMIN_KEY,
-    ciawi: process.env.KEY_CIAWI || process.env.ADMIN_KEY
+    bali: process.env.KEY_BALI || process.env.ADMIN_KEY || 'layarbali2026',
+    medan: process.env.KEY_MEDAN || process.env.ADMIN_KEY || 'layarmedan2026',
+    makassar: process.env.KEY_MAKASSAR || process.env.ADMIN_KEY || 'layarmakassar2026',
+    ciawi: process.env.KEY_CIAWI || process.env.ADMIN_KEY || 'layarciawi2026'
   };
 
   const payload = req.body;
@@ -29,16 +30,9 @@ export default async function handler(req, res) {
   const expectedKey = KEYS[tenant];
   const incomingKey = String(req.headers['x-admin-key'] || req.headers['authorization'] || '').replace(/^Bearer\s+/i, '').trim();
 
-  // Jika env var kunci dikonfigurasi, wajib cocok persis
-  if (expectedKey) {
-    if (!incomingKey || incomingKey !== expectedKey) {
-      return res.status(401).json({ error: `Akses ditolak: Kata sandi admin tidak sah untuk wilayah ${tenant.toUpperCase()}.` });
-    }
-  } else {
-    // Jika belum set env var di Vercel, tolak jika incomingKey kosong sama sekali
-    if (!incomingKey) {
-      return res.status(401).json({ error: 'Akses ditolak: Kunci otorisasi wajib disertakan.' });
-    }
+  // Kunci wajib cocok persis dengan wilayah target
+  if (!incomingKey || incomingKey !== expectedKey) {
+    return res.status(401).json({ error: `Akses ditolak: Kata sandi admin tidak sah untuk wilayah ${tenant.toUpperCase()}.` });
   }
 
   // 2. Proteksi Batas Ukuran Payload (Maksimal 200 KB)

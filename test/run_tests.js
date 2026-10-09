@@ -36,6 +36,12 @@ runTest('S2: Whitelist ketat tenant hanya 4 balai (bali, medan, makassar, ciawi)
   assert(saveCode.includes('hasOwnProperty.call(KEYS, tenant)'), 'Harus whitelist tenant via hasOwnProperty');
 });
 
+runTest('S2b: Isolasi Sandi Silang (Sandi Makassar wajib ditolak jika kirim data Bali)', () => {
+  const saveCode = fs.readFileSync(path.join(__dirname, '../api/save.js'), 'utf8');
+  assert(saveCode.includes('layarbali2026') && saveCode.includes('layarmakassar2026'), 'Harus memiliki default key berbeda per wilayah');
+  assert(!saveCode.includes('incomingKey !== ADMIN_PASS && incomingKey !== `Bearer ${ADMIN_PASS}`'), 'Dilarang 1 password global');
+});
+
 runTest('S3: Proteksi Payload > 200 KB (HTTP 413)', () => {
   const saveCode = fs.readFileSync(path.join(__dirname, '../api/save.js'), 'utf8');
   assert(saveCode.includes('200000') && saveCode.includes('status(413)'), 'Harus membatasi payload ke 200 KB');
