@@ -458,7 +458,7 @@ body {
     <div class="header-tools">
       <span id="syncBadge" style="font-size: 12px; font-weight: 600; color: var(--green); margin-right: 6px;">● Tersinkronisasi</span>
       <a href="index.html" id="linkTvPreview" target="_blank" class="btn btn-sm">Lihat Layar TV</a>
-      <button type="button" class="btn btn-sm" onclick="lockAdminSession()">Kunci</button>
+      <button type="button" class="btn btn-sm" onclick="logoutAdmin()" style="color: var(--rose); border-color: rgba(225,29,72,0.3); font-weight: 700;">🚪 Keluar</button>
     </div>
   </header>
 
@@ -738,12 +738,17 @@ function handleAuthSubmit(e) {
   }
 }
 
-function lockAdminSession() {
+function logoutAdmin() {
   sessionStorage.removeItem('layar_admin_key');
   adminKey = '';
   document.getElementById('authPass').value = '';
   document.getElementById('authScreen').style.display = 'flex';
   document.getElementById('mainApp').style.display = 'none';
+  showToast('Sesi pengelola berhasil ditutup (Logout).');
+}
+
+function lockAdminSession() {
+  logoutAdmin();
 }
 
 function showMainApp() {
