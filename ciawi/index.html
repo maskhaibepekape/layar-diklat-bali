@@ -459,16 +459,6 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "peserta": "34 orang"
     },
     {
-      "nama": "Diklat AIUEO",
-      "mulai": "2026-10-05",
-      "selesai": "2026-10-09",
-      "ket": "Tatap Muka",
-      "sambutan": "Selamat datang peserta Diklat AIUEO di Balai Diklat BPKP Bali.",
-      "ruang": "Ruang Kelas A (Lantai 2)",
-      "jam": "08.00–17.00 WITA",
-      "peserta": "25 orang"
-    },
-    {
       "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
       "mulai": "2026-10-14",
       "selesai": "2026-10-29",
@@ -566,7 +556,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   }
 
   /* ---------- dates & timezone logic ---------- */
-  const APP_VERSION = 3;
+  const APP_VERSION = 4;
   const OFFSET = { bali: 8, makassar: 8, medan: 7, ciawi: 7 };
   let clockCorrection = 0;
   let lastTick = Date.now();
@@ -961,7 +951,13 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
   function skip(){ clearTimeout(loopTimer); idx = (idx+1) % plan().length; transition(next); }
   let started = false;
   function startOnce(){ if(!started){ started = true; idx = 0; next(); } }
-  addEventListener('keydown', e => { if(e.key === 'ArrowRight') skip(); });
+  addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight') skip();
+    if(e.key === 'r' || e.key === 'R'){
+      localStorage.clear();
+      window.location.reload();
+    }
+  });
 
   function apply(d){
     data = Object.assign(JSON.parse(JSON.stringify(EMPTY)), d || {});
@@ -969,6 +965,18 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     if(!Array.isArray(data.notes)) data.notes = [];
     paintInfo();
   }
+  function normalizeLocData(obj, loc){
+    if(!obj || typeof obj !== 'object') return null;
+    const l = String(loc || 'bali').toLowerCase().trim();
+    if(obj[l] && typeof obj[l] === 'object' && Array.isArray(obj[l].trainings)){
+      return obj[l];
+    }
+    if(Array.isArray(obj.trainings)){
+      return obj;
+    }
+    return null;
+  }
+
   /* ---------- data loader: read from cloud data.json, localStorage, or embedded JSON ---------- */
   function getLocationKey(){
     try {
@@ -986,18 +994,27 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 
   function loadInitialData(){
     const lokasi = getLocationKey();
+    if(queryParams.reset){
+      try {
+        localStorage.removeItem('layar_diklat_data_' + lokasi);
+        localStorage.removeItem('layar_diklat_data');
+        localStorage.removeItem('layar_diklat_master_data');
+        localStorage.removeItem('layar_last_server_ms');
+        localStorage.removeItem('layar_tried_version');
+      } catch(e){}
+    }
     const saved = localStorage.getItem('layar_diklat_data_' + lokasi) || localStorage.getItem('layar_diklat_data');
     if(saved){
       try {
         const parsed = JSON.parse(saved);
-        if(parsed[lokasi]) return parsed[lokasi];
-        if(parsed.trainings) return parsed;
+        const normalized = normalizeLocData(parsed, lokasi);
+        if(normalized) return normalized;
       } catch(e){}
     }
     try {
       const emb = JSON.parse($('data').textContent);
-      if(emb[lokasi]) return emb[lokasi];
-      if(emb.trainings) return emb;
+      const normalized = normalizeLocData(emb, lokasi);
+      if(normalized) return normalized;
     } catch(e){}
     return null;
   }
@@ -1039,19 +1056,21 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
           }
         }
 
-        const cloudData = await res.json();
-        // Validation guard: must have trainings array
-        if(cloudData && Array.isArray(cloudData.trainings)){
-          if(cloudData.appVersion && cloudData.appVersion > APP_VERSION){
+        const rawData = await res.json();
+        const locData = normalizeLocData(rawData, lokasi);
+
+        // Validation guard: must have valid location data with trainings array
+        if(locData && Array.isArray(locData.trainings)){
+          if(locData.appVersion && locData.appVersion > APP_VERSION){
             const tried = +(localStorage.getItem('layar_tried_version') || 0);
-            if(tried < cloudData.appVersion){
-              localStorage.setItem('layar_tried_version', String(cloudData.appVersion));
-              triggerVersionUpgrade(cloudData.appVersion);
+            if(tried < locData.appVersion){
+              localStorage.setItem('layar_tried_version', String(locData.appVersion));
+              triggerVersionUpgrade(locData.appVersion);
               return;
             }
           }
-          apply(cloudData);
-          localStorage.setItem('layar_diklat_data_' + lokasi, JSON.stringify(cloudData));
+          apply(locData);
+          localStorage.setItem('layar_diklat_data_' + lokasi, JSON.stringify(locData));
           updateDebugHud();
         }
       }
