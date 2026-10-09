@@ -9,12 +9,13 @@ export default async function handler(req, res) {
   }
 
   // 1. Whitelist Tenant & Validasi Kunci Akses Per Wilayah
-  // Prioritas: Vercel Env (KEY_BALI dsb.) -> Global ADMIN_KEY -> Default Isolated Key per Wilayah
+  // MASTER_KEY (Super Admin): Bebas mengedit & menyimpan ke 4 wilayah sekaligus
+  const MASTER_KEY = process.env.ADMIN_KEY || 'layarsapi2026';
   const KEYS = {
-    bali: process.env.KEY_BALI || process.env.ADMIN_KEY || 'layarbali2026',
-    medan: process.env.KEY_MEDAN || process.env.ADMIN_KEY || 'layarmedan2026',
-    makassar: process.env.KEY_MAKASSAR || process.env.ADMIN_KEY || 'layarmakassar2026',
-    ciawi: process.env.KEY_CIAWI || process.env.ADMIN_KEY || 'layarciawi2026'
+    bali: process.env.KEY_BALI || 'layarbali2026',
+    medan: process.env.KEY_MEDAN || 'layarmedan2026',
+    makassar: process.env.KEY_MAKASSAR || 'layarmakassar2026',
+    ciawi: process.env.KEY_CIAWI || 'layarciawi2026'
   };
 
   const payload = req.body;
@@ -27,11 +28,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: `Wilayah '${tenant}' tidak terdaftar dalam whitelist.` });
   }
 
-  const expectedKey = KEYS[tenant];
+  const expectedRegionalKey = KEYS[tenant];
   const incomingKey = String(req.headers['x-admin-key'] || req.headers['authorization'] || '').replace(/^Bearer\s+/i, '').trim();
 
-  // Kunci wajib cocok persis dengan wilayah target
-  if (!incomingKey || incomingKey !== expectedKey) {
+  // Otorisasi: Lolos jika cocok dengan Master Key ATAU Kunci Khusus Wilayah Target
+  const isAuthorized = incomingKey && (incomingKey === MASTER_KEY || incomingKey === expectedRegionalKey);
+  if (!isAuthorized) {
     return res.status(401).json({ error: `Akses ditolak: Kata sandi admin tidak sah untuk wilayah ${tenant.toUpperCase()}.` });
   }
 
