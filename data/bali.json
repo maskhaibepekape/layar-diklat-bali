@@ -122,7 +122,7 @@
       "kode_ruangan": "WI",
       "nama": "Ruang Widyaiswara (WI)",
       "lokasi": "Lantai 2 (Depan Kelas)",
-      "kapasitas": 4,
+      "kapasitas": 3,
       "status": "tersedia",
       "status_label": "TERSEDIA",
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
