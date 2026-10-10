@@ -41,7 +41,7 @@ DEFAULT_ROOMS = [
     {"id": 3, "kode": "KLS-AUDIT", "nama": "Ruang Kelas Auditorium (Lantai 3)", "lokasi": "Lantai 3", "kapasitas": 60},
     {"id": 4, "kode": "AULA", "nama": "Aula (Lantai 1)", "lokasi": "Lantai 1", "kapasitas": 0},
     {"id": 5, "kode": "KLS-BLKG", "nama": "Ruang Kelas Belakang", "lokasi": "Sayap Belakang", "kapasitas": 4},
-    {"id": 6, "kode": "WI", "nama": "Ruang Widyaiswara (WI)", "lokasi": "Lantai 2 (Depan Kelas)", "kapasitas": 4}
+    {"id": 6, "kode": "WI", "nama": "Ruang Widyaiswara (WI)", "lokasi": "Lantai 2 (Depan Kelas)", "kapasitas": 3}
 ]
 
 def get_rooms_status(target_date: str) -> list:
