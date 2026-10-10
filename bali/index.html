@@ -163,6 +163,66 @@ body{height:100%;margin:0;background:var(--chrome-bg);color:var(--panel-fg);font
 .note-it .s { font-weight: 600; font-size: calc(33px * var(--k, 1)); line-height: 1.35; color: #1e293b; }
 .ib .hint2 { margin-top: 40px; font-size: 32px; font-weight: 600; color: #7a7166; line-height: 1.4; }
 
+/* room status scene (Slide: Status Ruangan) */
+.room-wrap { display: flex; flex-direction: column; gap: 14px; width: 100%; }
+.room-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: calc(18px * var(--k, 1)) 28px;
+  border-left: 14px solid #0025cc;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.room-card.avail {
+  border-left-color: #94a3b8;
+}
+.room-card .rc-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.room-card .r-name {
+  font-size: calc(34px * var(--k, 1));
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.15;
+}
+.room-card .r-badge {
+  font-size: calc(20px * var(--k, 1));
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.room-card .r-badge.used { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.room-card .r-badge.open { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.room-card .r-agenda {
+  font-size: calc(30px * var(--k, 1));
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.25;
+}
+.room-card .r-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: calc(2px * var(--k, 1));
+  font-size: calc(22px * var(--k, 1));
+  font-weight: 700;
+  color: #475569;
+}
+.room-card .r-meta span {
+  background: #f8fafc;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+.room-card .r-meta span b { color: #0025cc; }
+
 /* upcoming (Slide 3) */
 .next-bar {
   position: absolute;
@@ -344,6 +404,25 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       </div>
     </section>
 
+    <!-- Scene: Room Status (Slide: Status Ruangan) -->
+    <section class="scene" id="sRuangan">
+      <svg class="stripes" viewBox="0 0 1080 1920" aria-hidden="true">
+        <g class="a sweep" style="--d:0s"><polygon points="700,0 760,0 1080,320 1080,380" fill="#cc0000"/>
+        <polygon points="790,0 900,0 1080,180 1080,290" fill="#0025cc"/>
+        <polygon points="930,0 970,0 1080,110 1080,150" fill="#1a1a1a"/></g>
+        <g class="a sweepL" style="--d:.1s"><polygon points="0,1700 0,1770 150,1920 80,1920" fill="#cc0000"/>
+        <polygon points="0,1560 0,1680 240,1920 120,1920" fill="#4f6ff0"/>
+        <polygon points="0,1440 0,1480 440,1920 400,1920" fill="#1a1a1a"/></g>
+      </svg>
+      <div class="pill a pop fit" data-max="126" style="--d:.25s"><span>STATUS RUANGAN</span></div>
+      <div class="next-bar a" style="--d:.35s">
+        <div class="sub">Penggunaan Ruang Kelas & Aula Hari Ini di <span id="roomBalaiText">Pusdiklatwas BPKP</span></div>
+      </div>
+      <div class="ib" id="rbBox" style="top: 580px;">
+        <div class="room-wrap" id="rbList"></div>
+      </div>
+    </section>
+
     <!-- Scene: general welcome (no training running) -->
     <section class="scene" id="sGeneral">
       <svg class="stripes" viewBox="0 0 1080 1920" aria-hidden="true">
@@ -508,6 +587,73 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "jam": "",
       "peserta": ""
     }
+  ],
+  "rooms": [
+    {
+      "id": 1,
+      "kode_ruangan": "KLS-B",
+      "nama": "Ruang Kelas B",
+      "lokasi": "Lantai 2",
+      "kapasitas": 36,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 2,
+      "kode_ruangan": "KLS-A",
+      "nama": "Ruang Kelas A",
+      "lokasi": "Lantai 2",
+      "kapasitas": 4,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 3,
+      "kode_ruangan": "KLS-BLKG",
+      "nama": "Ruang Kelas Belakang",
+      "lokasi": "Sayap Belakang",
+      "kapasitas": 4,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 4,
+      "kode_ruangan": "WI",
+      "nama": "Ruang Widyaiswara (WI)",
+      "lokasi": "Lantai 2 (Depan Kelas)",
+      "kapasitas": 4,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 5,
+      "kode_ruangan": "AULA",
+      "nama": "Auditorium / Aula Bawah",
+      "lokasi": "Lantai 1",
+      "kapasitas": 100,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    }
   ]
 }
 </script>
@@ -517,7 +663,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 (function(){
   const $ = id => document.getElementById(id);
   const MON = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-  const EMPTY = {trainings:[], notes:[], alamat:'', wifiNama:'', wifiSandi:'', ig:'', yt:'', xx:'', fb:'', logo:'', foto:''};
+  const EMPTY = {trainings:[], notes:[], rooms:[], alamat:'', wifiNama:'', wifiSandi:'', ig:'', yt:'', xx:'', fb:'', logo:'', foto:''};
   let data = JSON.parse(JSON.stringify(EMPTY));
   const canWrite = false;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -617,6 +763,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       data = Object.assign(JSON.parse(JSON.stringify(EMPTY)), current);
       if(!Array.isArray(data.trainings)) data.trainings = [];
       if(!Array.isArray(data.notes)) data.notes = [];
+      if(!Array.isArray(data.rooms)) data.rooms = [];
     }
     const today = todayISO(getLocationKey());
     const ts = (data.trainings||[]).filter(t => t && t.nama && t.mulai).slice().sort((a,b)=> (a.mulai||'').localeCompare(b.mulai||''));
@@ -865,6 +1012,68 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     }
   }
 
+  function fillRoomScene(rooms){
+    stopMicroLoop();
+    const box = $('rbList'); if(!box) return;
+    box.textContent = '';
+    const nameEl = $('roomBalaiText');
+    const namaBalai = data.namaBalai || (data.namaUnit ? (data.namaUnit + ' ' + (data.wilayah||'')) : 'Pusdiklatwas BPKP');
+    if(nameEl) nameEl.textContent = namaBalai;
+
+    const rbBox = $('rbBox');
+    if(rbBox){
+      rbBox.style.setProperty('--k', '1');
+      rbBox.style.transform = 'none';
+    }
+
+    if(!rooms || !rooms.length){
+      box.appendChild(el('div', 'empty', 'Semua ruangan kelas & aula tersedia.', 0.4));
+      return;
+    }
+
+    rooms.forEach((r, i) => {
+      const isUsed = r.status === 'terpakai' || r.status === 'digunakan' || r.is_available === false;
+      const card = el('div', 'room-card' + (isUsed ? '' : ' avail'), null, 0.35 + i*0.1);
+      
+      const head = el('div', 'rc-head');
+      const title = el('div', 'r-name', r.nama || r.nama_ruangan || '-');
+      const badge = el('div', 'r-badge ' + (isUsed ? 'used' : 'open'), isUsed ? 'SEDANG DIGUNAKAN' : 'TERSEDIA');
+      head.appendChild(title);
+      head.appendChild(badge);
+      card.appendChild(head);
+
+      const agendaText = isUsed 
+        ? (r.kegiatan || r.agenda || r.current_agenda || 'Kegiatan Kedinasan') 
+        : 'Tersedia / Siap Digunakan';
+      const agenda = el('div', 'r-agenda', agendaText);
+      card.appendChild(agenda);
+
+      const meta = el('div', 'r-meta');
+      if(r.kategori_label || r.kategori_kegiatan){
+        meta.appendChild(metaItem('Kategori', r.kategori_label || r.kategori_kegiatan));
+      }
+      if(r.jam || (r.jam_mulai && r.jam_selesai)){
+        const jamStr = r.jam || (r.jam_mulai + '–' + r.jam_selesai + ' WITA');
+        meta.appendChild(metaItem('Waktu', jamStr));
+      }
+      if(r.pj || r.nama_peminjam || r.peserta){
+        const pjStr = r.pj || r.nama_peminjam || r.peserta;
+        meta.appendChild(metaItem(r.peserta ? 'Peserta' : 'Personel', pjStr));
+      }
+      if(!isUsed && (r.kapasitas || r.fasilitas)){
+        if(r.kapasitas) meta.appendChild(metaItem('Kapasitas', r.kapasitas + ' Orang'));
+      }
+      card.appendChild(meta);
+      box.appendChild(card);
+    });
+
+    if(rbBox){
+      requestAnimationFrame(() => {
+        fitBlock(rbBox, 1740 - 580 - 230);
+      });
+    }
+  }
+
   function fillNext(items, page, pages){
     stopMicroLoop();
     const box = $('nList'); if(!box) return;
@@ -891,6 +1100,8 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 
   function plan(){
     const L = lists(), out = [];
+    const rooms = (Array.isArray(data.rooms) && data.rooms.length) ? data.rooms : [];
+
     if(L.on.length){
       // Slide 1: Welcome (3s micro-loop jika 2+ diklat, maks 20s)
       const rawDurSlide1 = L.on.length > 1 ? Math.min(20000, L.on.length * 3000 * 3) : 10000;
@@ -902,7 +1113,12 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       out.push({ type: 'g', dur: Math.max(800, Math.round(11000 / SPEED)) });
     }
 
-    // Slide 3: Diklat Mendatang (Paginasi 3 per halaman, maks 3 halaman / 9 diklat)
+    // Slide: Status Penggunaan Ruangan (Hanya tampil bila data.rooms ada isinya, durasi ~11s)
+    if(rooms.length){
+      out.push({ type: 'r', items: rooms, dur: Math.max(800, Math.round(11000 / SPEED)) });
+    }
+
+    // Slide: Diklat Mendatang (Paginasi 4 per halaman, maks 3 halaman / 12 diklat)
     const totalPages = Math.min(MAX_PAGES, Math.ceil(L.up.length / PER));
     for(let p = 0; p < totalPages; p++){
       const items = L.up.slice(p * PER, (p + 1) * PER);
@@ -911,7 +1127,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     }
     return out;
   }
-  const SCENES = {d:'sDiklat', i:'sInfo', g:'sGeneral', n:'sNext'};
+  const SCENES = {d:'sDiklat', i:'sInfo', g:'sGeneral', n:'sNext', r:'sRuangan'};
   let idx = 0, loopTimer = null;
   function show(sc){
     stopMicroLoop();
@@ -923,6 +1139,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       paintInfo();
       if(sc.type === 'd') fillDiklatScene(sc.items);
       else if(sc.type === 'i') fillInfoScene(sc.items);
+      else if(sc.type === 'r') fillRoomScene(sc.items);
       else if(sc.type === 'n') fillNext(sc.items || [], sc.page || 0, sc.pages || 1);
     } catch(err){
       console.error('[show] render error:', err);

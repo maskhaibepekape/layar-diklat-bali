@@ -76,5 +76,72 @@
       "jam": "",
       "peserta": ""
     }
+  ],
+  "rooms": [
+    {
+      "id": 1,
+      "kode_ruangan": "KLS-B",
+      "nama": "Ruang Kelas B",
+      "lokasi": "Lantai 2",
+      "kapasitas": 36,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 2,
+      "kode_ruangan": "KLS-A",
+      "nama": "Ruang Kelas A",
+      "lokasi": "Lantai 2",
+      "kapasitas": 4,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 3,
+      "kode_ruangan": "KLS-BLKG",
+      "nama": "Ruang Kelas Belakang",
+      "lokasi": "Sayap Belakang",
+      "kapasitas": 4,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 4,
+      "kode_ruangan": "WI",
+      "nama": "Ruang Widyaiswara (WI)",
+      "lokasi": "Lantai 2 (Depan Kelas)",
+      "kapasitas": 4,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 5,
+      "kode_ruangan": "AULA",
+      "nama": "Auditorium / Aula Bawah",
+      "lokasi": "Lantai 1",
+      "kapasitas": 100,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    }
   ]
 }
