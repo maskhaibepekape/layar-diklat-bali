@@ -37,10 +37,11 @@ KATEGORI_MAP = {
 
 DEFAULT_ROOMS = [
     {"id": 1, "kode": "KLS-B", "nama": "Ruang Kelas B (Lantai 2)", "lokasi": "Lantai 2", "kapasitas": 36},
-    {"id": 2, "kode": "KLS-A", "nama": "Ruang Kelas A (Lantai 2)", "lokasi": "Lantai 2", "kapasitas": 4},
-    {"id": 3, "kode": "KLS-BLKG", "nama": "Ruang Kelas Belakang", "lokasi": "Sayap Belakang", "kapasitas": 4},
-    {"id": 4, "kode": "WI", "nama": "Ruang Widyaiswara (WI)", "lokasi": "Lantai 2 (Depan Kelas)", "kapasitas": 4},
-    {"id": 5, "kode": "AULA", "nama": "Auditorium / Aula Bawah", "lokasi": "Lantai 1", "kapasitas": 100}
+    {"id": 2, "kode": "KLS-A", "nama": "Ruang Kelas A (Lantai 2)", "lokasi": "Lantai 2", "kapasitas": 24},
+    {"id": 3, "kode": "KLS-AUDIT", "nama": "Ruang Kelas Auditorium (Lantai 3)", "lokasi": "Lantai 3", "kapasitas": 60},
+    {"id": 4, "kode": "AULA", "nama": "Aula (Lantai 1)", "lokasi": "Lantai 1", "kapasitas": 0},
+    {"id": 5, "kode": "KLS-BLKG", "nama": "Ruang Kelas Belakang", "lokasi": "Sayap Belakang", "kapasitas": 4},
+    {"id": 6, "kode": "WI", "nama": "Ruang Widyaiswara (WI)", "lokasi": "Lantai 2 (Depan Kelas)", "kapasitas": 4}
 ]
 
 def get_rooms_status(target_date: str) -> list:
