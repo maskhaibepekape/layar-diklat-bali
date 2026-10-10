@@ -607,7 +607,7 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "kode_ruangan": "KLS-A",
       "nama": "Ruang Kelas A",
       "lokasi": "Lantai 2",
-      "kapasitas": 4,
+      "kapasitas": 24,
       "status": "tersedia",
       "status_label": "TERSEDIA",
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
@@ -644,9 +644,22 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
     {
       "id": 5,
       "kode_ruangan": "AULA",
-      "nama": "Auditorium / Aula Bawah",
+      "nama": "Aula",
       "lokasi": "Lantai 1",
-      "kapasitas": 100,
+      "kapasitas": 0,
+      "status": "tersedia",
+      "status_label": "TERSEDIA",
+      "kegiatan": "Tidak ada agenda kegiatan saat ini",
+      "jam": "-",
+      "pj": "-",
+      "is_available": true
+    },
+    {
+      "id": 6,
+      "kode_ruangan": "KLS-AUDIT",
+      "nama": "Ruang Kelas Auditorium",
+      "lokasi": "Lantai 3",
+      "kapasitas": 60,
       "status": "tersedia",
       "status_label": "TERSEDIA",
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
@@ -1061,7 +1074,11 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
         meta.appendChild(metaItem(r.peserta ? 'Peserta' : 'Personel', pjStr));
       }
       if(!isUsed && (r.kapasitas || r.fasilitas)){
-        if(r.kapasitas) meta.appendChild(metaItem('Kapasitas', r.kapasitas + ' Orang'));
+        const kCode = (r.kode_ruangan || '').toUpperCase();
+        const rName = (r.nama || r.nama_ruangan || '').toLowerCase();
+        if(r.kapasitas && r.kapasitas > 0 && kCode !== 'AULA' && !rName.includes('aula')){
+          meta.appendChild(metaItem('Kapasitas', r.kapasitas + ' Orang'));
+        }
       }
       card.appendChild(meta);
       box.appendChild(card);
