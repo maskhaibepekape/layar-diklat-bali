@@ -99,7 +99,8 @@
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
       "jam": "-",
       "pj": "-",
-      "is_available": true
+      "is_available": true,
+      "override": null
     },
     {
       "id": 2,
@@ -112,7 +113,8 @@
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
       "jam": "-",
       "pj": "-",
-      "is_available": true
+      "is_available": true,
+      "override": null
     },
     {
       "id": 3,
@@ -125,7 +127,8 @@
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
       "jam": "-",
       "pj": "-",
-      "is_available": true
+      "is_available": true,
+      "override": null
     },
     {
       "id": 4,
@@ -138,7 +141,8 @@
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
       "jam": "-",
       "pj": "-",
-      "is_available": true
+      "is_available": true,
+      "override": null
     },
     {
       "id": 5,
@@ -151,7 +155,8 @@
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
       "jam": "-",
       "pj": "-",
-      "is_available": true
+      "is_available": true,
+      "override": null
     },
     {
       "id": 6,
@@ -164,7 +169,8 @@
       "kegiatan": "Tidak ada agenda kegiatan saat ini",
       "jam": "-",
       "pj": "-",
-      "is_available": true
+      "is_available": true,
+      "override": null
     }
   ]
 }

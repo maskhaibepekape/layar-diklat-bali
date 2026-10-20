@@ -466,6 +466,7 @@ body {
   <nav class="nav-tabs">
     <button type="button" class="tab-link active" onclick="setTab('diklat', this)">Pelatihan (<span id="countDiklat">0</span>)</button>
     <button type="button" class="tab-link" onclick="setTab('notes', this)">Catatan Peserta (<span id="countNotes">0</span>)</button>
+    <button type="button" class="tab-link" onclick="setTab('ruangan', this)">Ruangan (<span id="countRuangan">0</span>)</button>
     <button type="button" class="tab-link" onclick="setTab('fasilitas', this)">Identitas Balai &amp; Wi-Fi</button>
   </nav>
 
@@ -491,7 +492,18 @@ body {
     </section>
   </div>
 
-  <!-- Tab 3: Fasilitas & Wi-Fi -->
+  <!-- Tab 3: Ruangan -->
+  <div id="tab-ruangan" class="tab-content" style="display: none;">
+    <section class="section-panel">
+      <div class="panel-head">
+        <span class="panel-title">Status Ruangan</span>
+        <span style="font-size:12px;color:var(--text-muted);">Status otomatis dari jadwal · Override manual tersedia</span>
+      </div>
+      <div id="ruanganList"></div>
+    </section>
+  </div>
+
+  <!-- Tab 4: Fasilitas & Wi-Fi -->
   <div id="tab-fasilitas" class="tab-content" style="display: none;">
     <section class="section-panel">
       <div class="panel-head">
@@ -693,6 +705,49 @@ body {
   </div>
 </div>
 
+<!-- Modal Form Ruangan -->
+<div id="modalRuangan" class="modal-overlay">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3 id="modalRuanganTitle">Override Status Ruangan</h3>
+      <button type="button" class="modal-close" onclick="closeModal('modalRuangan')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editRuanganIdx" value="-1">
+      <div class="field">
+        <label>Nama Ruangan:</label>
+        <input type="text" id="mRuanganNama" disabled style="background:#f8fafc;">
+      </div>
+      <div class="field">
+        <label>Override Status Manual:</label>
+        <select id="mRuanganOverride">
+          <option value="">Otomatis (dari jadwal diklat)</option>
+          <option value="tersedia">✅ Tersedia</option>
+          <option value="terpakai">🔴 Terpakai</option>
+          <option value="maintenance">🔧 Maintenance</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Keterangan Kegiatan (opsional):</label>
+        <input type="text" id="mRuanganKegiatan" placeholder="Misal: Rapat Internal, Maintenance AC...">
+      </div>
+      <div class="field">
+        <label>Jam:</label>
+        <input type="text" id="mRuanganJam" placeholder="08.00–17.00 WITA">
+      </div>
+      <div class="field">
+        <label>PJ / Penanggungjawab:</label>
+        <input type="text" id="mRuanganPj" placeholder="Nama PJ atau unit">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn" onclick="closeModal('modalRuangan')">Batal</button>
+      <button type="button" class="btn btn-danger btn-sm" onclick="resetRuanganOverride()">Reset Otomatis</button>
+      <button type="button" class="btn btn-primary" onclick="submitRuanganItem()">Simpan Override</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Notice -->
 <div id="toastBar" class="toast-bar"></div>
 
@@ -838,6 +893,7 @@ function getCurrentLocData() {
   }
   if (!Array.isArray(masterData[currentLoc].trainings)) masterData[currentLoc].trainings = [];
   if (!Array.isArray(masterData[currentLoc].notes)) masterData[currentLoc].notes = [];
+  if (!Array.isArray(masterData[currentLoc].rooms)) masterData[currentLoc].rooms = [];
   return masterData[currentLoc];
 }
 
@@ -852,6 +908,7 @@ function renderCurrentLoc() {
 
   renderDiklatList();
   renderNotesList();
+  renderRuanganList();
   renderFasilitasForm();
 
   document.getElementById('countDiklat').textContent = (locData.trainings || []).length;
@@ -1323,6 +1380,138 @@ function handleImportJSON(e) {
     }
   };
   reader.readAsText(file);
+}
+
+/* ===== RUANGAN ===== */
+
+function computeRoomStatus(room, trainings) {
+  if (room.override) {
+    const labels = { tersedia: 'TERSEDIA', terpakai: 'TERPAKAI', maintenance: 'MAINTENANCE' };
+    return {
+      status: room.override,
+      status_label: labels[room.override] || room.override.toUpperCase(),
+      is_available: room.override === 'tersedia',
+      kegiatan: room.kegiatan || '-',
+      jam: room.jam || '-',
+      pj: room.pj || '-'
+    };
+  }
+
+  const today = getTodayStr();
+  const activeTrainings = (trainings || []).filter(t => t.mulai <= today && today <= (t.selesai || t.mulai));
+
+  for (const t of activeTrainings) {
+    const ruangLower = (t.ruang || '').toLowerCase();
+    const namaLower = (room.nama || '').toLowerCase();
+    const kodeLower = (room.kode_ruangan || '').toLowerCase();
+    if (ruangLower.includes(namaLower.split(' ')[0].toLowerCase()) ||
+        ruangLower.includes(kodeLower) ||
+        namaLower.includes(ruangLower.split('(')[0].trim().toLowerCase())) {
+      return {
+        status: 'terpakai',
+        status_label: 'TERPAKAI',
+        is_available: false,
+        kegiatan: t.nama,
+        jam: t.jam || '08.00–17.00 WITA',
+        pj: t.peserta ? `${t.peserta}` : '-'
+      };
+    }
+  }
+
+  return {
+    status: 'tersedia',
+    status_label: 'TERSEDIA',
+    is_available: true,
+    kegiatan: 'Tidak ada agenda kegiatan saat ini',
+    jam: '-',
+    pj: '-'
+  };
+}
+
+function renderRuanganList() {
+  const container = document.getElementById('ruanganList');
+  if (!container) return;
+  const locData = getCurrentLocData();
+  const rooms = locData.rooms || [];
+  const trainings = locData.trainings || [];
+
+  if (rooms.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;">Belum ada data ruangan.</div>';
+    return;
+  }
+
+  container.innerHTML = rooms.map((room, idx) => {
+    const computed = computeRoomStatus(room, trainings);
+    const isOverride = !!room.override;
+    const statusColor = computed.status === 'tersedia' ? 'var(--green)' : computed.status === 'maintenance' ? '#f59e0b' : 'var(--rose)';
+    const statusBg = computed.status === 'tersedia' ? 'var(--green-bg)' : computed.status === 'maintenance' ? '#fffbeb' : 'var(--rose-bg)';
+
+    return `
+      <div class="item-row" style="border-left: 4px solid ${statusColor};">
+        <div class="row-top">
+          <div>
+            <div class="row-heading">${escapeHtml(room.nama)}</div>
+            <div style="font-size:12px;color:var(--text-muted);">${escapeHtml(room.lokasi)}${room.kapasitas ? ' · Kapasitas ' + room.kapasitas + ' orang' : ''}</div>
+          </div>
+          <span class="tag" style="background:${statusBg};color:${statusColor};">
+            ${computed.status_label}${isOverride ? ' ✏️' : ''}
+          </span>
+        </div>
+        <div class="row-subbox">
+          <div>Kegiatan: <b>${escapeHtml(computed.kegiatan)}</b></div>
+          ${computed.jam !== '-' ? `<div>Jam: <b>${escapeHtml(computed.jam)}</b></div>` : ''}
+        </div>
+        ${isOverride ? '<div style="font-size:11.5px;color:#f59e0b;margin-bottom:6px;">⚠️ Status di-override manual</div>' : '<div style="font-size:11.5px;color:var(--text-muted);margin-bottom:6px;">🔄 Status otomatis dari jadwal</div>'}
+        <div class="row-actions">
+          <button type="button" class="btn btn-sm" onclick="openEditRuangan(${idx})">Override</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const countEl = document.getElementById('countRuangan');
+  if (countEl) countEl.textContent = rooms.length;
+}
+
+function openEditRuangan(idx) {
+  const locData = getCurrentLocData();
+  const room = (locData.rooms || [])[idx];
+  if (!room) return;
+  document.getElementById('modalRuanganTitle').textContent = `Override: ${room.nama}`;
+  document.getElementById('editRuanganIdx').value = idx;
+  document.getElementById('mRuanganNama').value = room.nama || '';
+  document.getElementById('mRuanganOverride').value = room.override || '';
+  document.getElementById('mRuanganKegiatan').value = room.kegiatan || '';
+  document.getElementById('mRuanganJam').value = room.jam || '';
+  document.getElementById('mRuanganPj').value = room.pj || '';
+  openModal('modalRuangan');
+}
+
+function submitRuanganItem() {
+  const locData = getCurrentLocData();
+  const idx = parseInt(document.getElementById('editRuanganIdx').value, 10);
+  if (idx < 0 || !locData.rooms) return;
+
+  const override = document.getElementById('mRuanganOverride').value;
+  locData.rooms[idx].override = override || null;
+  locData.rooms[idx].kegiatan = document.getElementById('mRuanganKegiatan').value.trim() || null;
+  locData.rooms[idx].jam = document.getElementById('mRuanganJam').value.trim() || null;
+  locData.rooms[idx].pj = document.getElementById('mRuanganPj').value.trim() || null;
+
+  closeModal('modalRuangan');
+  saveAllData('Status ruangan berhasil diperbarui.');
+}
+
+function resetRuanganOverride() {
+  const locData = getCurrentLocData();
+  const idx = parseInt(document.getElementById('editRuanganIdx').value, 10);
+  if (idx < 0 || !locData.rooms) return;
+  locData.rooms[idx].override = null;
+  locData.rooms[idx].kegiatan = null;
+  locData.rooms[idx].jam = null;
+  locData.rooms[idx].pj = null;
+  closeModal('modalRuangan');
+  saveAllData('Override ruangan dihapus — kembali ke status otomatis.');
 }
 
 // Initial check
