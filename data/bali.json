@@ -40,21 +40,31 @@
       "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 5",
       "mulai": "2026-10-14",
       "selesai": "2026-10-29",
-      "ket": "Blended Learning",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
+      "ket": "Tatap Muka (Fase Luring)",
+      "sambutan": "Selamat datang para peserta Pelatihan Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung Batch 5 di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
+      "ruang": "Ruang Kelas B (Lantai 2)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "22 orang"
     },
     {
-      "nama": "Pelatihan Penilaian Risiko Pemda (PPBR Pemda)",
+      "nama": "Pelatihan Perencanaan Pengawasan Berbasis Risiko Pemda – Kelas A",
       "mulai": "2026-10-26",
       "selesai": "2026-10-30",
       "ket": "Tatap Muka",
-      "sambutan": "",
-      "ruang": "",
-      "jam": "",
-      "peserta": ""
+      "sambutan": "Selamat datang para peserta Pelatihan PPBR Pemda Kelas A di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
+      "ruang": "Ruang Kelas A (Lantai 2)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "23 orang"
+    },
+    {
+      "nama": "Pelatihan Perencanaan Pengawasan Berbasis Risiko Pemda – Kelas B",
+      "mulai": "2026-10-26",
+      "selesai": "2026-10-30",
+      "ket": "Tatap Muka",
+      "sambutan": "Selamat datang para peserta Pelatihan PPBR Pemda Kelas B di Learning Center Pusdiklatwas BPKP Wilayah II Bali.",
+      "ruang": "Aula Auditorium (Lantai 3)",
+      "jam": "08.00–17.00 WITA",
+      "peserta": "23 orang"
     },
     {
       "nama": "Fungsional Auditor Ahli Muda di Lingkungan Kejaksaan Agung – Batch 10",
