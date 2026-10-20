@@ -1401,12 +1401,16 @@ function computeRoomStatus(room, trainings) {
   const activeTrainings = (trainings || []).filter(t => t.mulai <= today && today <= (t.selesai || t.mulai));
 
   for (const t of activeTrainings) {
-    const ruangLower = (t.ruang || '').toLowerCase();
-    const namaLower = (room.nama || '').toLowerCase();
-    const kodeLower = (room.kode_ruangan || '').toLowerCase();
-    if (ruangLower.includes(namaLower.split(' ')[0].toLowerCase()) ||
-        ruangLower.includes(kodeLower) ||
-        namaLower.includes(ruangLower.split('(')[0].trim().toLowerCase())) {
+    const ruangTraining = (t.ruang || '').toLowerCase().trim();
+    const namaRuangan = (room.nama || '').toLowerCase().trim();
+    const kodeRuangan = (room.kode_ruangan || '').toLowerCase().trim();
+    const matched = ruangTraining.length > 0 && (
+      ruangTraining === namaRuangan ||
+      ruangTraining.includes(namaRuangan) ||
+      namaRuangan.includes(ruangTraining) ||
+      ruangTraining.includes(kodeRuangan)
+    );
+    if (matched) {
       return {
         status: 'terpakai',
         status_label: 'TERPAKAI',
