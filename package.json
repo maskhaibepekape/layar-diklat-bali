@@ -1,0 +1,24 @@
+{
+  "name": "layar-diklat",
+  "version": "2.0.0",
+  "description": "Smart Signage Display & Pengelola Layar Diklat Pusdiklatwas BPKP",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test/run_tests.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
+  },
+  "keywords": [
+    "signage",
+    "pusdiklatwas",
+    "bpkp",
+    "layar-diklat"
+  ],
+  "author": "Pusdiklatwas BPKP",
+  "license": "MIT"
+}
