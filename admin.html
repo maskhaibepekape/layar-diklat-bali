@@ -457,6 +457,7 @@ body {
     </div>
     <div class="header-tools">
       <span id="syncBadge" style="font-size: 12px; font-weight: 600; color: var(--green); margin-right: 6px;">● Tersinkronisasi</span>
+      <button type="button" class="btn btn-sm" id="btnSyncKamarDiklat" onclick="triggerSyncKamarDiklat()" style="background: #0284c7; color: #ffffff; border-color: #0284c7; font-weight: 600;">🔄 Sinkron Kamar Diklat</button>
       <a href="index.html" id="linkTvPreview" target="_blank" class="btn btn-sm">Lihat Layar TV</a>
       <button type="button" class="btn btn-sm" onclick="logoutAdmin()" style="color: var(--rose); border-color: rgba(225,29,72,0.3); font-weight: 700;">🚪 Keluar</button>
     </div>
@@ -475,7 +476,10 @@ body {
     <section class="section-panel">
       <div class="panel-head">
         <span class="panel-title">Daftar Pelatihan (<span id="panelLocName">Bali</span>)</span>
-        <button type="button" class="btn btn-primary btn-sm" onclick="openDiklatModal()">+ Tambah Pelatihan</button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-sm" id="btnSyncKamarDiklatPanel" onclick="triggerSyncKamarDiklat()" style="border-color: #0284c7; color: #0284c7; font-weight: 600;">🔄 Sinkron Kamar Diklat</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="openDiklatModal()">+ Tambah Pelatihan</button>
+        </div>
       </div>
       <div id="diklatList"></div>
     </section>
@@ -496,8 +500,11 @@ body {
   <div id="tab-ruangan" class="tab-content" style="display: none;">
     <section class="section-panel">
       <div class="panel-head">
-        <span class="panel-title">Status Ruangan</span>
-        <span style="font-size:12px;color:var(--text-muted);">Status otomatis dari jadwal · Override manual tersedia</span>
+        <div>
+          <span class="panel-title">Status Ruangan</span>
+          <span style="font-size:12px;color:var(--text-muted);display:block;margin-top:2px;">Status otomatis dari jadwal &amp; booking Kamar Diklat · Override manual tersedia</span>
+        </div>
+        <button type="button" class="btn btn-sm" id="btnSyncKamarDiklatRuangan" onclick="triggerSyncKamarDiklat()" style="border-color: #0284c7; color: #0284c7; font-weight: 600;">🔄 Sinkron Ruangan</button>
       </div>
       <div id="ruanganList"></div>
     </section>
@@ -820,6 +827,13 @@ async function switchLocation(loc) {
   const activeChip = document.getElementById('chip-' + loc);
   if (activeChip) activeChip.classList.add('active');
 
+  // Tampilkan tombol Sinkron Kamar Diklat khusus untuk Bali
+  const isBali = (loc === 'bali');
+  ['btnSyncKamarDiklat', 'btnSyncKamarDiklatPanel', 'btnSyncKamarDiklatRuangan'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = isBali ? 'inline-flex' : 'none';
+  });
+
   // Update URL preview link
   const linkPreview = document.getElementById('linkTvPreview');
   if (linkPreview) {
@@ -841,6 +855,48 @@ async function switchLocation(loc) {
   } catch(e) {}
 
   renderCurrentLoc();
+}
+
+/* Trigger Sinkronisasi Langsung dari Kamar Diklat (pusdiklat.db) */
+async function triggerSyncKamarDiklat() {
+  const btns = ['btnSyncKamarDiklat', 'btnSyncKamarDiklatPanel', 'btnSyncKamarDiklatRuangan']
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  btns.forEach(b => {
+    b.disabled = true;
+    b.dataset.origText = b.innerHTML;
+    b.innerHTML = '🔄 Menyinkronkan...';
+  });
+
+  showToast('Menghubungkan ke Kamar Diklat (pusdiklat.db)...');
+
+  const authKey = adminKey || sessionStorage.getItem('layar_admin_key') || '';
+  try {
+    const res = await fetch('/api/sync/bali', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-key': authKey
+      }
+    });
+
+    const resData = await res.json().catch(() => ({}));
+
+    if (res.ok && resData.ok) {
+      showToast(`✅ ${resData.message || 'Sinkronisasi berhasil!'}`);
+      await switchLocation('bali');
+    } else {
+      showToast(`❌ Gagal: ${resData.error || resData.message || 'Terjadi kesalahan saat sinkronisasi.'}`);
+    }
+  } catch(err) {
+    showToast(`❌ Gagal terhubung ke server: ${err.message}`);
+  } finally {
+    btns.forEach(b => {
+      b.disabled = false;
+      b.innerHTML = b.dataset.origText || '🔄 Sinkron Kamar Diklat';
+    });
+  }
 }
 
 /* Data Loading */
