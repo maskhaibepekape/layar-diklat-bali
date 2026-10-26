@@ -501,7 +501,8 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 <!-- ================= EDIT DATA LAYAR DI SINI =================
      Format JSON. Lihat AGENTS.md untuk penjelasan setiap kolom.
      Tanggal ditulis YYYY-MM-DD. Diklat pindah otomatis sesuai tanggal hari ini. -->
-<script id="data" type="application/json">{
+<script id="data" type="application/json">
+{
   "alamat": "Jl. Cokroaminoto Blok A-B-C-D No.66, Pemecutan Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80118",
   "wifiNama": "id bpkp bali",
   "wifiSandi": "bali2025",
@@ -604,12 +605,13 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "nama": "Ruang Kelas B",
       "lokasi": "Lantai 2",
       "kapasitas": 36,
-      "status": "tersedia",
-      "status_label": "TERSEDIA",
-      "kegiatan": "Tidak ada agenda kegiatan saat ini",
-      "jam": "-",
-      "pj": "-",
-      "is_available": true
+      "status": "terpakai",
+      "status_label": "DIKLAT TATAP MUKA",
+      "kategori_label": "Diklat Tatap Muka",
+      "kegiatan": "Pelaksanaan Diklat Tatap Muka Luring (20 Peserta)",
+      "jam": "08:00–17:00 WITA",
+      "pj": "Panitia Diklat Kejagung Batch 5",
+      "is_available": false
     },
     {
       "id": 2,
@@ -617,12 +619,13 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "nama": "Ruang Kelas A",
       "lokasi": "Lantai 2",
       "kapasitas": 24,
-      "status": "tersedia",
-      "status_label": "TERSEDIA",
-      "kegiatan": "Tidak ada agenda kegiatan saat ini",
-      "jam": "-",
-      "pj": "-",
-      "is_available": true
+      "status": "terpakai",
+      "status_label": "DIKLAT TATAP MUKA",
+      "kategori_label": "Diklat Tatap Muka",
+      "kegiatan": "Pelaksanaan Diklat PPBR Pemda Kelas A (20 Peserta)",
+      "jam": "08:00–17:00 WITA",
+      "pj": "Panitia Diklat PPBR",
+      "is_available": false
     },
     {
       "id": 3,
@@ -669,15 +672,17 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
       "nama": "Ruang Kelas Auditorium",
       "lokasi": "Lantai 3",
       "kapasitas": 60,
-      "status": "tersedia",
-      "status_label": "TERSEDIA",
-      "kegiatan": "Tidak ada agenda kegiatan saat ini",
-      "jam": "-",
-      "pj": "-",
-      "is_available": true
+      "status": "terpakai",
+      "status_label": "DIKLAT TATAP MUKA",
+      "kategori_label": "Diklat Tatap Muka",
+      "kegiatan": "Pelaksanaan Diklat PPBR Pemda Kelas B (28 Peserta)",
+      "jam": "08:00–17:00 WITA",
+      "pj": "Panitia Diklat PPBR",
+      "is_available": false
     }
   ]
-}</script>
+}
+</script>
 <!-- ================= AKHIR DATA ================= -->
 
 <script>
@@ -1125,7 +1130,38 @@ label.file input{position:absolute;opacity:0;width:1px;height:1px}
 
   function plan(){
     const L = lists(), out = [];
-    const rooms = (Array.isArray(data.rooms) && data.rooms.length) ? data.rooms : [];
+    const rawRooms = (Array.isArray(data.rooms) && data.rooms.length) ? data.rooms : [];
+    const rooms = rawRooms.map(r => {
+      if (r.override && r.override !== 'auto') {
+        const isAvail = r.override === 'tersedia';
+        return { ...r, status: r.override, is_available: isAvail };
+      }
+      if (r.status === 'terpakai' || r.status === 'digunakan' || r.is_available === false) {
+        return r;
+      }
+      const rNama = (r.nama || r.nama_ruangan || '').toLowerCase().trim();
+      const rKode = (r.kode_ruangan || '').toLowerCase().trim();
+      for (const t of (L.on || [])) {
+        const tRuang = (t.ruang || '').toLowerCase().trim();
+        if (!tRuang) continue;
+        if (rKode === 'aula' && tRuang.includes('auditorium')) continue;
+        const matched = (rKode === 'kls-audit') 
+          ? (tRuang.includes('auditorium') || tRuang.includes('kls-audit'))
+          : (tRuang.includes(rNama) || rNama.includes(tRuang) || (rKode && tRuang.includes(rKode)));
+        if (matched) {
+          return {
+            ...r,
+            status: 'terpakai',
+            status_label: 'TERPAKAI',
+            is_available: false,
+            kegiatan: t.nama,
+            jam: t.jam || '08.00–17.00 WITA',
+            pj: t.peserta || '-'
+          };
+        }
+      }
+      return r;
+    });
 
     if(L.on.length){
       // Slide 1: Welcome (3s micro-loop jika 2+ diklat, maks 20s)
